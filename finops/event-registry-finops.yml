@@ -1,0 +1,63 @@
+name: Event Registry FinOps
+description: Financial operations guidance for managing costs when using the Event Registry (NewsAPI.ai) news intelligence REST API.
+url: https://newsapi.ai/plans
+costModel:
+  type: Token-based monthly subscription
+  description: >
+    Event Registry uses a token-based consumption model within monthly subscription tiers.
+    Each API call consumes a number of tokens based on the type of query and historical depth.
+    Plans are monthly, auto-renewing, and tokens do not roll over.
+  currency: USD
+  billingPeriod: monthly
+  overageEnabled: true (opt-in)
+  overageCostPerToken: 0.015
+costDrivers:
+  - name: Plan Tier
+    description: Base monthly cost determined by token allocation tier (5K, 10K, 25K, etc.).
+    impact: High
+  - name: Historical Depth
+    description: Searching older historical data (pre-2020) consumes significantly more tokens per query than recent data.
+    impact: High
+    detail: Recent article search = 1 token; historical article search = 5 tokens per year queried.
+  - name: Event Queries vs Article Queries
+    description: Event queries cost 5x more tokens than article queries for recent data, and 20 tokens per historical year for events vs 5 for articles.
+    impact: High
+  - name: Concurrency
+    description: The 5-request concurrency cap may slow throughput, indirectly increasing time-to-value for large batch jobs.
+    impact: Medium
+  - name: Overage Usage
+    description: Exceeding plan token limits triggers per-token overage charges ($0.015/token) if overage mode is enabled.
+    impact: High (risk)
+costOptimizationStrategies:
+  - name: Use Recent Data When Possible
+    description: Restrict queries to the last 30 days (1 token/query) rather than deep historical archives (5+ tokens/query/year) to minimize consumption.
+  - name: Prefer Article Queries Over Event Queries
+    description: Article searches (1 token) cost far less than event searches (5 tokens). Use events only when clustering/deduplication is required.
+  - name: Disable Overage or Set Alerts
+    description: Keep "Block API calls once the monthly cap is reached" enabled to prevent unexpected overage charges. Monitor token consumption via the dashboard.
+  - name: Cache Results Locally
+    description: Cache API responses for repeated queries to avoid re-consuming tokens for the same data.
+  - name: Use the Sandbox for Development
+    description: Test and refine queries using the free Sandbox (https://newsapi.ai/documentation/sandbox) before running against production token allocation.
+  - name: Right-Size Your Plan
+    description: Start with the 5K plan and monitor actual token usage before upgrading; plans can be changed monthly.
+  - name: Academic Discount
+    description: If usage is exclusively academic, request a discount by emailing info@eventregistry.org from an academic institution email address.
+  - name: Sequential Requests
+    description: Design request patterns to be sequential rather than concurrent to avoid 429 rejections that waste retry overhead.
+budgetControls:
+  - name: Monthly Token Cap (Default)
+    description: By default, the API blocks further calls once the monthly token limit is reached, preventing uncontrolled spend.
+    enabled: true (default)
+  - name: Overage Opt-In
+    description: Users can opt in to overage billing in the dashboard. Recommended only for production workloads with known, bounded usage patterns.
+    costPerToken: 0.015
+    currency: USD
+monitoring:
+  - Dashboard token consumption tracking available at https://eventregistry.org
+  - Monitor monthly consumption rate to detect spikes early.
+  - Set internal alerts when 75-80% of monthly token budget is consumed.
+freeTolerancePolicy:
+  freeTier: 2,000 tokens (one-time, no renewal)
+  purpose: Testing and evaluation only; non-commercial use required.
+  upgradeRecommended: When token budget is regularly exhausted before month end, upgrade to next tier rather than relying on overage.

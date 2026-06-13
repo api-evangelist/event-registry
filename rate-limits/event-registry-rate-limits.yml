@@ -1,0 +1,55 @@
+name: Event Registry Rate Limits
+description: Rate limiting policies for the Event Registry (NewsAPI.ai) news intelligence REST API.
+url: https://newsapi.ai/documentation
+rateLimits:
+  - name: Concurrent Request Limit
+    description: Maximum number of simultaneous API requests allowed per account at any given time.
+    limit: 5
+    window: concurrent
+    scope: account
+    enforcement: >
+      If more than 5 simultaneous requests are made, the server returns HTTP 429 Too Many Requests.
+      Excess requests are not queued — they are rejected immediately.
+    recommendation: Make API requests sequentially rather than in parallel to avoid 429 errors.
+  - name: Monthly Token Quota
+    description: Each plan includes a monthly token allocation. API calls consume tokens based on the type of request and historical depth.
+    scope: account
+    enforcement: >
+      Once the monthly token cap is reached, further API calls are rejected by default.
+      Users can opt to allow overages (charged at $0.015 per token) by unchecking "Block API calls once the monthly cap is reached" in the dashboard.
+    tokenConsumption:
+      - action: Search recent articles (last 30 days)
+        tokensPerCall: 1
+      - action: Search historical articles
+        tokensPerCall: 5 per year searched (e.g., searching 2017 costs 5 tokens; 2015-2017 costs 15 tokens)
+      - action: Search recent events
+        tokensPerCall: 5
+      - action: Search historical events
+        tokensPerCall: 20 per year searched
+      - action: Per-document analytics
+        tokensPerCall: 0.01 to 0.05
+    overage:
+      enabled: true (optional, opt-in)
+      costPerToken: 0.015
+      currency: USD
+  - name: Free Plan Limit
+    description: Free accounts are limited to 2,000 total search tokens with no monthly renewal.
+    limit: 2000
+    scope: account
+    enforcement: Free plan tokens are a one-time allocation for testing purposes.
+errorCodes:
+  - code: 429
+    description: Too Many Requests — more than 5 concurrent requests sent simultaneously.
+    resolution: Reduce concurrency to 5 or fewer simultaneous requests; implement sequential request patterns.
+authentication:
+  method: API Key
+  parameterName: apiKey
+  placement: query parameter or request body
+  acquisition: Register at https://newsapi.ai/register to obtain a free API key.
+httpMethods:
+  - GET
+  - POST
+notes:
+  - POST is required when request content is too long for a GET URL.
+  - All endpoints support both GET and POST unless otherwise specified.
+  - The 5-request concurrency cap applies across all plan tiers.

@@ -1,0 +1,80 @@
+aid: event-registry
+name: Event Registry
+description: >
+  Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing
+  a REST API for accessing global news articles, trending topics, event detection, named
+  entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages,
+  with historical archive access dating back to 2014.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/event-registry/refs/heads/main/apis.yml
+created: 2026-06-13
+modified: 2026-06-13
+specificationVersion: "0.19"
+tags:
+  - News
+  - Media Monitoring
+  - News Intelligence
+  - Event Detection
+  - Named Entity Recognition
+  - Sentiment Analysis
+  - Media Analytics
+  - News API
+apis:
+  - aid: event-registry:news-api
+    name: Event Registry News API
+    description: >
+      REST API for querying global news articles and clustered events with AI-enriched
+      metadata including named entities, sentiment scores, topic categories, and social
+      media engagement metrics. Supports keyword, concept, location, source, and
+      date-range filtering across 150,000+ sources in 60+ languages.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://newsapi.ai
+    baseURL: https://eventregistry.org/api/v1
+    tags:
+      - News
+      - Articles
+      - Events
+      - Media Monitoring
+      - Sentiment Analysis
+      - Named Entity Recognition
+    properties:
+      - type: Documentation
+        url: https://newsapi.ai/documentation
+      - type: OpenAPI
+        url: https://newsapi.ai/documentation
+      - type: Sandbox
+        url: https://newsapi.ai/documentation/sandbox
+      - type: PythonSDK
+        url: https://github.com/EventRegistry/event-registry-python
+      - type: NodeSDK
+        url: https://github.com/EventRegistry/event-registry-node-js
+      - type: MCP
+        url: https://github.com/EventRegistry/newsapi-mcp
+    contact:
+      - FN: Event Registry Support
+        email: info@eventregistry.org
+        url: https://newsapi.ai
+common:
+  - type: Website
+    url: https://eventregistry.org
+  - type: Documentation
+    url: https://newsapi.ai/documentation
+  - type: GitHubOrg
+    url: https://github.com/EventRegistry
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/event-registry/
+  - type: Blog
+    url: https://newsapi.ai/blog/
+  - type: Pricing
+    url: https://newsapi.ai/plans
+  - type: X
+    url: https://x.com/event_registry
+  - type: Plans
+    url: plans/event-registry-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/event-registry-rate-limits.yml
+  - type: FinOps
+    url: finops/event-registry-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

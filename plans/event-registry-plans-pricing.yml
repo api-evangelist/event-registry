@@ -1,0 +1,109 @@
+name: Event Registry Plans and Pricing
+description: Pricing plans and token allocations for the Event Registry (NewsAPI.ai) news intelligence REST API.
+url: https://newsapi.ai/plans
+plans:
+  - name: Free
+    description: Free tier for testing and evaluation with no credit card required.
+    price: 0
+    currency: USD
+    period: month
+    tokens: 2000
+    features:
+      - 2,000 search tokens included
+      - Access to last 30 days of content only
+      - Non-commercial use only
+      - Sandbox access for query building
+      - Python and Node.js SDK access
+    rateLimits:
+      - maxConcurrentRequests: 5
+    support: Community
+  - name: 5K
+    description: Starter paid plan for small-scale commercial use.
+    price: 90
+    currency: USD
+    period: month
+    tokens: 5000
+    features:
+      - 5,000 tokens per month
+      - Full article content and metadata
+      - AI-enriched data (entities, sentiment, categories)
+      - Access to 150,000+ news sources in 60+ languages
+      - Historical archive access since 2014
+      - 99.99% uptime SLA
+      - Python and Node.js SDK access
+      - Overage at $0.015 per token
+      - Tokens reset monthly (no rollover)
+    rateLimits:
+      - maxConcurrentRequests: 5
+    support: Basic
+  - name: 10K
+    description: Growth plan for moderate API usage.
+    price: 150
+    currency: USD
+    period: month
+    tokens: 10000
+    features:
+      - 10,000 tokens per month
+      - Full article content and metadata
+      - AI-enriched data (entities, sentiment, categories)
+      - Access to 150,000+ news sources in 60+ languages
+      - Historical archive access since 2014
+      - 99.99% uptime SLA
+      - Python and Node.js SDK access
+      - Overage at $0.015 per token
+      - Tokens reset monthly (no rollover)
+    rateLimits:
+      - maxConcurrentRequests: 5
+    support: Enhanced
+  - name: 25K
+    description: Professional plan for higher-volume API usage.
+    price: 300
+    currency: USD
+    period: month
+    tokens: 25000
+    features:
+      - 25,000 tokens per month
+      - Full article content and metadata
+      - AI-enriched data (entities, sentiment, categories)
+      - Access to 150,000+ news sources in 60+ languages
+      - Historical archive access since 2014
+      - 99.99% uptime SLA
+      - Python and Node.js SDK access
+      - Overage at $0.015 per token
+      - Tokens reset monthly (no rollover)
+    rateLimits:
+      - maxConcurrentRequests: 5
+    support: Advanced
+  - name: Enterprise
+    description: Custom enterprise plan for large-scale or specialized deployments.
+    price: custom
+    currency: USD
+    period: month
+    tokens: custom
+    features:
+      - Custom token allocation
+      - Dedicated support
+      - SLA guarantees
+      - Academic discounts available
+      - Volume licensing
+      - Custom data delivery options
+    rateLimits:
+      - maxConcurrentRequests: custom
+    support: Premium
+tokenConsumption:
+  - action: Search recent articles (last 30 days)
+    tokensUsed: 1
+  - action: Search historical articles (per year searched)
+    tokensUsed: 5
+  - action: Search recent events
+    tokensUsed: 5
+  - action: Search historical events (per year searched)
+    tokensUsed: 20
+  - action: Per-document analytics
+    tokensUsed: 0.01 to 0.05
+notes:
+  - Unused tokens do not roll over to the next month.
+  - Overage is charged at $0.015 per token above the plan limit.
+  - Academic discounts available by contacting info@eventregistry.org from an academic email.
+  - Short-term and month-to-month agreements are available.
+  - Plans can be upgraded or downgraded flexibly.
