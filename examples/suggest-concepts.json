@@ -1,0 +1,37 @@
+{
+  "title": "Suggest Concepts by Name Prefix",
+  "description": "Example request and response for resolving an entity name to a URI using /suggestConceptsFast. Always run this before searching to get accurate conceptUri values.",
+  "request": {
+    "method": "POST",
+    "url": "https://eventregistry.org/api/v1/suggestConceptsFast",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "apiKey": "YOUR_API_KEY",
+      "prefix": "Tesla",
+      "lang": "eng"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": [
+      {
+        "uri": "http://en.wikipedia.org/wiki/Tesla,_Inc.",
+        "label": { "eng": "Tesla, Inc." },
+        "type": "org"
+      },
+      {
+        "uri": "http://en.wikipedia.org/wiki/Tesla_(unit)",
+        "label": { "eng": "Tesla (unit)" },
+        "type": "wiki"
+      },
+      {
+        "uri": "http://en.wikipedia.org/wiki/Nikola_Tesla",
+        "label": { "eng": "Nikola Tesla" },
+        "type": "person"
+      }
+    ]
+  },
+  "notes": "Take the URI from the desired result (e.g. 'http://en.wikipedia.org/wiki/Tesla,_Inc.') and pass it as conceptUri in /article/getArticles or /event/getEvents."
+}

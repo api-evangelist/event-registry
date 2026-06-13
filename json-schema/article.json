@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/event-registry/main/json-schema/article.json",
+  "title": "Article",
+  "description": "A news article returned by the Event Registry (NewsAPI.ai) API.",
+  "type": "object",
+  "properties": {
+    "uri": {
+      "type": "string",
+      "description": "Unique article identifier used in API calls."
+    },
+    "title": {
+      "type": "string",
+      "description": "Article headline."
+    },
+    "body": {
+      "type": "string",
+      "description": "Article body text. Length is controlled by the articleBodyLen request parameter."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Original article URL on the publisher's website."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Publication date (YYYY-MM-DD)."
+    },
+    "time": {
+      "type": "string",
+      "description": "Publication time (HH:MM:SS)."
+    },
+    "dateTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Combined publication date-time in ISO 8601 format."
+    },
+    "lang": {
+      "type": "string",
+      "description": "ISO 639-2 language code (e.g. 'eng', 'deu', 'fra')."
+    },
+    "isDuplicate": {
+      "type": "boolean",
+      "description": "Whether this article is a near-duplicate of another (e.g. wire syndication)."
+    },
+    "sentiment": {
+      "type": ["number", "null"],
+      "minimum": -1,
+      "maximum": 1,
+      "description": "Sentiment score from -1 (very negative) to +1 (very positive). Requires 'sentiment' in includeFields."
+    },
+    "source": {
+      "$ref": "#/$defs/Source"
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Author"
+      },
+      "description": "Byline authors. Requires 'authors' in includeFields."
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Concept"
+      },
+      "description": "Named entities mentioned in the article. Requires 'concepts' in includeFields."
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Category"
+      },
+      "description": "Topic categories. Requires 'categories' in includeFields."
+    },
+    "image": {
+      "type": "string",
+      "format": "uri",
+      "description": "Article lead image URL. Requires 'images' in includeFields."
+    },
+    "eventUri": {
+      "type": ["string", "null"],
+      "description": "URI of the event cluster this article belongs to. Requires 'event' in includeFields."
+    },
+    "shares": {
+      "type": "object",
+      "properties": {
+        "facebook": { "type": "integer" },
+        "twitter": { "type": "integer" },
+        "linkedin": { "type": "integer" },
+        "pinterest": { "type": "integer" }
+      },
+      "description": "Social media share counts. Requires 'social' in includeFields."
+    },
+    "location": {
+      "$ref": "#/$defs/Location",
+      "description": "Geographic location associated with the article. Requires 'location' in includeFields."
+    },
+    "relevance": {
+      "type": "number",
+      "description": "Relevance score for the query. Requires 'metadata' in includeFields."
+    }
+  },
+  "$defs": {
+    "Source": {
+      "type": "object",
+      "description": "News source that published the article.",
+      "properties": {
+        "uri": { "type": "string" },
+        "title": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "ranking": {
+          "type": "object",
+          "properties": {
+            "importanceRank": { "type": "integer" },
+            "alexaGlobalRank": { "type": "integer" },
+            "alexaCountryRank": { "type": "integer" }
+          }
+        },
+        "sourceGroups": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "Author": {
+      "type": "object",
+      "properties": {
+        "uri": { "type": "string" },
+        "name": { "type": "string" },
+        "isAgency": { "type": "boolean" }
+      }
+    },
+    "Concept": {
+      "type": "object",
+      "description": "A named entity (person, organization, location, or wiki concept) mentioned in the article.",
+      "properties": {
+        "uri": { "type": "string" },
+        "type": {
+          "type": "string",
+          "enum": ["person", "org", "loc", "wiki"]
+        },
+        "score": {
+          "type": "number",
+          "description": "Relevance score of the concept to the article."
+        },
+        "label": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Display labels keyed by ISO language code."
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "uri": { "type": "string" },
+        "label": { "type": "string" },
+        "wgt": { "type": "integer", "description": "Category weight/confidence score." }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "uri": { "type": "string" },
+        "label": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "type": { "type": "string" },
+        "lat": { "type": "number" },
+        "long": { "type": "number" },
+        "country": {
+          "type": "object",
+          "properties": {
+            "uri": { "type": "string" },
+            "label": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

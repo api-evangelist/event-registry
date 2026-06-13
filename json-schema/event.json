@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/event-registry/main/json-schema/event.json",
+  "title": "Event",
+  "description": "A news event — a cluster of related articles about the same real-world happening — returned by the Event Registry (NewsAPI.ai) API.",
+  "type": "object",
+  "properties": {
+    "uri": {
+      "type": "string",
+      "description": "Unique event identifier (e.g. 'eng-12345678')."
+    },
+    "title": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Event title keyed by ISO language code (e.g. {'eng': 'AI Summit 2026'})."
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Auto-generated event summary keyed by ISO language code."
+    },
+    "articleCount": {
+      "type": "integer",
+      "description": "Number of articles grouped into this event cluster."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Approximate event date (YYYY-MM-DD)."
+    },
+    "dateStart": {
+      "type": "string",
+      "format": "date",
+      "description": "Earliest article publication date for this event."
+    },
+    "dateEnd": {
+      "type": "string",
+      "format": "date",
+      "description": "Latest article publication date for this event."
+    },
+    "sentiment": {
+      "type": ["number", "null"],
+      "minimum": -1,
+      "maximum": 1,
+      "description": "Average sentiment of articles in this event (-1 to +1)."
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["person", "org", "loc", "wiki"]
+          },
+          "score": { "type": "number" },
+          "label": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        }
+      },
+      "description": "Key named entities associated with this event."
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": { "type": "string" },
+          "label": { "type": "string" },
+          "wgt": { "type": "integer" }
+        }
+      },
+      "description": "Topic categories for the event."
+    },
+    "location": {
+      "type": ["object", "null"],
+      "description": "Primary geographic location associated with the event.",
+      "properties": {
+        "uri": { "type": "string" },
+        "label": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "type": { "type": "string" },
+        "lat": { "type": "number" },
+        "long": { "type": "number" },
+        "country": {
+          "type": "object",
+          "properties": {
+            "uri": { "type": "string" },
+            "label": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "images": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "Representative images for the event."
+    },
+    "socialScore": {
+      "type": "number",
+      "description": "Aggregate social media engagement score."
+    },
+    "stories": {
+      "type": "array",
+      "description": "Sub-stories or related event clusters.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "uri": { "type": "string" },
+          "title": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "articleCount": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

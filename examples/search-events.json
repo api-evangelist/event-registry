@@ -1,0 +1,75 @@
+{
+  "title": "Search Events by Concept",
+  "description": "Example request and response for searching clustered news events about Climate Change using /event/getEvents.",
+  "request": {
+    "method": "POST",
+    "url": "https://eventregistry.org/api/v1/event/getEvents",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "apiKey": "YOUR_API_KEY",
+      "conceptUri": "http://en.wikipedia.org/wiki/Climate_change",
+      "dateStart": "2026-05-01",
+      "lang": "eng",
+      "eventsSortBy": "size",
+      "eventsCount": 3,
+      "minArticlesInEvent": 10,
+      "resultType": "events"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "events": {
+        "results": [
+          {
+            "uri": "eng-9876543",
+            "title": {
+              "eng": "UN Climate Summit 2026: World Leaders Agree on Emission Cuts"
+            },
+            "summary": {
+              "eng": "World leaders at the UN Climate Summit in June 2026 reached a landmark agreement on accelerated emission reduction targets, with 150 countries signing the accord..."
+            },
+            "articleCount": 3421,
+            "date": "2026-06-05",
+            "dateStart": "2026-06-01",
+            "dateEnd": "2026-06-12",
+            "sentiment": -0.12,
+            "location": {
+              "uri": "http://en.wikipedia.org/wiki/New_York_City",
+              "label": { "eng": "New York City" },
+              "type": "city",
+              "lat": 40.7128,
+              "long": -74.006
+            },
+            "concepts": [
+              {
+                "uri": "http://en.wikipedia.org/wiki/Climate_change",
+                "type": "wiki",
+                "score": 100,
+                "label": { "eng": "Climate change" }
+              },
+              {
+                "uri": "http://en.wikipedia.org/wiki/United_Nations",
+                "type": "org",
+                "score": 85,
+                "label": { "eng": "United Nations" }
+              }
+            ],
+            "categories": [
+              {
+                "uri": "dmoz/Science/Environment",
+                "label": "Environment",
+                "wgt": 100
+              }
+            ]
+          }
+        ],
+        "totalResults": 892,
+        "page": 1,
+        "count": 3
+      }
+    }
+  }
+}

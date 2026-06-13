@@ -1,0 +1,206 @@
+title: Event Registry (NewsAPI.ai) API Vocabulary
+description: >
+  Core terms, concepts, and domain-specific vocabulary used by the Event Registry
+  (NewsAPI.ai) REST API for news intelligence, event detection, and media monitoring.
+version: "1.0.0"
+source: https://newsapi.ai/documentation
+terms:
+  - term: Article
+    definition: >
+      A single news item published by a news source. Each article has a unique URI, title,
+      body text, publication date, source attribution, and optionally enriched metadata
+      including sentiment, concepts, categories, and social share counts.
+    related:
+      - Event
+      - Source
+      - articleUri
+
+  - term: Event
+    definition: >
+      A cluster of articles from different sources covering the same real-world happening.
+      Events provide deduplicated story summaries — one event entry groups all articles about
+      the same story, providing a summary, article count, and AI-enriched metadata.
+    related:
+      - Article
+      - eventUri
+
+  - term: Concept
+    definition: >
+      A named entity identified and normalized by the system. Can be a person, organization
+      (org), location (loc), or general Wikipedia concept (wiki). Each concept has a unique
+      URI (usually a Wikipedia URL), a type, and multilingual labels.
+    related:
+      - conceptUri
+      - suggestConceptsFast
+
+  - term: conceptUri
+    definition: >
+      A URI uniquely identifying a concept/entity — typically a Wikipedia article URL
+      (e.g. 'http://en.wikipedia.org/wiki/Tesla,_Inc.'). Always resolve concept names to
+      URIs using /suggestConceptsFast before using them in search filters.
+    related:
+      - Concept
+
+  - term: articleUri
+    definition: >
+      A unique numeric string identifier for a single article. Used to fetch full article
+      details via /article/getArticle.
+    related:
+      - Article
+
+  - term: eventUri
+    definition: >
+      A unique string identifier for an event cluster (e.g. 'eng-12345678'). Used to fetch
+      full event details via /event/getEvent and to link articles to their parent event.
+    related:
+      - Event
+
+  - term: Source
+    definition: >
+      A news outlet or publisher (e.g. Reuters, BBC, TechCrunch). Each source has a unique
+      URI, display title, website URL, and importance ranking metrics.
+    related:
+      - sourceUri
+      - sourceLocationUri
+
+  - term: sourceUri
+    definition: >
+      A unique URI identifying a news source, typically derived from the source's domain
+      (e.g. 'reuters.com'). Resolve source names to URIs using /suggestSourcesFast.
+    related:
+      - Source
+
+  - term: sourceLocationUri
+    definition: >
+      A location URI used to filter articles by where the news source is geographically
+      based, rather than filtering by location mentioned in the article.
+    related:
+      - locationUri
+      - Source
+
+  - term: Category
+    definition: >
+      A topic classification applied to articles and events using the DMOZ taxonomy
+      (e.g. 'dmoz/Business/Finance'). Each category has a URI, label, and confidence weight.
+    related:
+      - categoryUri
+
+  - term: categoryUri
+    definition: >
+      A URI identifying a topic category in the DMOZ taxonomy hierarchy. Resolve category
+      names to URIs using /suggestCategoriesFast.
+    related:
+      - Category
+
+  - term: Location
+    definition: >
+      A geographic entity (city, region, or country) mentioned in articles or associated
+      with an event. Locations have URIs, multilingual labels, and latitude/longitude
+      coordinates.
+    related:
+      - locationUri
+
+  - term: locationUri
+    definition: >
+      A URI identifying a geographic location — typically a Wikipedia URL for a city or
+      country (e.g. 'http://en.wikipedia.org/wiki/Germany'). Used in locationUri (content
+      mentions) and sourceLocationUri (source origin) filters.
+    related:
+      - Location
+
+  - term: Author
+    definition: >
+      A journalist or content creator attributed in article bylines. Authors have unique
+      URIs and can be filtered via authorUri.
+    related:
+      - authorUri
+
+  - term: authorUri
+    definition: >
+      A URI identifying a specific journalist or author. Resolve author names to URIs
+      using /suggestAuthorsFast.
+    related:
+      - Author
+
+  - term: Sentiment
+    definition: >
+      An AI-computed score from -1 (very negative) to +1 (very positive) representing
+      the emotional tone of an article or event. Available on articles, events, and as
+      a search filter (minSentiment, maxSentiment).
+    related:
+      - minSentiment
+      - maxSentiment
+
+  - term: Token
+    definition: >
+      The unit of API quota consumption. Each API request consumes a number of tokens
+      proportional to the data returned. Monitor usage via /usage.
+    related:
+      - TokenUsage
+
+  - term: Topic Page
+    definition: >
+      A user-configured saved search profile created on the newsapi.ai website. Topic
+      pages define a set of filters (concepts, keywords, categories, etc.) that can be
+      reused across API calls via /article/getArticlesForTopicPage and
+      /event/getEventsForTopicPage.
+    related:
+      - topicPageUri
+
+  - term: topicPageUri
+    definition: >
+      A URI identifying a user-created topic page on newsapi.ai.
+    related:
+      - Topic Page
+
+  - term: isDuplicate
+    definition: >
+      A boolean flag on articles indicating the article is a near-duplicate of another
+      (e.g., syndicated wire copy). Use isDuplicateFilter: "skipDuplicates" in search
+      requests to filter these out and improve result quality.
+    related:
+      - Article
+
+  - term: isDuplicateFilter
+    definition: >
+      A request parameter controlling duplicate article handling — "keepAll" (default),
+      "skipDuplicates" (removes wire syndication duplicates), or "keepOnlyDuplicates".
+    related:
+      - isDuplicate
+
+  - term: resultType
+    definition: >
+      A required request parameter for /article/getArticles and /event/getEvents that
+      specifies what to return. Set to "articles" for article results, "events" for event
+      results, or other values for aggregate counts and analytics.
+
+  - term: dataType
+    definition: >
+      Content type filter for article searches. Values — "news" (standard news articles),
+      "pr" (press releases), "blog" (blog posts). Comma-separate for multiple types.
+
+  - term: Source Rank Percentile
+    definition: >
+      A 0-100 percentile ranking of news source importance, where 0 = most important
+      sources. Use startSourceRankPercentile and endSourceRankPercentile to filter for
+      high-quality sources (e.g. 0-30 = top 30% most important sources).
+    related:
+      - startSourceRankPercentile
+      - endSourceRankPercentile
+
+  - term: Advanced Query Language (AQL)
+    definition: >
+      A JSON-based boolean query language for expressing complex search conditions
+      (AND, OR, NOT, nested combinations). Passed as the "query" parameter in article
+      and event search requests, overriding simple filter parameters.
+
+  - term: forceMaxDataTimeWindow
+    definition: >
+      A shorthand time window parameter. Value 7 restricts results to the last 7 days;
+      value 31 restricts to the last 31 days. More efficient than providing explicit
+      dateStart/dateEnd for recent news queries.
+
+  - term: articleBodyLen
+    definition: >
+      Controls how many characters of article body text to return. Default is 1000.
+      Use -1 for full text, 0 to exclude body entirely (useful for metadata-only scans).

@@ -1,0 +1,56 @@
+{
+  "title": "Search Articles by Concept",
+  "description": "Example request and response for searching news articles about Artificial Intelligence using /article/getArticles.",
+  "request": {
+    "method": "POST",
+    "url": "https://eventregistry.org/api/v1/article/getArticles",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "apiKey": "YOUR_API_KEY",
+      "conceptUri": "http://en.wikipedia.org/wiki/Artificial_intelligence",
+      "dateStart": "2026-06-01",
+      "dateEnd": "2026-06-13",
+      "lang": "eng",
+      "isDuplicateFilter": "skipDuplicates",
+      "articlesSortBy": "date",
+      "articlesCount": 5,
+      "articleBodyLen": 300,
+      "resultType": "articles"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "articles": {
+        "results": [
+          {
+            "uri": "850438242",
+            "title": "Major AI breakthrough announced at global summit",
+            "body": "Researchers at leading technology institutions announced a significant advance in large language model efficiency...",
+            "url": "https://www.example-news.com/ai-breakthrough-2026",
+            "date": "2026-06-12",
+            "time": "14:30:00",
+            "dateTime": "2026-06-12T14:30:00Z",
+            "lang": "eng",
+            "isDuplicate": false,
+            "source": {
+              "uri": "techcrunch.com",
+              "title": "TechCrunch",
+              "url": "https://techcrunch.com",
+              "ranking": {
+                "importanceRank": 150,
+                "alexaGlobalRank": 890,
+                "alexaCountryRank": 320
+              }
+            }
+          }
+        ],
+        "totalResults": 4821,
+        "page": 1,
+        "count": 5
+      }
+    }
+  }
+}
