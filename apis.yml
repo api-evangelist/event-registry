@@ -5,7 +5,7 @@ description: >
   a REST API for accessing global news articles, trending topics, event detection, named
   entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages,
   with historical archive access dating back to 2014.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/event-registry/refs/heads/main/apis.yml
 created: 2026-06-13
 modified: 2026-06-13
@@ -27,7 +27,7 @@ apis:
       metadata including named entities, sentiment scores, topic categories, and social
       media engagement metrics. Supports keyword, concept, location, source, and
       date-range filtering across 150,000+ sources in 60+ languages.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://newsapi.ai
     baseURL: https://eventregistry.org/api/v1
     tags:
