@@ -2,10 +2,20 @@
   "repo": "event-registry",
   "feeds": [
     {
+      "source": "https://newsapi.ai/blog/feed/",
+      "feed_url": "https://newsapi.ai/blog/feed/",
+      "title": "",
+      "saved": 1,
+      "method": "feed"
+    },
+    {
       "source": "https://www.linkedin.com/company/event-registry/",
-      "error": "HTTPError"
+      "feed_url": "https://www.linkedin.com/company/event-registry/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:03:07Z",
+  "post_count": 8
 }
