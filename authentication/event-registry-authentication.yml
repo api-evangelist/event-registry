@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - query
+schemes:
+- name: apiKeyAuth
+  type: apiKey
+  in: query
+  parameter: apiKey
+  description: API key obtained from newsapi.ai/register. Include as a field in the JSON POST
+    body or as a query parameter named apiKey.
+  sources:
+  - openapi/openapi.yml

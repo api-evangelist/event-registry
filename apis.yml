@@ -55,6 +55,10 @@ apis:
         email: info@eventregistry.org
         url: https://newsapi.ai
 common:
+  - type: DomainSecurity
+    url: security/event-registry-domain-security.yml
+  - type: Authentication
+    url: authentication/event-registry-authentication.yml
   - type: Website
     url: https://eventregistry.org
   - type: Documentation
