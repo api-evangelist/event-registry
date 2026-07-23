@@ -1,0 +1,488 @@
+openapi: 3.1.0
+info:
+  title: Event Registry (NewsAPI.ai) Articles API
+  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Event Registry Support
+    email: info@eventregistry.org
+    url: https://newsapi.ai
+  termsOfService: https://newsapi.ai/terms
+  license:
+    name: Proprietary
+    url: https://newsapi.ai/plans
+servers:
+- url: https://eventregistry.org/api/v1
+  description: Production API server
+security:
+- apiKeyAuth: []
+tags:
+- name: Articles
+  description: Search and retrieve individual news articles from 150,000+ global sources.
+paths:
+  /article/getArticles:
+    post:
+      operationId: searchArticles
+      summary: Search news articles
+      description: 'Search news articles by concepts, sources, categories, dates, language, and sentiment. Returns up to 100 articles per call. Use /suggestConceptsFast to resolve entity names to URIs before searching. Set resultType to "articles" in the request body.
+
+        '
+      tags:
+      - Articles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              - $ref: '#/components/schemas/ContentFilterParams'
+              - $ref: '#/components/schemas/ArticleResponseControl'
+              properties:
+                resultType:
+                  type: string
+                  default: articles
+                  description: Must be "articles".
+            example:
+              apiKey: YOUR_API_KEY
+              conceptUri: http://en.wikipedia.org/wiki/Artificial_intelligence
+              dateStart: '2026-01-01'
+              dateEnd: '2026-06-01'
+              lang: eng
+              articlesCount: 10
+              articleBodyLen: 500
+              resultType: articles
+      responses:
+        '200':
+          description: Successful response with articles array.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Article'
+                      totalResults:
+                        type: integer
+                      page:
+                        type: integer
+                      count:
+                        type: integer
+        '401':
+          description: Unauthorized — invalid or missing API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded — daily token quota exhausted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /article/getArticle:
+    post:
+      operationId: getArticleDetails
+      summary: Get full article details by URI
+      description: 'Retrieve full details for one or more articles by their URI(s). Use this after obtaining article URIs from /article/getArticles to fetch complete content and metadata.
+
+        '
+      tags:
+      - Articles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              properties:
+                articleUri:
+                  oneOf:
+                  - type: string
+                  - type: array
+                    items:
+                      type: string
+                  description: Article URI or array of URIs.
+                articleBodyLen:
+                  type: integer
+                  description: Article body length in characters. Default -1 (full text).
+              required:
+              - articleUri
+            example:
+              apiKey: YOUR_API_KEY
+              articleUri: '850438242'
+              articleBodyLen: -1
+      responses:
+        '200':
+          description: Article details object keyed by article URI.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Article'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /article/getArticlesForTopicPage:
+    post:
+      operationId: getTopicPageArticles
+      summary: Get articles for a topic page
+      description: 'Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.
+
+        '
+      tags:
+      - Articles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              properties:
+                uri:
+                  type: string
+                  description: Topic page URI.
+                articlesPage:
+                  type: integer
+                  description: Page number (starting from 1). Default 1.
+                articlesCount:
+                  type: integer
+                  maximum: 100
+                  description: Articles per page (max 100). Default 100.
+                articleBodyLen:
+                  type: integer
+                  description: Article body length in characters. Default 1000.
+              required:
+              - uri
+      responses:
+        '200':
+          description: Articles matching the topic page.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Article'
+                      totalResults:
+                        type: integer
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: string
+        wgt:
+          type: integer
+    Concept:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
+    Article:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique article identifier.
+        title:
+          type: string
+        body:
+          type: string
+          description: Article body text (length controlled by articleBodyLen).
+        url:
+          type: string
+          format: uri
+          description: Original article URL.
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        dateTime:
+          type: string
+          format: date-time
+        lang:
+          type: string
+          description: ISO language code.
+        source:
+          $ref: '#/components/schemas/Source'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Sentiment score (-1 very negative, +1 very positive).
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+        eventUri:
+          type: string
+          description: URI of the event this article belongs to.
+        isDuplicate:
+          type: boolean
+    Source:
+      type: object
+      properties:
+        uri:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        ranking:
+          type: object
+          properties:
+            importanceRank:
+              type: integer
+            alexaGlobalRank:
+              type: integer
+            alexaCountryRank:
+              type: integer
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    ContentFilterParams:
+      type: object
+      properties:
+        keyword:
+          type: string
+          description: 'Secondary keyword filter. Use conceptUri as the primary search method. Comma-separate individual words for multi-term matching (e.g., "SaaS, acquisition, merger").
+
+            '
+        conceptUri:
+          type: string
+          description: 'Primary search filter. URI(s) identifying concepts/entities (comma-separated for multiple). Resolve names to URIs using /suggestConceptsFast first.
+
+            '
+        categoryUri:
+          type: string
+          description: Category URI(s) to filter by (comma-separated).
+        sourceUri:
+          type: string
+          description: Specific news source URI(s) to filter by (comma-separated).
+        sourceLocationUri:
+          type: string
+          description: Filter by where news sources are based (country/region URI, comma-separated).
+        authorUri:
+          type: string
+          description: Author URI(s) to filter by (comma-separated).
+        locationUri:
+          type: string
+          description: Location URI(s) mentioned in content (comma-separated).
+        lang:
+          type: string
+          description: Language code(s) to filter by (comma-separated ISO codes, e.g. "eng", "deu", "fra").
+        dateStart:
+          type: string
+          format: date
+          description: Start date inclusive (YYYY-MM-DD).
+        dateEnd:
+          type: string
+          format: date
+          description: End date inclusive (YYYY-MM-DD).
+        forceMaxDataTimeWindow:
+          type: integer
+          enum:
+          - 7
+          - 31
+          description: Limit results to recent data — 7 (last week) or 31 (last month).
+        keywordLoc:
+          type: string
+          enum:
+          - body
+          - title
+          - title,body
+          description: Where to match keywords. Default "body".
+        keywordOper:
+          type: string
+          enum:
+          - and
+          - or
+          description: Boolean operator for multiple keywords. Default "and".
+        minSentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Minimum article sentiment score (-1 to 1).
+        maxSentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Maximum article sentiment score (-1 to 1).
+        startSourceRankPercentile:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Min source rank percentile (0=most important). Default 0.
+        endSourceRankPercentile:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Max source rank percentile. Default 100.
+        ignoreKeyword:
+          type: string
+          description: Exclude articles/events mentioning these keywords (comma-separated).
+        ignoreConceptUri:
+          type: string
+          description: Exclude by concept URI(s) (comma-separated).
+        ignoreCategoryUri:
+          type: string
+          description: Exclude by category URI(s) (comma-separated).
+        ignoreSourceUri:
+          type: string
+          description: Exclude by source URI(s) (comma-separated).
+        ignoreSourceLocationUri:
+          type: string
+          description: Exclude by source location URI(s) (comma-separated).
+        ignoreAuthorUri:
+          type: string
+          description: Exclude by author URI(s) (comma-separated).
+        ignoreLocationUri:
+          type: string
+          description: Exclude by location URI(s) (comma-separated).
+        ignoreLang:
+          type: string
+          description: Exclude by language code(s) (comma-separated).
+        sourceGroupUri:
+          type: string
+          description: Filter by source group URI(s) (comma-separated).
+        conceptOper:
+          type: string
+          enum:
+          - and
+          - or
+          description: Boolean operator for multiple concepts. Default "and".
+        categoryOper:
+          type: string
+          enum:
+          - and
+          - or
+          description: Boolean operator for multiple categories. Default "or".
+        dateMentionStart:
+          type: string
+          format: date
+          description: Articles mentioning dates >= this (YYYY-MM-DD).
+        dateMentionEnd:
+          type: string
+          format: date
+          description: Articles mentioning dates <= this (YYYY-MM-DD).
+        isDuplicateFilter:
+          type: string
+          enum:
+          - keepAll
+          - skipDuplicates
+          - keepOnlyDuplicates
+          description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
+        query:
+          description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Author:
+      type: object
+      properties:
+        uri:
+          type: string
+        name:
+          type: string
+        isAgency:
+          type: boolean
+    ArticleResponseControl:
+      type: object
+      properties:
+        articleBodyLen:
+          type: integer
+          description: Article body length in characters. Default 1000. Use -1 for full text, 0 to exclude body.
+        articlesPage:
+          type: integer
+          description: Page number (starting from 1). Default 1.
+        articlesCount:
+          type: integer
+          maximum: 100
+          description: Articles per page (max 100). Default 100.
+        articlesSortBy:
+          type: string
+          enum:
+          - date
+          - rel
+          - sourceImportance
+          - sourceAlexaGlobalRank
+          - socialScore
+          - facebookShares
+          description: Sort order. Default "date".
+        articlesSortByAsc:
+          type: boolean
+          description: Ascending sort order. Default false.
+        dataType:
+          type: string
+          description: Content types (comma-separated) — "news", "pr", "blog". Default "news".
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: 'API key obtained from newsapi.ai/register. Include as a field in the JSON POST body or as a query parameter named apiKey.
+
+        '
+externalDocs:
+  description: Official API Documentation
+  url: https://newsapi.ai/documentation

@@ -1,0 +1,469 @@
+openapi: 3.1.0
+info:
+  title: Event Registry (NewsAPI.ai) Articles Events API
+  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Event Registry Support
+    email: info@eventregistry.org
+    url: https://newsapi.ai
+  termsOfService: https://newsapi.ai/terms
+  license:
+    name: Proprietary
+    url: https://newsapi.ai/plans
+servers:
+- url: https://eventregistry.org/api/v1
+  description: Production API server
+security:
+- apiKeyAuth: []
+tags:
+- name: Events
+  description: Search and retrieve clustered news events (deduplicated story groups).
+paths:
+  /event/getEvents:
+    post:
+      operationId: searchEvents
+      summary: Search news events
+      description: 'Search events — clusters of related articles about the same real-world happening. Events deduplicate coverage: one entry per story instead of per article. Returns up to 50 events per call. Ideal for high-level overviews and trend analysis.
+
+        '
+      tags:
+      - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              - $ref: '#/components/schemas/ContentFilterParams'
+              properties:
+                resultType:
+                  type: string
+                  default: events
+                  description: Must be "events".
+                minArticlesInEvent:
+                  type: integer
+                  description: Minimum number of articles in the event.
+                maxArticlesInEvent:
+                  type: integer
+                  description: Maximum number of articles in the event.
+                reportingDateStart:
+                  type: string
+                  format: date
+                  description: Filter by average article publishing date >= this (YYYY-MM-DD).
+                reportingDateEnd:
+                  type: string
+                  format: date
+                  description: Filter by average article publishing date <= this (YYYY-MM-DD).
+                eventsPage:
+                  type: integer
+                  description: Page number (starting from 1). Default 1.
+                eventsCount:
+                  type: integer
+                  maximum: 50
+                  description: Events per page (max 50). Default 50.
+                eventsSortBy:
+                  type: string
+                  enum:
+                  - date
+                  - rel
+                  - size
+                  - socialScore
+                  description: Sort order. Default "date". Use "size" for biggest stories.
+                eventsSortByAsc:
+                  type: boolean
+                  description: Ascending sort order. Default false.
+                minSentimentEvent:
+                  type: number
+                  minimum: -1
+                  maximum: 1
+                  description: Minimum event sentiment score.
+                maxSentimentEvent:
+                  type: number
+                  minimum: -1
+                  maximum: 1
+                  description: Maximum event sentiment score.
+                query:
+                  description: Advanced Query Language object for complex boolean logic.
+            example:
+              apiKey: YOUR_API_KEY
+              conceptUri: http://en.wikipedia.org/wiki/Climate_change
+              dateStart: '2026-01-01'
+              eventsCount: 10
+              eventsSortBy: size
+              resultType: events
+      responses:
+        '200':
+          description: Successful response with events array.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Event'
+                      totalResults:
+                        type: integer
+                      page:
+                        type: integer
+                      count:
+                        type: integer
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /event/getEvent:
+    post:
+      operationId: getEventDetails
+      summary: Get full event details by URI
+      description: 'Retrieve full details for one or more events by their URI(s), including all grouped articles, concepts, categories, and geographic data.
+
+        '
+      tags:
+      - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              properties:
+                eventUri:
+                  oneOf:
+                  - type: string
+                  - type: array
+                    items:
+                      type: string
+                  description: Event URI or array of URIs.
+                articleBodyLen:
+                  type: integer
+                  description: Article body length in characters. Default 1000.
+              required:
+              - eventUri
+            example:
+              apiKey: YOUR_API_KEY
+              eventUri: eng-12345678
+      responses:
+        '200':
+          description: Event details object keyed by event URI.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Event'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /event/getEventsForTopicPage:
+    post:
+      operationId: getTopicPageEvents
+      summary: Get events for a topic page
+      description: 'Returns events matching a user-created topic page (pre-configured search profile).
+
+        '
+      tags:
+      - Events
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              properties:
+                uri:
+                  type: string
+                  description: Topic page URI.
+                eventsPage:
+                  type: integer
+                  description: Page number (starting from 1). Default 1.
+                eventsCount:
+                  type: integer
+                  maximum: 50
+                  description: Events per page (max 50). Default 50.
+              required:
+              - uri
+      responses:
+        '200':
+          description: Events matching the topic page.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Event'
+                      totalResults:
+                        type: integer
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: string
+        wgt:
+          type: integer
+    Location:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        lat:
+          type: number
+        long:
+          type: number
+    Concept:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
+    Event:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique event identifier.
+        title:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event title keyed by language code.
+        summary:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event summary keyed by language code.
+        articleCount:
+          type: integer
+          description: Number of articles grouped in this event.
+        date:
+          type: string
+          format: date
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+        location:
+          $ref: '#/components/schemas/Location'
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    ContentFilterParams:
+      type: object
+      properties:
+        keyword:
+          type: string
+          description: 'Secondary keyword filter. Use conceptUri as the primary search method. Comma-separate individual words for multi-term matching (e.g., "SaaS, acquisition, merger").
+
+            '
+        conceptUri:
+          type: string
+          description: 'Primary search filter. URI(s) identifying concepts/entities (comma-separated for multiple). Resolve names to URIs using /suggestConceptsFast first.
+
+            '
+        categoryUri:
+          type: string
+          description: Category URI(s) to filter by (comma-separated).
+        sourceUri:
+          type: string
+          description: Specific news source URI(s) to filter by (comma-separated).
+        sourceLocationUri:
+          type: string
+          description: Filter by where news sources are based (country/region URI, comma-separated).
+        authorUri:
+          type: string
+          description: Author URI(s) to filter by (comma-separated).
+        locationUri:
+          type: string
+          description: Location URI(s) mentioned in content (comma-separated).
+        lang:
+          type: string
+          description: Language code(s) to filter by (comma-separated ISO codes, e.g. "eng", "deu", "fra").
+        dateStart:
+          type: string
+          format: date
+          description: Start date inclusive (YYYY-MM-DD).
+        dateEnd:
+          type: string
+          format: date
+          description: End date inclusive (YYYY-MM-DD).
+        forceMaxDataTimeWindow:
+          type: integer
+          enum:
+          - 7
+          - 31
+          description: Limit results to recent data — 7 (last week) or 31 (last month).
+        keywordLoc:
+          type: string
+          enum:
+          - body
+          - title
+          - title,body
+          description: Where to match keywords. Default "body".
+        keywordOper:
+          type: string
+          enum:
+          - and
+          - or
+          description: Boolean operator for multiple keywords. Default "and".
+        minSentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Minimum article sentiment score (-1 to 1).
+        maxSentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Maximum article sentiment score (-1 to 1).
+        startSourceRankPercentile:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Min source rank percentile (0=most important). Default 0.
+        endSourceRankPercentile:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Max source rank percentile. Default 100.
+        ignoreKeyword:
+          type: string
+          description: Exclude articles/events mentioning these keywords (comma-separated).
+        ignoreConceptUri:
+          type: string
+          description: Exclude by concept URI(s) (comma-separated).
+        ignoreCategoryUri:
+          type: string
+          description: Exclude by category URI(s) (comma-separated).
+        ignoreSourceUri:
+          type: string
+          description: Exclude by source URI(s) (comma-separated).
+        ignoreSourceLocationUri:
+          type: string
+          description: Exclude by source location URI(s) (comma-separated).
+        ignoreAuthorUri:
+          type: string
+          description: Exclude by author URI(s) (comma-separated).
+        ignoreLocationUri:
+          type: string
+          description: Exclude by location URI(s) (comma-separated).
+        ignoreLang:
+          type: string
+          description: Exclude by language code(s) (comma-separated).
+        sourceGroupUri:
+          type: string
+          description: Filter by source group URI(s) (comma-separated).
+        conceptOper:
+          type: string
+          enum:
+          - and
+          - or
+          description: Boolean operator for multiple concepts. Default "and".
+        categoryOper:
+          type: string
+          enum:
+          - and
+          - or
+          description: Boolean operator for multiple categories. Default "or".
+        dateMentionStart:
+          type: string
+          format: date
+          description: Articles mentioning dates >= this (YYYY-MM-DD).
+        dateMentionEnd:
+          type: string
+          format: date
+          description: Articles mentioning dates <= this (YYYY-MM-DD).
+        isDuplicateFilter:
+          type: string
+          enum:
+          - keepAll
+          - skipDuplicates
+          - keepOnlyDuplicates
+          description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
+        query:
+          description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: 'API key obtained from newsapi.ai/register. Include as a field in the JSON POST body or as a query parameter named apiKey.
+
+        '
+externalDocs:
+  description: Official API Documentation
+  url: https://newsapi.ai/documentation

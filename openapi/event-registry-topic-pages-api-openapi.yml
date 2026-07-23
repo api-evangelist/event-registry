@@ -1,0 +1,315 @@
+openapi: 3.1.0
+info:
+  title: Event Registry (NewsAPI.ai) Articles Topic Pages API
+  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Event Registry Support
+    email: info@eventregistry.org
+    url: https://newsapi.ai
+  termsOfService: https://newsapi.ai/terms
+  license:
+    name: Proprietary
+    url: https://newsapi.ai/plans
+servers:
+- url: https://eventregistry.org/api/v1
+  description: Production API server
+security:
+- apiKeyAuth: []
+tags:
+- name: Topic Pages
+  description: Retrieve content matching user-defined topic page configurations.
+paths:
+  /article/getArticlesForTopicPage:
+    post:
+      operationId: getTopicPageArticles
+      summary: Get articles for a topic page
+      description: 'Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.
+
+        '
+      tags:
+      - Topic Pages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              properties:
+                uri:
+                  type: string
+                  description: Topic page URI.
+                articlesPage:
+                  type: integer
+                  description: Page number (starting from 1). Default 1.
+                articlesCount:
+                  type: integer
+                  maximum: 100
+                  description: Articles per page (max 100). Default 100.
+                articleBodyLen:
+                  type: integer
+                  description: Article body length in characters. Default 1000.
+              required:
+              - uri
+      responses:
+        '200':
+          description: Articles matching the topic page.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  articles:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Article'
+                      totalResults:
+                        type: integer
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /event/getEventsForTopicPage:
+    post:
+      operationId: getTopicPageEvents
+      summary: Get events for a topic page
+      description: 'Returns events matching a user-created topic page (pre-configured search profile).
+
+        '
+      tags:
+      - Topic Pages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ApiKeyParam'
+              properties:
+                uri:
+                  type: string
+                  description: Topic page URI.
+                eventsPage:
+                  type: integer
+                  description: Page number (starting from 1). Default 1.
+                eventsCount:
+                  type: integer
+                  maximum: 50
+                  description: Events per page (max 50). Default 50.
+              required:
+              - uri
+      responses:
+        '200':
+          description: Events matching the topic page.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Event'
+                      totalResults:
+                        type: integer
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: string
+        wgt:
+          type: integer
+    Location:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        lat:
+          type: number
+        long:
+          type: number
+    Concept:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
+    Article:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique article identifier.
+        title:
+          type: string
+        body:
+          type: string
+          description: Article body text (length controlled by articleBodyLen).
+        url:
+          type: string
+          format: uri
+          description: Original article URL.
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        dateTime:
+          type: string
+          format: date-time
+        lang:
+          type: string
+          description: ISO language code.
+        source:
+          $ref: '#/components/schemas/Source'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Sentiment score (-1 very negative, +1 very positive).
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+        eventUri:
+          type: string
+          description: URI of the event this article belongs to.
+        isDuplicate:
+          type: boolean
+    Event:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique event identifier.
+        title:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event title keyed by language code.
+        summary:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event summary keyed by language code.
+        articleCount:
+          type: integer
+          description: Number of articles grouped in this event.
+        date:
+          type: string
+          format: date
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+        location:
+          $ref: '#/components/schemas/Location'
+    Source:
+      type: object
+      properties:
+        uri:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        ranking:
+          type: object
+          properties:
+            importanceRank:
+              type: integer
+            alexaGlobalRank:
+              type: integer
+            alexaCountryRank:
+              type: integer
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Author:
+      type: object
+      properties:
+        uri:
+          type: string
+        name:
+          type: string
+        isAgency:
+          type: boolean
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: 'API key obtained from newsapi.ai/register. Include as a field in the JSON POST body or as a query parameter named apiKey.
+
+        '
+externalDocs:
+  description: Official API Documentation
+  url: https://newsapi.ai/documentation

@@ -1,0 +1,91 @@
+openapi: 3.1.0
+info:
+  title: Event Registry (NewsAPI.ai) Articles Usage API
+  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
+
+    '
+  version: 1.0.0
+  contact:
+    name: Event Registry Support
+    email: info@eventregistry.org
+    url: https://newsapi.ai
+  termsOfService: https://newsapi.ai/terms
+  license:
+    name: Proprietary
+    url: https://newsapi.ai/plans
+servers:
+- url: https://eventregistry.org/api/v1
+  description: Production API server
+security:
+- apiKeyAuth: []
+tags:
+- name: Usage
+  description: Monitor API token quota and usage.
+paths:
+  /usage:
+    post:
+      operationId: getApiUsage
+      summary: Get API token usage
+      description: 'Check API token usage — tokens consumed and tokens remaining in the current quota period for the authenticated API key.
+
+        '
+      tags:
+      - Usage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiKeyParam'
+            example:
+              apiKey: YOUR_API_KEY
+      responses:
+        '200':
+          description: Token usage details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenUsage'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    TokenUsage:
+      type: object
+      properties:
+        tokensUsed:
+          type: number
+          description: Tokens consumed by this request.
+        remaining:
+          type: number
+          description: Tokens remaining in the current quota period.
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: 'API key obtained from newsapi.ai/register. Include as a field in the JSON POST body or as a query parameter named apiKey.
+
+        '
+externalDocs:
+  description: Official API Documentation
+  url: https://newsapi.ai/documentation
