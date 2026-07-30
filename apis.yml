@@ -5,7 +5,20 @@ description: >
   a REST API for accessing global news articles, trending topics, event detection, named
   entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages,
   with historical archive access dating back to 2014.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/event-registry.png
 url: https://raw.githubusercontent.com/api-evangelist/event-registry/refs/heads/main/apis.yml
 created: 2026-06-13
 modified: 2026-06-13
@@ -20,40 +33,106 @@ tags:
   - Media Analytics
   - News API
 apis:
-  - aid: event-registry:news-api
-    name: Event Registry News API
-    description: >
-      REST API for querying global news articles and clustered events with AI-enriched
-      metadata including named entities, sentiment scores, topic categories, and social
-      media engagement metrics. Supports keyword, concept, location, source, and
-      date-range filtering across 150,000+ sources in 60+ languages.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://newsapi.ai
-    baseURL: https://eventregistry.org/api/v1
-    tags:
-      - News
-      - Articles
-      - Events
-      - Media Monitoring
-      - Sentiment Analysis
-      - Named Entity Recognition
-    properties:
-      - type: Documentation
-        url: https://newsapi.ai/documentation
-      - type: OpenAPI
-        url: https://newsapi.ai/documentation
-      - type: Sandbox
-        url: https://newsapi.ai/documentation/sandbox
-      - type: PythonSDK
-        url: https://github.com/EventRegistry/event-registry-python
-      - type: NodeSDK
-        url: https://github.com/EventRegistry/event-registry-node-js
-      - type: MCP
-        url: https://github.com/EventRegistry/newsapi-mcp
-    contact:
-      - FN: Event Registry Support
-        email: info@eventregistry.org
-        url: https://newsapi.ai
+- aid: event-registry:event-registry-articles-api
+  name: Event Registry Articles API
+  description: Search and retrieve individual news articles from 150,000+ global sources.
+  humanURL: https://newsapi.ai
+  baseURL: https://eventregistry.org/api/v1
+  tags:
+  - Articles
+  properties:
+  - type: OpenAPI
+    url: openapi/event-registry-articles-api-openapi.yml
+  - type: Documentation
+    url: https://newsapi.ai/documentation
+  - type: Sandbox
+    url: https://newsapi.ai/documentation/sandbox
+  - type: PythonSDK
+    url: https://github.com/EventRegistry/event-registry-python
+  - type: NodeSDK
+    url: https://github.com/EventRegistry/event-registry-node-js
+  - type: MCP
+    url: https://github.com/EventRegistry/newsapi-mcp
+- aid: event-registry:event-registry-events-api
+  name: Event Registry Events API
+  description: Search and retrieve clustered news events (deduplicated story groups).
+  humanURL: https://newsapi.ai
+  baseURL: https://eventregistry.org/api/v1
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/event-registry-events-api-openapi.yml
+  - type: Documentation
+    url: https://newsapi.ai/documentation
+  - type: Sandbox
+    url: https://newsapi.ai/documentation/sandbox
+  - type: PythonSDK
+    url: https://github.com/EventRegistry/event-registry-python
+  - type: NodeSDK
+    url: https://github.com/EventRegistry/event-registry-node-js
+  - type: MCP
+    url: https://github.com/EventRegistry/newsapi-mcp
+- aid: event-registry:event-registry-suggest-api
+  name: Event Registry Suggest API
+  description: Resolve entity names to URIs for use in search filters.
+  humanURL: https://newsapi.ai
+  baseURL: https://eventregistry.org/api/v1
+  tags:
+  - Suggest
+  properties:
+  - type: OpenAPI
+    url: openapi/event-registry-suggest-api-openapi.yml
+  - type: Documentation
+    url: https://newsapi.ai/documentation
+  - type: Sandbox
+    url: https://newsapi.ai/documentation/sandbox
+  - type: PythonSDK
+    url: https://github.com/EventRegistry/event-registry-python
+  - type: NodeSDK
+    url: https://github.com/EventRegistry/event-registry-node-js
+  - type: MCP
+    url: https://github.com/EventRegistry/newsapi-mcp
+- aid: event-registry:event-registry-topic-pages-api
+  name: Event Registry Topic Pages API
+  description: Retrieve content matching user-defined topic page configurations.
+  humanURL: https://newsapi.ai
+  baseURL: https://eventregistry.org/api/v1
+  tags:
+  - Topic Pages
+  properties:
+  - type: OpenAPI
+    url: openapi/event-registry-topic-pages-api-openapi.yml
+  - type: Documentation
+    url: https://newsapi.ai/documentation
+  - type: Sandbox
+    url: https://newsapi.ai/documentation/sandbox
+  - type: PythonSDK
+    url: https://github.com/EventRegistry/event-registry-python
+  - type: NodeSDK
+    url: https://github.com/EventRegistry/event-registry-node-js
+  - type: MCP
+    url: https://github.com/EventRegistry/newsapi-mcp
+- aid: event-registry:event-registry-usage-api
+  name: Event Registry Usage API
+  description: Monitor API token quota and usage.
+  humanURL: https://newsapi.ai
+  baseURL: https://eventregistry.org/api/v1
+  tags:
+  - Usage
+  properties:
+  - type: OpenAPI
+    url: openapi/event-registry-usage-api-openapi.yml
+  - type: Documentation
+    url: https://newsapi.ai/documentation
+  - type: Sandbox
+    url: https://newsapi.ai/documentation/sandbox
+  - type: PythonSDK
+    url: https://github.com/EventRegistry/event-registry-python
+  - type: NodeSDK
+    url: https://github.com/EventRegistry/event-registry-node-js
+  - type: MCP
+    url: https://github.com/EventRegistry/newsapi-mcp
 common:
   - type: AgenticAccess
     url: agentic-access/event-registry-agentic-access.yml
