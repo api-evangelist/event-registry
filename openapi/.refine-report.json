@@ -1,0 +1,22 @@
+{
+  "provider": "event-registry",
+  "sources": [
+    "event-registry-articles-api-openapi.yml",
+    "event-registry-events-api-openapi.yml",
+    "event-registry-suggest-api-openapi.yml",
+    "event-registry-topic-pages-api-openapi.yml",
+    "event-registry-usage-api-openapi.yml"
+  ],
+  "outputs": [
+    "event-registry-articles-api-openapi.yml",
+    "event-registry-events-api-openapi.yml",
+    "event-registry-suggest-api-openapi.yml",
+    "event-registry-topic-pages-api-openapi.yml",
+    "event-registry-usage-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
