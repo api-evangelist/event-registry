@@ -51,7 +51,7 @@ apis:
     url: https://github.com/EventRegistry/event-registry-python
   - type: NodeSDK
     url: https://github.com/EventRegistry/event-registry-node-js
-  - type: MCP
+  - type: Documentation
     url: https://github.com/EventRegistry/newsapi-mcp
 - aid: event-registry:event-registry-events-api
   name: Event Registry Events API
@@ -71,7 +71,7 @@ apis:
     url: https://github.com/EventRegistry/event-registry-python
   - type: NodeSDK
     url: https://github.com/EventRegistry/event-registry-node-js
-  - type: MCP
+  - type: Documentation
     url: https://github.com/EventRegistry/newsapi-mcp
 - aid: event-registry:event-registry-suggest-api
   name: Event Registry Suggest API
@@ -91,7 +91,7 @@ apis:
     url: https://github.com/EventRegistry/event-registry-python
   - type: NodeSDK
     url: https://github.com/EventRegistry/event-registry-node-js
-  - type: MCP
+  - type: Documentation
     url: https://github.com/EventRegistry/newsapi-mcp
 - aid: event-registry:event-registry-topic-pages-api
   name: Event Registry Topic Pages API
@@ -111,7 +111,7 @@ apis:
     url: https://github.com/EventRegistry/event-registry-python
   - type: NodeSDK
     url: https://github.com/EventRegistry/event-registry-node-js
-  - type: MCP
+  - type: Documentation
     url: https://github.com/EventRegistry/newsapi-mcp
 - aid: event-registry:event-registry-usage-api
   name: Event Registry Usage API
@@ -131,7 +131,7 @@ apis:
     url: https://github.com/EventRegistry/event-registry-python
   - type: NodeSDK
     url: https://github.com/EventRegistry/event-registry-node-js
-  - type: MCP
+  - type: Documentation
     url: https://github.com/EventRegistry/newsapi-mcp
 common:
   - type: AgenticAccess
