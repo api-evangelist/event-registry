@@ -21,7 +21,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/event-registry.png
 url: https://raw.githubusercontent.com/api-evangelist/event-registry/refs/heads/main/apis.yml
 created: 2026-06-13
-modified: 2026-06-13
+modified: 2026-08-13
 specificationVersion: "0.19"
 tags:
   - News
@@ -43,6 +43,12 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/event-registry-articles-api-openapi.yml
+  - type: Overlay
+    url: overlays/event-registry-articles-overlay.yaml
+  - type: PostmanCollection
+    url: collections/event-registry-articles-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/event-registry-articles-api.opencollection.json
   - type: Documentation
     url: https://newsapi.ai/documentation
   - type: Sandbox
@@ -63,6 +69,12 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/event-registry-events-api-openapi.yml
+  - type: Overlay
+    url: overlays/event-registry-events-overlay.yaml
+  - type: PostmanCollection
+    url: collections/event-registry-events-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/event-registry-events-api.opencollection.json
   - type: Documentation
     url: https://newsapi.ai/documentation
   - type: Sandbox
@@ -83,6 +95,12 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/event-registry-suggest-api-openapi.yml
+  - type: Overlay
+    url: overlays/event-registry-suggest-overlay.yaml
+  - type: PostmanCollection
+    url: collections/event-registry-suggest-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/event-registry-suggest-api.opencollection.json
   - type: Documentation
     url: https://newsapi.ai/documentation
   - type: Sandbox
@@ -103,6 +121,12 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/event-registry-topic-pages-api-openapi.yml
+  - type: Overlay
+    url: overlays/event-registry-topic-pages-overlay.yaml
+  - type: PostmanCollection
+    url: collections/event-registry-topic-pages-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/event-registry-topic-pages-api.opencollection.json
   - type: Documentation
     url: https://newsapi.ai/documentation
   - type: Sandbox
@@ -123,6 +147,12 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/event-registry-usage-api-openapi.yml
+  - type: Overlay
+    url: overlays/event-registry-usage-overlay.yaml
+  - type: PostmanCollection
+    url: collections/event-registry-usage-api.postman_collection.json
+  - type: OpenCollection
+    url: collections/event-registry-usage-api.opencollection.json
   - type: Documentation
     url: https://newsapi.ai/documentation
   - type: Sandbox
@@ -160,6 +190,45 @@ common:
     url: rate-limits/event-registry-rate-limits.yml
   - type: FinOps
     url: finops/event-registry-finops.yml
+  - type: Packages
+    url: packages/event-registry-packages.yml
+  - type: SDKs
+    url: packages/event-registry-packages.yml
+  - type: MCPServer
+    url: mcp/event-registry-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/event-registry-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/event-registry-llms.txt
+  - type: Conventions
+    url: conventions/event-registry-conventions.yml
+  - type: ErrorCatalog
+    url: errors/event-registry-problem-types.yml
+  - type: DataModel
+    url: data-model/event-registry-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/event-registry-lifecycle.yml
+  - type: Conformance
+    url: conformance/event-registry-conformance.yml
+  - type: ChangeLog
+    url: changelog/event-registry-changelog.yml
+  - type: Sandbox
+    url: sandbox/event-registry-sandbox.yml
+  - type: TermsOfService
+    url: https://newsapi.ai/terms
+  - type: SignUp
+    url: https://newsapi.ai/register
+  - type: APIReference
+    url: https://newsapi.ai/documentation
+  - type: SourceCode
+    url: https://github.com/EventRegistry/newsapi-mcp
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v1
