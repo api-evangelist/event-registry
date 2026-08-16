@@ -10,9 +10,12 @@
     },
     {
       "source": "https://www.linkedin.com/company/event-registry/",
-      "error": "HTTPError"
+      "feed_url": "https://www.linkedin.com/company/event-registry/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
-  "fetched": "2026-08-06T14:08:46Z",
+  "fetched": "2026-08-15T12:22:01Z",
   "post_count": 19
 }
