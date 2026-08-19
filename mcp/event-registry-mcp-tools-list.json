@@ -1,0 +1,663 @@
+{
+  "tools": [
+    {
+      "name": "search_articles",
+      "description": "Search news articles by concepts, sources, categories, dates, language, and sentiment. Returns up to 100 articles per call.\n\nWORKFLOW: Use suggest tool first to resolve names to URIs, then search with conceptUri. Use keyword only as a secondary text filter.\nEXAMPLE: search_articles({conceptUri: \"<uri>\", dateStart: \"2025-01-01\", lang: \"eng\"})\n\nUSE THIS WHEN you need individual articles with full text, dates, and sources.\nNOT THIS when you need high-level event summaries \u2014 use search_events instead.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "Secondary keyword filter. Use conceptUri as the primary search method. Keywords narrow concept results \u2014 especially useful with broad concepts (e.g., keyword: \"2026\" with Olympic Games concept). Also effective as a fallback when a specific concept returns no results. IMPORTANT: each keyword value is matched as an exact phrase. Comma-separate individual words for multi-term matching (e.g., \"SaaS, acquisition, merger\" NOT \"SaaS acquisition merger\"). Use keywordOper to control AND/OR logic for comma-separated keywords."
+          },
+          "conceptUri": {
+            "type": "string",
+            "description": "Primary search filter. Always use suggest(type: \"concepts\") first to resolve entity names to URIs, then pass them here. Prefer this over keyword search for reliable results. Comma-separated for multiple concepts. Prefer well-established concepts over year-specific ones (e.g., \"Olympic Games\" not \"2026 Olympics\"). Combine broad concept + keyword for precision."
+          },
+          "categoryUri": {
+            "type": "string",
+            "description": "Category URI(s) to filter by (comma-separated). Use suggest(type: \"categories\") to look up URIs."
+          },
+          "sourceUri": {
+            "type": "string",
+            "description": "Specific news source URI(s) to filter by (e.g., Reuters, BBC). Use suggest(type: \"sources\") to look up URIs. For sources from a country/region, use sourceLocationUri instead."
+          },
+          "sourceLocationUri": {
+            "type": "string",
+            "description": "Filter by where news sources are based (e.g., sources from Slovenia, UK). Use suggest(type: \"locations\") to look up country/region URIs. Prefer this over sourceUri when filtering by country."
+          },
+          "authorUri": {
+            "type": "string",
+            "description": "Author URI(s) to filter by (comma-separated). Use suggest(type: \"authors\") to look up URIs."
+          },
+          "locationUri": {
+            "type": "string",
+            "description": "Location URI(s) mentioned in content (comma-separated). Use suggest(type: \"locations\") to look up URIs."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language code(s) to filter by (comma-separated ISO codes, e.g. \"eng\", \"deu\", \"fra\")."
+          },
+          "dateStart": {
+            "type": "string",
+            "description": "Start date inclusive (YYYY-MM-DD)."
+          },
+          "dateEnd": {
+            "type": "string",
+            "description": "End date inclusive (YYYY-MM-DD)."
+          },
+          "forceMaxDataTimeWindow": {
+            "anyOf": [
+              {
+                "type": "number",
+                "const": 7
+              },
+              {
+                "type": "number",
+                "const": 31
+              }
+            ],
+            "description": "Limit results to recent data: 7 (last week) or 31 (last month). Use this instead of dateStart/dateEnd for recent news queries to minimize token usage. Omit to search all available data."
+          },
+          "keywordLoc": {
+            "type": "string",
+            "enum": [
+              "body",
+              "title",
+              "title,body"
+            ],
+            "description": "Where to match keywords: \"body\", \"title\", or \"title,body\" (OR \u2014 matches in either location). Default: \"body\"."
+          },
+          "keywordOper": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "description": "Boolean operator for multiple keywords: \"and\" or \"or\". Default: \"and\"."
+          },
+          "minSentiment": {
+            "type": "number",
+            "description": "Minimum sentiment (-1 to 1)."
+          },
+          "maxSentiment": {
+            "type": "number",
+            "description": "Maximum sentiment (-1 to 1)."
+          },
+          "startSourceRankPercentile": {
+            "type": "number",
+            "description": "Min source rank percentile (0-100). Lower = more important. Default: 0."
+          },
+          "endSourceRankPercentile": {
+            "type": "number",
+            "description": "Max source rank percentile (0-100). Default: 100."
+          },
+          "ignoreKeyword": {
+            "type": "string",
+            "description": "Exclude articles/events mentioning these keywords. Comma-separated for multiple."
+          },
+          "ignoreConceptUri": {
+            "type": "string",
+            "description": "Exclude by concept URI(s). Comma-separated for multiple. Use suggest(type: \"concepts\") to look up URIs."
+          },
+          "ignoreCategoryUri": {
+            "type": "string",
+            "description": "Exclude by category URI(s). Comma-separated for multiple. Use suggest(type: \"categories\") to look up URIs."
+          },
+          "ignoreSourceUri": {
+            "type": "string",
+            "description": "Exclude by source URI(s). Comma-separated for multiple. Use suggest(type: \"sources\") to look up URIs."
+          },
+          "ignoreSourceLocationUri": {
+            "type": "string",
+            "description": "Exclude by source location URI(s). Comma-separated for multiple. Use suggest(type: \"locations\") to look up URIs."
+          },
+          "ignoreSourceGroupUri": {
+            "type": "string",
+            "description": "Exclude by source group URI(s). Comma-separated for multiple."
+          },
+          "ignoreAuthorUri": {
+            "type": "string",
+            "description": "Exclude by author URI(s). Comma-separated for multiple. Use suggest(type: \"authors\") to look up URIs."
+          },
+          "ignoreLocationUri": {
+            "type": "string",
+            "description": "Exclude by location URI(s). Comma-separated for multiple. Use suggest(type: \"locations\") to look up URIs."
+          },
+          "ignoreLang": {
+            "type": "string",
+            "description": "Exclude by language code(s). Comma-separated ISO codes (e.g. \"eng\", \"deu\")."
+          },
+          "ignoreKeywordLoc": {
+            "type": "string",
+            "enum": [
+              "body",
+              "title",
+              "title,body"
+            ],
+            "description": "Where to match ignoreKeyword: \"body\", \"title\", or \"title,body\". Default: \"body\"."
+          },
+          "sourceGroupUri": {
+            "type": "string",
+            "description": "Filter by source group URI(s). Comma-separated for multiple."
+          },
+          "conceptOper": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "description": "Boolean operator for multiple concepts: \"and\" or \"or\". Default: \"and\"."
+          },
+          "categoryOper": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "description": "Boolean operator for multiple categories: \"and\" or \"or\". Default: \"or\"."
+          },
+          "dateMentionStart": {
+            "type": "string",
+            "description": "Articles mentioning dates >= this (YYYY-MM-DD). Filters by dates mentioned in content."
+          },
+          "dateMentionEnd": {
+            "type": "string",
+            "description": "Articles mentioning dates <= this (YYYY-MM-DD). Filters by dates mentioned in content. WARNING: combining both dateMentionStart and dateMentionEnd often returns 0 results \u2014 prefer using dateMentionStart alone."
+          },
+          "includeFields": {
+            "type": "string",
+            "description": "Comma-separated field groups to include beyond the minimal set (title, body, date, source). Options: sentiment, concepts, categories, images, authors, location, social, metadata, event, full. Default: minimal only."
+          },
+          "articleBodyLen": {
+            "type": "number",
+            "description": "Article body length in characters. Default: 1000. Use -1 for full text, 0 to exclude body."
+          },
+          "isDuplicateFilter": {
+            "type": "string",
+            "enum": [
+              "keepAll",
+              "skipDuplicates",
+              "keepOnlyDuplicates"
+            ],
+            "description": "Duplicate handling: \"keepAll\" (default), \"skipDuplicates\" (recommended for scan steps \u2014 removes wire syndication noise), \"keepOnlyDuplicates\"."
+          },
+          "dataType": {
+            "type": "string",
+            "description": "Content types (comma-separated): \"news\", \"pr\", \"blog\". Default: \"news\"."
+          },
+          "articlesPage": {
+            "type": "number",
+            "description": "Page number (starting from 1). Default: 1."
+          },
+          "articlesCount": {
+            "type": "number",
+            "description": "Articles per page (max 100). Default: 100."
+          },
+          "articlesSortBy": {
+            "type": "string",
+            "enum": [
+              "date",
+              "rel",
+              "sourceImportance",
+              "sourceAlexaGlobalRank",
+              "socialScore",
+              "facebookShares"
+            ],
+            "description": "Sort by: \"date\", \"rel\", \"sourceImportance\", \"socialScore\". Default: \"date\". Note: socialScore may surface low-authority viral sources \u2014 combine with startSourceRankPercentile/endSourceRankPercentile to filter for quality."
+          },
+          "articlesSortByAsc": {
+            "type": "boolean",
+            "description": "Ascending sort order. Default: false."
+          },
+          "query": {
+            "description": "Advanced Query Language object for complex boolean logic. See API docs. Overrides simple filter params when provided."
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_article_details",
+      "description": "Get full details for one or more articles by their URI(s).\n\nEXAMPLE: get_article_details({articleUri: \"123456789\", includeFields: \"concepts,sentiment\"})\nEXAMPLE (multiple): get_article_details({articleUri: [\"123456789\", \"987654321\"]})\n\nUSE THIS WHEN you already have article URIs from search results and need more details.\nNOT THIS for searching \u2014 use search_articles with filters instead.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "articleUri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Article URI or array of URIs. Also accepts comma-separated string."
+          },
+          "includeFields": {
+            "type": "string",
+            "description": "Comma-separated field groups to include beyond the minimal set (title, body, date, source). Options: sentiment, concepts, categories, images, authors, location, social, metadata, event, full. Default: minimal only."
+          },
+          "articleBodyLen": {
+            "type": "number",
+            "description": "Article body length in characters. Default: 1000. Use -1 for full text, 0 to exclude body."
+          }
+        },
+        "required": [
+          "articleUri"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "search_events",
+      "description": "Search events (clusters of related articles about the same real-world happening). Returns up to 50 events per call. Events deduplicate coverage \u2014 one entry per story instead of per article.\n\nWORKFLOW: Use suggest tool first to resolve names to URIs, then search with conceptUri.\nEXAMPLE: search_events({conceptUri: \"<uri>\", dateStart: \"2025-01-01\"})\n\nUSE THIS WHEN you need a high-level overview of what happened (event summaries, article counts). Use eventsSortBy: \"size\" for the biggest stories, or minArticlesInEvent to filter by significance.\nNOT THIS when you need full article text \u2014 use search_articles instead.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "Secondary keyword filter. Use conceptUri as the primary search method. Keywords narrow concept results \u2014 especially useful with broad concepts (e.g., keyword: \"2026\" with Olympic Games concept). Also effective as a fallback when a specific concept returns no results. IMPORTANT: each keyword value is matched as an exact phrase. Comma-separate individual words for multi-term matching (e.g., \"SaaS, acquisition, merger\" NOT \"SaaS acquisition merger\"). Use keywordOper to control AND/OR logic for comma-separated keywords."
+          },
+          "conceptUri": {
+            "type": "string",
+            "description": "Primary search filter. Always use suggest(type: \"concepts\") first to resolve entity names to URIs, then pass them here. Prefer this over keyword search for reliable results. Comma-separated for multiple concepts. Prefer well-established concepts over year-specific ones (e.g., \"Olympic Games\" not \"2026 Olympics\"). Combine broad concept + keyword for precision."
+          },
+          "categoryUri": {
+            "type": "string",
+            "description": "Category URI(s) to filter by (comma-separated). Use suggest(type: \"categories\") to look up URIs."
+          },
+          "sourceUri": {
+            "type": "string",
+            "description": "Specific news source URI(s) to filter by (e.g., Reuters, BBC). Use suggest(type: \"sources\") to look up URIs. For sources from a country/region, use sourceLocationUri instead."
+          },
+          "sourceLocationUri": {
+            "type": "string",
+            "description": "Filter by where news sources are based (e.g., sources from Slovenia, UK). Use suggest(type: \"locations\") to look up country/region URIs. Prefer this over sourceUri when filtering by country."
+          },
+          "authorUri": {
+            "type": "string",
+            "description": "Author URI(s) to filter by (comma-separated). Use suggest(type: \"authors\") to look up URIs."
+          },
+          "locationUri": {
+            "type": "string",
+            "description": "Location URI(s) mentioned in content (comma-separated). Use suggest(type: \"locations\") to look up URIs."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language code(s) to filter by (comma-separated ISO codes, e.g. \"eng\", \"deu\", \"fra\")."
+          },
+          "dateStart": {
+            "type": "string",
+            "description": "Start date inclusive (YYYY-MM-DD)."
+          },
+          "dateEnd": {
+            "type": "string",
+            "description": "End date inclusive (YYYY-MM-DD)."
+          },
+          "forceMaxDataTimeWindow": {
+            "anyOf": [
+              {
+                "type": "number",
+                "const": 7
+              },
+              {
+                "type": "number",
+                "const": 31
+              }
+            ],
+            "description": "Limit results to recent data: 7 (last week) or 31 (last month). Use this instead of dateStart/dateEnd for recent news queries to minimize token usage. Omit to search all available data."
+          },
+          "keywordLoc": {
+            "type": "string",
+            "enum": [
+              "body",
+              "title",
+              "title,body"
+            ],
+            "description": "Where to match keywords: \"body\", \"title\", or \"title,body\" (OR \u2014 matches in either location). Default: \"body\"."
+          },
+          "keywordOper": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "description": "Boolean operator for multiple keywords: \"and\" or \"or\". Default: \"and\"."
+          },
+          "minSentiment": {
+            "type": "number",
+            "description": "Minimum sentiment (-1 to 1)."
+          },
+          "maxSentiment": {
+            "type": "number",
+            "description": "Maximum sentiment (-1 to 1)."
+          },
+          "startSourceRankPercentile": {
+            "type": "number",
+            "description": "Min source rank percentile (0-100). Lower = more important. Default: 0."
+          },
+          "endSourceRankPercentile": {
+            "type": "number",
+            "description": "Max source rank percentile (0-100). Default: 100."
+          },
+          "ignoreKeyword": {
+            "type": "string",
+            "description": "Exclude articles/events mentioning these keywords. Comma-separated for multiple."
+          },
+          "ignoreConceptUri": {
+            "type": "string",
+            "description": "Exclude by concept URI(s). Comma-separated for multiple. Use suggest(type: \"concepts\") to look up URIs."
+          },
+          "ignoreCategoryUri": {
+            "type": "string",
+            "description": "Exclude by category URI(s). Comma-separated for multiple. Use suggest(type: \"categories\") to look up URIs."
+          },
+          "ignoreSourceUri": {
+            "type": "string",
+            "description": "Exclude by source URI(s). Comma-separated for multiple. Use suggest(type: \"sources\") to look up URIs."
+          },
+          "ignoreSourceLocationUri": {
+            "type": "string",
+            "description": "Exclude by source location URI(s). Comma-separated for multiple. Use suggest(type: \"locations\") to look up URIs."
+          },
+          "ignoreSourceGroupUri": {
+            "type": "string",
+            "description": "Exclude by source group URI(s). Comma-separated for multiple."
+          },
+          "ignoreAuthorUri": {
+            "type": "string",
+            "description": "Exclude by author URI(s). Comma-separated for multiple. Use suggest(type: \"authors\") to look up URIs."
+          },
+          "ignoreLocationUri": {
+            "type": "string",
+            "description": "Exclude by location URI(s). Comma-separated for multiple. Use suggest(type: \"locations\") to look up URIs."
+          },
+          "ignoreLang": {
+            "type": "string",
+            "description": "Exclude by language code(s). Comma-separated ISO codes (e.g. \"eng\", \"deu\")."
+          },
+          "ignoreKeywordLoc": {
+            "type": "string",
+            "enum": [
+              "body",
+              "title",
+              "title,body"
+            ],
+            "description": "Where to match ignoreKeyword: \"body\", \"title\", or \"title,body\". Default: \"body\"."
+          },
+          "sourceGroupUri": {
+            "type": "string",
+            "description": "Filter by source group URI(s). Comma-separated for multiple."
+          },
+          "conceptOper": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "description": "Boolean operator for multiple concepts: \"and\" or \"or\". Default: \"and\"."
+          },
+          "categoryOper": {
+            "type": "string",
+            "enum": [
+              "and",
+              "or"
+            ],
+            "description": "Boolean operator for multiple categories: \"and\" or \"or\". Default: \"or\"."
+          },
+          "dateMentionStart": {
+            "type": "string",
+            "description": "Articles mentioning dates >= this (YYYY-MM-DD). Filters by dates mentioned in content."
+          },
+          "dateMentionEnd": {
+            "type": "string",
+            "description": "Articles mentioning dates <= this (YYYY-MM-DD). Filters by dates mentioned in content. WARNING: combining both dateMentionStart and dateMentionEnd often returns 0 results \u2014 prefer using dateMentionStart alone."
+          },
+          "includeFields": {
+            "type": "string",
+            "description": "Comma-separated field groups to include beyond the minimal set. Options: sentiment, concepts, categories, images, authors, location, social, metadata, event, full. Default: minimal only."
+          },
+          "minArticlesInEvent": {
+            "type": "number",
+            "description": "Minimum number of articles in the event."
+          },
+          "maxArticlesInEvent": {
+            "type": "number",
+            "description": "Maximum number of articles in the event."
+          },
+          "reportingDateStart": {
+            "type": "string",
+            "description": "Filter by average article publishing date >= this (YYYY-MM-DD)."
+          },
+          "reportingDateEnd": {
+            "type": "string",
+            "description": "Filter by average article publishing date <= this (YYYY-MM-DD)."
+          },
+          "eventsPage": {
+            "type": "number",
+            "description": "Page number (starting from 1). Default: 1."
+          },
+          "eventsCount": {
+            "type": "number",
+            "description": "Events per page (max 50). Default: 50."
+          },
+          "eventsSortBy": {
+            "type": "string",
+            "enum": [
+              "date",
+              "rel",
+              "size",
+              "socialScore"
+            ],
+            "description": "Sort by: \"date\", \"rel\", \"size\", \"socialScore\". Default: \"date\"."
+          },
+          "eventsSortByAsc": {
+            "type": "boolean",
+            "description": "Ascending sort order. Default: false."
+          },
+          "query": {
+            "description": "Advanced Query Language object for complex boolean logic."
+          }
+        }
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_event_details",
+      "description": "Get full details for one or more events by their URI(s).\n\nEXAMPLE: get_event_details({eventUri: \"eng-4567890\", includeFields: \"concepts,categories\"})\nEXAMPLE (multiple): get_event_details({eventUri: [\"eng-4567890\", \"eng-1234567\"]})\nEXAMPLE (articles): get_event_details({eventUri: \"eng-4567890\", resultType: \"articles\"})\n\nUSE THIS WHEN you have event URIs from search results and need full details.\nNOT THIS for searching \u2014 use search_events with filters instead.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "eventUri": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Event URI or array of URIs. Also accepts comma-separated string. Array/multiple URIs only supported with resultType \"info\" (default)."
+          },
+          "resultType": {
+            "type": "string",
+            "enum": [
+              "info",
+              "articles",
+              "articleUris",
+              "keywordAggr",
+              "sourceExAggr",
+              "dateMentionAggr",
+              "articleTrend",
+              "similarEvents"
+            ],
+            "description": "Result type: \"info\" (default), \"articles\", \"articleUris\", \"keywordAggr\", \"sourceExAggr\", \"dateMentionAggr\", \"articleTrend\", \"similarEvents\". When resultType is \"info\", eventUri can be a string or array. For all other types, eventUri must be a single string."
+          },
+          "includeFields": {
+            "type": "string",
+            "description": "Comma-separated field groups to include beyond the minimal set. Options: sentiment, concepts, categories, images, authors, location, social, metadata, event, full. Default: minimal only."
+          }
+        },
+        "required": [
+          "eventUri"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_topic_page_articles",
+      "description": "Get articles matching a user-created topic page. Topic pages are pre-configured search profiles on newsapi.ai.\n\nEXAMPLE: get_topic_page_articles({uri: \"<topic-page-uri>\", articlesCount: 5, articleBodyLen: 200})\n\nUSE THIS WHEN monitoring a pre-configured topic. NOT THIS for ad-hoc searches \u2014 use search_articles.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "Topic page URI."
+          },
+          "includeFields": {
+            "type": "string",
+            "description": "Comma-separated field groups to include beyond the minimal set (title, body, date, source). Options: sentiment, concepts, categories, images, authors, location, social, metadata, event, full. Default: minimal only."
+          },
+          "articleBodyLen": {
+            "type": "number",
+            "description": "Article body length in characters. Default: 1000. Use -1 for full text, 0 to exclude body."
+          },
+          "articlesPage": {
+            "type": "number",
+            "description": "Page number (starting from 1). Default: 1."
+          },
+          "articlesCount": {
+            "type": "number",
+            "description": "Articles per page (max 100). Default: 100."
+          },
+          "articlesSortBy": {
+            "type": "string",
+            "enum": [
+              "date",
+              "rel",
+              "sourceImportance",
+              "socialScore"
+            ],
+            "description": "Sort by: \"date\", \"rel\", \"sourceImportance\", \"socialScore\". Default: \"date\"."
+          }
+        },
+        "required": [
+          "uri"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_topic_page_events",
+      "description": "Get events matching a user-created topic page. Topic pages are pre-configured search profiles on newsapi.ai.\n\nEXAMPLE: get_topic_page_events({uri: \"<topic-page-uri>\", eventsSortBy: \"size\"})\n\nUSE THIS WHEN monitoring a pre-configured topic for events. NOT THIS for ad-hoc searches \u2014 use search_events.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "uri": {
+            "type": "string",
+            "description": "Topic page URI."
+          },
+          "includeFields": {
+            "type": "string",
+            "description": "Comma-separated field groups to include beyond the minimal set. Options: sentiment, concepts, categories, images, authors, location, social, metadata, event, full. Default: minimal only."
+          },
+          "eventsPage": {
+            "type": "number",
+            "description": "Page number (starting from 1). Default: 1."
+          },
+          "eventsCount": {
+            "type": "number",
+            "description": "Events per page (max 50). Default: 50."
+          },
+          "eventsSortBy": {
+            "type": "string",
+            "enum": [
+              "date",
+              "rel",
+              "size",
+              "socialScore"
+            ],
+            "description": "Sort by: \"date\", \"rel\", \"size\", \"socialScore\". Default: \"date\"."
+          }
+        },
+        "required": [
+          "uri"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "suggest",
+      "description": "Look up URIs for entities by name. You MUST resolve names to URIs before using them in search filters.\n\nTYPES:\n- \"concepts\": people, orgs, locations, things \u2192 for conceptUri\n- \"categories\": news topics (business, tech, sports) \u2192 for categoryUri\n- \"sources\": news outlets (Reuters, BBC) \u2192 for sourceUri\n- \"locations\": countries, cities, regions \u2192 for locationUri or sourceLocationUri\n- \"authors\": journalists \u2192 for authorUri\n\nWORKFLOW: suggest(type, prefix) \u2192 get URI \u2192 pass to search_articles or search_events.\nEXAMPLE: suggest({type: \"concepts\", prefix: \"Tesla\"}) \u2192 search_articles({conceptUri: \"<uri>\"})\n\nPrefer \"concepts\" as the default type. Use specific types when entity type is unambiguous (e.g., journalist name \u2192 \"authors\").\n\nTIPS:\n- Keep prefix SHORT (1-3 words). The API does prefix matching, not full-text search.\n  Good: \"Tesla\", \"Angela Merkel\" | Bad: \"Tesla electric vehicle company\"\n- For non-English entities, search in English first. Only try the native language if English returns no results.\n  Example: For Slovenian company \"Krka\", first search with lang=\"eng\", then try lang=\"slv\" if needed.\n- For locations, ALWAYS use English names regardless of target language.\n  Good: \"Germany\", \"Slovenia\" | Bad: \"Deutschland\", \"Slovenija\"\n- Prefer WELL-ESTABLISHED concepts over year-specific or recent event editions.\n  Good: \"Winter Olympic Games\", \"FIFA World Cup\" | Bad: \"2026 Winter Olympics\", \"2026 FIFA World Cup\"\n  If a specific concept returns no results, try a broader parent concept or use keyword search instead.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "concepts",
+              "categories",
+              "sources",
+              "locations",
+              "authors"
+            ],
+            "description": "Entity type to look up: \"concepts\" (people, orgs, things), \"categories\" (news topics), \"sources\" (news outlets), \"locations\" (countries, cities), \"authors\" (journalists)."
+          },
+          "prefix": {
+            "type": "string",
+            "description": "Short name or prefix to search for (1-3 words). Shorter prefixes work better than long descriptions."
+          },
+          "lang": {
+            "type": "string",
+            "description": "Language code for results (e.g. \"eng\", \"deu\", \"fra\", \"slv\"). Defaults to \"eng\". For non-English entities, try English first, then native language if needed. For locations, always use English names."
+          }
+        },
+        "required": [
+          "type",
+          "prefix"
+        ]
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    },
+    {
+      "name": "get_api_usage",
+      "description": "Check API token usage (tokens used and available) for the current API key.\n\nUSE THIS WHEN checking remaining quota before large queries or when the user asks about API limits.",
+      "inputSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {}
+      },
+      "execution": {
+        "taskSupport": "forbidden"
+      }
+    }
+  ]
+}

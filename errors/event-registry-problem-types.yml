@@ -1,0 +1,152 @@
+generated: '2026-08-13'
+method: derived
+source: >
+  Derived from the 401/429 responses declared in openapi/event-registry-*-openapi.yml and the
+  components.schemas.ErrorResponse envelope, enriched from Event Registry's own first-party
+  error classifier at
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/types.ts
+  (classifyError) and
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/errors.ts
+  (formatErrorResponse), read 2026-08-13.
+name: Event Registry Error Catalog
+description: >
+  Event Registry does not publish an RFC 9457 problem+json catalog. Errors are signalled by
+  HTTP status with a small JSON envelope. The semantic categories, retryability and recovery
+  guidance below are Event Registry's OWN classification, lifted from the classifyError()
+  switch in its first-party MCP server — this is the closest thing the provider publishes to
+  a documented error reference.
+format: custom-json
+rfc9457: false
+media_type: application/json
+envelope:
+  schema: ErrorResponse
+  fields:
+    - name: error
+      type: string
+      description: Short error identifier returned by the API.
+    - name: message
+      type: string
+      description: Human-readable description of what went wrong.
+  note: >
+    No `type`, `title`, `status`, `detail` or `instance` members — this is not RFC 9457. The
+    envelope is not always JSON: the provider's own client falls back to treating the body as
+    a raw string when JSON.parse fails, and raises a synthetic 502 when a 2xx body is not
+    valid JSON.
+problem_types:
+  - status: 400
+    category: invalid_param
+    title: Invalid request parameter
+    retryable: false
+    remediation: >
+      A parameter value was rejected. The provider's client extracts the offending parameter
+      name from the error body and echoes the valid enum. Known constrained parameters and
+      their accepted values are recorded under `parameter_enums` below.
+    source: newsapi-mcp src/errors.ts
+  - status: 401
+    category: auth_error
+    title: Authentication failed
+    retryable: false
+    declared_in_openapi: true
+    operations:
+      - searchArticles
+      - getArticleDetails
+      - searchEvents
+      - getEventDetails
+      - getTopicPageArticles
+      - getTopicPageEvents
+      - suggestConcepts
+      - suggestCategories
+      - suggestSources
+      - suggestLocations
+      - suggestAuthors
+      - getApiUsage
+    remediation: >
+      The apiKey field in the JSON POST body is missing, malformed, or invalid. Obtain a key
+      at https://newsapi.ai/register.
+  - status: 403
+    category: auth_error
+    title: Forbidden
+    retryable: false
+    declared_in_openapi: false
+    remediation: >
+      Classified identically to 401 by the provider's own client. Typically a valid key
+      without entitlement for the requested content (for example historical archive depth on
+      the free plan, which is limited to the last 30 days).
+    source: newsapi-mcp src/types.ts classifyError
+  - status: 404
+    category: not_found
+    title: No results found
+    retryable: false
+    declared_in_openapi: false
+    remediation: Broaden the search terms or verify the concept/source/event URIs resolved via `suggest`.
+    source: newsapi-mcp src/errors.ts
+  - status: 429
+    category: rate_limit
+    title: Token quota exhausted
+    retryable: true
+    retry_guidance: >
+      Retryable but NOT immediately — this is a quota, not a burst limit. The provider's own
+      guidance is "Tokens refresh the next day"; monthly plan caps reset at the billing
+      period. Retrying without waiting will not succeed.
+    declared_in_openapi: true
+    operations:
+      - searchArticles
+      - searchEvents
+    remediation: >
+      Reduce token consumption (search recent windows rather than historical years, prefer
+      article queries over event queries) or enable overage at $0.015/token in the dashboard.
+      See rate-limits/event-registry-rate-limits.yml.
+  - status: 503
+    category: concurrent_limit
+    title: Too many simultaneous requests
+    retryable: true
+    declared_in_openapi: false
+    remediation: >
+      Event Registry allows a maximum of 5 concurrent requests per account. Excess requests
+      are rejected outright, not queued. Make requests sequentially. This is the single most
+      important runtime behaviour an integrator must design for, and it is NOT declared in
+      the OpenAPI — it is documented only in the provider's MCP server error handler.
+    source: newsapi-mcp src/errors.ts (added in release 1.2.0, 2026-03-04)
+  - status: 5xx
+    category: api_error
+    title: Server error
+    retryable: true
+    declared_in_openapi: false
+    remediation: Transient upstream failure. Retry shortly.
+  - status: 502
+    category: api_error
+    title: Response body is not valid JSON
+    retryable: true
+    declared_in_openapi: false
+    synthetic: true
+    remediation: >
+      Synthesised client-side by the provider's own SDK when a 2xx response body fails to
+      parse as JSON. Not returned by the API itself.
+parameter_enums:
+  note: >
+    Values the provider's error handler offers as recovery hints when a 400 names one of
+    these parameters. Verbatim from newsapi-mcp src/errors.ts KNOWN_PARAM_VALUES.
+  articlesSortBy:
+    - date
+    - rel
+    - sourceImportance
+    - sourceImportanceRank
+    - sourceAlexaGlobalRank
+    - sourceAlexaCountryRank
+    - socialScore
+    - facebookShares
+  eventsSortBy: [date, rel, size, socialScore]
+  isDuplicateFilter: [keepAll, skipDuplicates, keepOnlyDuplicates]
+  keywordLoc: [body, title, 'title,body']
+  keywordOper: [and, or]
+  dataType: [news, pr, blog]
+  lang_count: 56
+counts:
+  problem_types: 8
+  declared_in_openapi: 2
+  discovered_from_provider_source: 6
+finding: >
+  The OpenAPI declares only 401 and 429. Six further statuses the API genuinely returns —
+  including the 503 concurrency signal that every integrator will hit — are documented
+  nowhere in the spec and only in the provider's MCP server source. The spec understates the
+  real error surface by a factor of four.

@@ -1,0 +1,145 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://github.com/EventRegistry/event-registry-api (the provider's declared API changelog
+  repository) and https://github.com/EventRegistry/newsapi-mcp/blob/main/CHANGELOG.md, both
+  read 2026-08-13.
+name: Event Registry Change Log
+description: >
+  Event Registry maintains no changelog on newsapi.ai. It publishes two dated changelogs on
+  GitHub, and they tell opposite stories: the one meant for API consumers has one entry and
+  stopped in 2017, while the MCP server's changelog is current, well-structured and dated
+  through 2026. API changes made in the nine years between the two are recorded nowhere a
+  consumer can read.
+scheme: dated
+current_version: v1
+version_scheme_note: >
+  The API is versioned only by the `v1` path segment. No release is tagged, numbered or
+  date-pinned, so a changelog entry cannot be tied to a version an integrator can pin to.
+sources:
+  - name: Event Registry API changelog
+    url: https://github.com/EventRegistry/event-registry-api
+    scope: The REST API and its returned data models — the consumer-facing changelog.
+    format: markdown, Keep-a-Changelog style (Added / Changed / Deprecated)
+    entries: 1
+    first_entry: '2017-06-14'
+    last_entry: '2017-06-14'
+    last_pushed: '2017-06-12'
+    status: abandoned
+    note: >
+      The repository's own README states its purpose: "This repository simply lists the
+      recent changes to the Event Registry for the users who use the system through the API
+      but don't use the Python SDK." It contains exactly one entry, dated 2017-06-14, and has
+      not been touched since. It is the only place the provider has ever published a
+      deprecation notice.
+  - name: newsapi-mcp changelog
+    url: https://github.com/EventRegistry/newsapi-mcp/blob/main/CHANGELOG.md
+    scope: The first-party MCP server. Tracks tool schema and behaviour changes, which in practice mirror API parameter changes.
+    format: markdown, semver headings with dates and Features/Improvements/Fixes/Docs sections
+    entries: 7
+    first_entry: '2026-02-10'
+    last_entry: '2026-03-18'
+    status: current
+entries:
+  - version: 1.3.1
+    date: '2026-03-18'
+    surface: mcp
+    breaking: false
+    additions:
+      - Claude Code Agent Skill (skill/SKILL.md) with 10 report templates.
+    changes:
+      - Streamlined server instructions around the scan/triage/retrieve workflow.
+      - search_events description now explains deduplication; get_event_details resultType enum reformatted.
+  - version: 1.3.0
+    date: '2026-03-11'
+    surface: mcp
+    breaking: false
+    additions:
+      - articlesSortBy gained sourceImportanceRank and sourceAlexaCountryRank.
+      - get_event_details resultType gained keywordAggr, sourceExAggr, dateMentionAggr, articleTrend.
+    fixes:
+      - Articles/events missing a URI no longer emit blank lines in formatted output.
+    docs:
+      - Clarified that articleBodyLen defaults to 1000 characters.
+  - version: 1.2.0
+    date: '2026-03-04'
+    surface: mcp
+    breaking: false
+    additions:
+      - Per-request token usage footer derived from the req-tokens and x-ratelimit-remaining response headers, replacing the old start/end get_api_usage workflow.
+      - New `extended` detail level became the default (50 articles / 20 events, 1000-char previews).
+      - Exclusion filters across all search tools — ignoreKeyword, ignoreConceptUri, ignoreCategoryUri, ignoreSourceUri, ignoreLocationUri, ignoreAuthorUri, ignoreLang.
+      - Boolean operators conceptOper and categoryOper (and/or).
+      - Date-mention filters dateMentionStart / dateMentionEnd.
+      - HTTP 503 concurrent-request-limit recognised as a distinct error category.
+    fixes:
+      - Event search sentiment params corrected to minSentimentEvent / maxSentimentEvent.
+      - Article-only params stripped before calling the events API.
+      - Cached suggest results now report "Tokens used: 0 (cached)".
+  - version: 1.1.3
+    date: '2026-02-26'
+    surface: mcp
+    breaking: false
+    fixes:
+      - Token counts reported as plain numbers so LLMs can compute exact differences.
+  - version: 1.1.2
+    date: '2026-02-26'
+    surface: mcp
+    breaking: false
+    docs:
+      - README rewrite with collapsible client configuration sections and an expanded tools table.
+  - version: 1.1.1
+    date: '2026-02-26'
+    surface: mcp
+    breaking: false
+    fixes:
+      - parseArray() no longer splits Wikipedia URIs containing commas (Tesla,_Inc.) into fragments.
+    docs:
+      - Documented that each keyword value matches as an exact phrase.
+  - version: 1.1.0
+    date: '2026-02-10'
+    surface: mcp
+    breaking: true
+    breaking_note: >
+      Five separate suggest tools were consolidated into one `suggest` tool with a `type`
+      parameter, cutting the tool count from 13 to 8. Any client wired to the old tool names
+      broke.
+    additions:
+      - Unified suggest tool.
+      - includeFields enrichment data now rendered instead of silently dropped.
+      - Structured error handling with categorised errors and recovery guidance.
+      - LRU cache for suggest (1000 entries, 24h TTL).
+      - MCP instructions plus 3 documentation resources (newsapi://guide, newsapi://examples, newsapi://fields).
+      - Language support expanded from 10 to 56 codes.
+      - forceMaxDataTimeWindow parameter (last 7 or 31 days).
+  - version: null
+    date: '2017-06-14'
+    surface: rest-api
+    breaking: true
+    breaking_note: >
+      Renamed query flags and changed two returned data models. *IncludeSourceImportance
+      became *IncludeSourceRanking and the source `importance` property became a `ranking`
+      object; *IncludeSourceTag became *IncludeSourceSourceGroups and the `tag` property
+      became a `sourceGroups` array; *IncludeArticleSocialScore became *IncludeArticleShares
+      and the article `socialScore` property became `shares`.
+    additions:
+      - sourceLocationUri and sourceGroupUri filter parameters for articles and events.
+      - sourceAlexaGlobalRank and sourceAlexaCountryRank article sort values.
+      - Source image returned via *IncludeSourceImage=true (image and thumbImage fields).
+    deprecations:
+      - >
+        sortBy value `sourceImportance` deprecated in favour of `sourceImportanceRank`, with
+        a migration note that the new value is the reverse of the old and callers must negate
+        their sortByAsc. The only deprecation notice Event Registry has ever published.
+counts:
+  total_entries: 8
+  rest_api_entries: 1
+  mcp_entries: 7
+  breaking_entries: 2
+  window: 2017-06-14 to 2026-03-18
+finding: >
+  A nine-year gap. The consumer-facing API changelog has been dormant since 2017 while the
+  API itself demonstrably kept changing — the 2026 MCP releases add conceptOper,
+  categoryOper, dateMention filters and new sort values that must exist on the REST API to
+  be callable, yet none of them appears in the API changelog. An integrator on the REST API
+  has no way to learn about a change except by reading the MCP server's release notes.

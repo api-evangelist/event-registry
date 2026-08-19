@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Event Registry (NewsAPI.ai) Articles API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apiKey",
+      "value": "{{apiKey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Articles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search news articles",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/article/getArticles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search news articles by concepts, sources, categories, dates, language, and sentiment. Returns up to 100 articles per call. Use /suggestConceptsFast to resolve entity names to URIs before searching. Set resultType to \"articles\" in the request body.\n"
+        },
+        {
+          "info": {
+            "name": "Get full article details by URI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/article/getArticle",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve full details for one or more articles by their URI(s). Use this after obtaining article URIs from /article/getArticles to fetch complete content and metadata.\n"
+        },
+        {
+          "info": {
+            "name": "Get articles for a topic page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/article/getArticlesForTopicPage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Event Registry (NewsAPI.ai) Articles Topic Pages API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apiKey",
+      "value": "{{apiKey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Topic Pages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get articles for a topic page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/article/getArticlesForTopicPage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.\n"
+        },
+        {
+          "info": {
+            "name": "Get events for a topic page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/event/getEventsForTopicPage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns events matching a user-created topic page (pre-configured search profile).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

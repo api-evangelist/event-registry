@@ -1,0 +1,70 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay — Event Registry Usage API
+  version: 1.0.0
+  x-generated: '2026-08-13'
+  x-method: generated
+  x-source: openapi/event-registry-usage-api-openapi.yml
+extends: ./event-registry-usage-api-openapi.yml
+actions:
+- target: $.info
+  description: Record API Evangelist provenance and the artifacts derived from this definition.
+  update:
+    x-apievangelist-enrichment:
+      repository: https://github.com/api-evangelist/event-registry
+      enriched: '2026-08-13'
+      artifacts:
+      - conventions/event-registry-conventions.yml
+      - errors/event-registry-problem-types.yml
+      - data-model/event-registry-data-model.yml
+      - lifecycle/event-registry-lifecycle.yml
+      - conformance/event-registry-conformance.yml
+      - mcp/event-registry-mcp.yml
+      - mcp/event-registry-tool-crosswalk.yml
+      - skills/_index.yml
+- target: $.info
+  description: Note that the documentation portal is JavaScript-rendered and that the provider publishes
+    no OpenAPI of its own.
+  update:
+    x-contract-provenance:
+      authored_by: API Evangelist
+      provider_published_openapi: false
+      probed:
+      - https://eventregistry.org/openapi.json
+      - https://eventregistry.org/swagger.json
+      - https://newsapi.ai/openapi.json
+      probe_result: All returned HTTP 200 with the site SPA HTML shell, not an OpenAPI document.
+- target: $.servers[0]
+  description: Confirm the production base URL against the provider's own first-party client source.
+  update:
+    x-verified:
+      source: https://github.com/EventRegistry/newsapi-mcp/blob/main/src/client.ts
+      evidence: const BASE_URL = "https://eventregistry.org/api/v1";
+      checked: '2026-08-13'
+- target: $.components.securitySchemes.apiKeyAuth
+  description: Record how the provider's own client transmits the API key.
+  update:
+    x-transmission:
+      primary: apiKey field inside the JSON POST body
+      alternate: apiKey query parameter
+      header: null
+      source: https://github.com/EventRegistry/newsapi-mcp/blob/main/src/client.ts
+- target: $.paths.*.post
+  description: Attach the undeclared runtime error surface and the rate-limit response headers to every
+    operation.
+  update:
+    x-runtime-semantics:
+      concurrency-limit: 5
+      concurrency-exhausted-status: 503
+      concurrency-note: Excess simultaneous requests are rejected immediately, not queued. Call sequentially.
+      quota-exhausted-status: 429
+      response-headers:
+      - req-tokens
+      - x-ratelimit-remaining
+      retry-after: false
+      undeclared-statuses:
+      - 400
+      - 403
+      - 404
+      - 503
+      source: errors/event-registry-problem-types.yml

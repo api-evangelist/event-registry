@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Event Registry (NewsAPI.ai) Articles Suggest API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apiKey",
+      "value": "{{apiKey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Suggest",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Suggest concept URIs by name prefix",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/suggestConceptsFast",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Look up concept URIs (people, organizations, locations, things) by name prefix. Always resolve entity names to URIs using this endpoint before passing them to conceptUri filters in search operations.\n"
+        },
+        {
+          "info": {
+            "name": "Suggest category URIs by name prefix",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/suggestCategoriesFast",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Look up news topic category URIs (business, tech, sports, etc.) by name prefix. Use returned URIs in categoryUri filters.\n"
+        },
+        {
+          "info": {
+            "name": "Suggest news source URIs by name prefix",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/suggestSourcesFast",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Look up news source URIs (e.g., Reuters, BBC) by name prefix. Use returned URIs in sourceUri filters.\n"
+        },
+        {
+          "info": {
+            "name": "Suggest location URIs by name prefix",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/suggestLocationsFast",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Look up location URIs (countries, cities, regions) by name prefix. Use returned URIs in locationUri or sourceLocationUri filters. Always use English location names.\n"
+        },
+        {
+          "info": {
+            "name": "Suggest author URIs by name prefix",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/suggestAuthorsFast",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Look up journalist/author URIs by name prefix. Use returned URIs in authorUri filters.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

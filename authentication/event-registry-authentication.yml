@@ -1,17 +1,94 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/openapi.yml
+generated: '2026-08-13'
+method: searched
+source: >
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/client.ts and
+  src/types.ts — Event Registry's own published first-party client, read 2026-08-13 — plus
+  the securitySchemes declared in openapi/event-registry-*-openapi.yml. The documentation
+  portal at https://newsapi.ai/documentation is JavaScript-rendered and returns only an SPA
+  shell to a machine fetch, so the provider's open-source client is the authoritative
+  readable description of how authentication actually works.
+docs: https://newsapi.ai/documentation
 summary:
   types:
   - apiKey
   api_key_in:
+  - body
   - query
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+  bearer_token: false
+  scoped: false
 schemes:
 - name: apiKeyAuth
   type: apiKey
-  in: query
+  in: body
   parameter: apiKey
-  description: API key obtained from newsapi.ai/register. Include as a field in the JSON POST
-    body or as a query parameter named apiKey.
+  description: >
+    A single long-lived API key. The provider's own client injects it as an `apiKey` member
+    of the JSON POST body on every request; a query parameter of the same name is also
+    accepted. There is no Authorization header form.
+  primary_transmission: JSON POST body field
+  alternate_transmission: query parameter
+  header: null
+  evidence: >
+    newsapi-mcp src/client.ts request(): `const payload: Record<string, unknown> = { apiKey };`
+    merged into the body of a POST to `${BASE_URL}${path}` with
+    `headers: { "Content-Type": "application/json" }` and no auth header.
   sources:
-  - openapi/openapi.yml
+  - https://github.com/EventRegistry/newsapi-mcp/blob/main/src/client.ts
+  - openapi/event-registry-articles-api-openapi.yml
+  - openapi/event-registry-events-api-openapi.yml
+  - openapi/event-registry-suggest-api-openapi.yml
+  - openapi/event-registry-topic-pages-api-openapi.yml
+  - openapi/event-registry-usage-api-openapi.yml
+acquisition:
+  url: https://newsapi.ai/register
+  self_serve: true
+  credit_card_required: false
+  free_allocation: 2,000 searches (one-time, last 30 days of data, non-commercial)
+  approval_required: false
+key_properties:
+  prefix: none
+  format: not published
+  expiry: not published
+  rotation: not published
+  multiple_keys: not published
+  environment_separation: false
+  environment_note: >
+    One key for everything. There is no test-mode key and no sandbox host — see
+    sandbox/event-registry-sandbox.yml.
+scopes:
+  supported: false
+  note: >
+    No OAuth scopes, no permission model, no per-key restriction. A key carries the full
+    entitlement of its plan. derive-oauth-scopes.py returned zero oauth2 schemes on
+    2026-08-13, so no scopes artifact is emitted.
+mcp_authentication:
+  mechanism: environment variable
+  variable: NEWSAPI_KEY
+  transport: stdio (local)
+  oauth: false
+  note: >
+    The first-party MCP server takes the same API key via NEWSAPI_KEY and forwards it in the
+    request body. No OAuth handshake, no /.well-known/oauth-protected-resource — both hosts
+    returned the SPA shell for every OAuth discovery path probed.
+failure_modes:
+  - status: 401
+    meaning: Missing, malformed or invalid key.
+  - status: 403
+    meaning: >
+      Classified as an auth error by the provider's own client. In practice a valid key
+      lacking entitlement — for example historical archive depth beyond the free plan's
+      30-day window.
+security_notes:
+  - >
+    Because the key is normally carried in a POST body it stays out of server access logs and
+    Referer headers. The API also accepts it as a query parameter, however, so a careless
+    integrator can still leak it into logs and browser history.
+  - >
+    A long-lived, unscoped, non-expiring, non-rotatable bearer of full plan entitlement is the
+    weakest common credential shape. There is no documented revocation or rotation procedure.
+  - >
+    No security.txt and no vulnerability disclosure program were found — see
+    well-known/event-registry-well-known.yml.

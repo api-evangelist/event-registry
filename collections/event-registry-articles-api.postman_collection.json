@@ -1,0 +1,539 @@
+{
+  "item": [
+    {
+      "id": "53010bf6-eadc-4758-adde-4b5d2e872921",
+      "name": "Articles",
+      "description": {
+        "content": "Search and retrieve individual news articles from 150,000+ global sources.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "21e14cb3-f57f-4fa1-94bb-821306d892b8",
+          "name": "Search news articles",
+          "request": {
+            "name": "Search news articles",
+            "description": {
+              "content": "Search news articles by concepts, sources, categories, dates, language, and sentiment. Returns up to 100 articles per call. Use /suggestConceptsFast to resolve entity names to URIs before searching. Set resultType to \"articles\" in the request body.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "article",
+                "getArticles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"resultType\": \"articles\",\n  \"keyword\": \"<string>\",\n  \"conceptUri\": \"<string>\",\n  \"categoryUri\": \"<string>\",\n  \"sourceUri\": \"<string>\",\n  \"sourceLocationUri\": \"<string>\",\n  \"authorUri\": \"<string>\",\n  \"locationUri\": \"<string>\",\n  \"lang\": \"<string>\",\n  \"dateStart\": \"<date>\",\n  \"dateEnd\": \"<date>\",\n  \"forceMaxDataTimeWindow\": \"<integer>\",\n  \"keywordLoc\": \"<string>\",\n  \"keywordOper\": \"<string>\",\n  \"minSentiment\": \"<number>\",\n  \"maxSentiment\": \"<number>\",\n  \"startSourceRankPercentile\": \"<integer>\",\n  \"endSourceRankPercentile\": \"<integer>\",\n  \"ignoreKeyword\": \"<string>\",\n  \"ignoreConceptUri\": \"<string>\",\n  \"ignoreCategoryUri\": \"<string>\",\n  \"ignoreSourceUri\": \"<string>\",\n  \"ignoreSourceLocationUri\": \"<string>\",\n  \"ignoreAuthorUri\": \"<string>\",\n  \"ignoreLocationUri\": \"<string>\",\n  \"ignoreLang\": \"<string>\",\n  \"sourceGroupUri\": \"<string>\",\n  \"conceptOper\": \"<string>\",\n  \"categoryOper\": \"<string>\",\n  \"dateMentionStart\": \"<date>\",\n  \"dateMentionEnd\": \"<date>\",\n  \"isDuplicateFilter\": \"<string>\",\n  \"query\": {},\n  \"articleBodyLen\": \"<integer>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articlesSortBy\": \"<string>\",\n  \"articlesSortByAsc\": \"<boolean>\",\n  \"dataType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "093de690-2dfb-4bae-91e4-fab67bf98f3f",
+              "name": "Successful response with articles array.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"conceptUri\": \"http://en.wikipedia.org/wiki/Artificial_intelligence\",\n  \"dateStart\": \"2026-01-01\",\n  \"dateEnd\": \"2026-06-01\",\n  \"lang\": \"eng\",\n  \"articlesCount\": 10,\n  \"articleBodyLen\": 500,\n  \"resultType\": \"articles\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"articles\": {\n    \"results\": [\n      {\n        \"uri\": \"string\",\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"url\": \"https://VjtSPUPilsRXLMWSRevU.ovjq.yiPCzUYqMy5dLWqmZQN6FkZ,ojpnDxJvrrFqDP5WY\",\n        \"date\": \"1962-10-22\",\n        \"time\": \"string\",\n        \"dateTime\": \"1959-10-26T04:46:57.863Z\",\n        \"lang\": \"string\",\n        \"source\": {\n          \"uri\": \"string\",\n          \"title\": \"string\",\n          \"url\": \"https://dycUmgJaDZoTpj.bkBTwKS+em8LXZJ1VX\",\n          \"ranking\": {\n            \"importanceRank\": 6836,\n            \"alexaGlobalRank\": 6200,\n            \"alexaCountryRank\": 810\n          }\n        },\n        \"sentiment\": -0.45964591076819206,\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\",\n              \"key_2\": \"string\"\n            },\n            \"type\": \"wiki\",\n            \"score\": 6839.436142271219\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"loc\",\n            \"score\": 7088.225918076571\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 3116\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 125\n          }\n        ],\n        \"authors\": [\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          },\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          }\n        ],\n        \"eventUri\": \"string\",\n        \"isDuplicate\": false\n      },\n      {\n        \"uri\": \"string\",\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"url\": \"https://uEHIF.nkdzHk4ZW\",\n        \"date\": \"1975-11-25\",\n        \"time\": \"string\",\n        \"dateTime\": \"1964-11-05T00:26:47.834Z\",\n        \"lang\": \"string\",\n        \"source\": {\n          \"uri\": \"string\",\n          \"title\": \"string\",\n          \"url\": \"http://SiyoqUkMJoChkfZiQxQgsfNQ.enmdIc-ms82Y\",\n          \"ranking\": {\n            \"importanceRank\": 2183,\n            \"alexaGlobalRank\": 7663,\n            \"alexaCountryRank\": 2826\n          }\n        },\n        \"sentiment\": 0.8022708298004704,\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"type\": \"person\",\n            \"score\": 3951.0844530999802\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"wiki\",\n            \"score\": 3664.176238847039\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 8361\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 2677\n          }\n        ],\n        \"authors\": [\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": false\n          },\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": false\n          }\n        ],\n        \"eventUri\": \"string\",\n        \"isDuplicate\": false\n      }\n    ],\n    \"totalResults\": 3203,\n    \"page\": 1658,\n    \"count\": 854\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "42e359d6-e65f-4760-b612-c7cdda6aecd1",
+              "name": "Unauthorized — invalid or missing API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"conceptUri\": \"http://en.wikipedia.org/wiki/Artificial_intelligence\",\n  \"dateStart\": \"2026-01-01\",\n  \"dateEnd\": \"2026-06-01\",\n  \"lang\": \"eng\",\n  \"articlesCount\": 10,\n  \"articleBodyLen\": 500,\n  \"resultType\": \"articles\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03dd65f7-e7b2-4197-8456-e9f35b262a6e",
+              "name": "Rate limit exceeded — daily token quota exhausted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"conceptUri\": \"http://en.wikipedia.org/wiki/Artificial_intelligence\",\n  \"dateStart\": \"2026-01-01\",\n  \"dateEnd\": \"2026-06-01\",\n  \"lang\": \"eng\",\n  \"articlesCount\": 10,\n  \"articleBodyLen\": 500,\n  \"resultType\": \"articles\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73a96485-aeee-491e-9ab3-46b97872628b",
+          "name": "Get full article details by URI",
+          "request": {
+            "name": "Get full article details by URI",
+            "description": {
+              "content": "Retrieve full details for one or more articles by their URI(s). Use this after obtaining article URIs from /article/getArticles to fetch complete content and metadata.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "article",
+                "getArticle"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"articleUri\": \"<string>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5d9c3856-8d4f-4d1f-9412-b0bc12e55a9c",
+              "name": "Article details object keyed by article URI.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"articleUri\": \"850438242\",\n  \"articleBodyLen\": -1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": {\n    \"uri\": \"string\",\n    \"title\": \"string\",\n    \"body\": \"string\",\n    \"url\": \"http://gTospgTPjpBSCKdfvtTJAfjX.oocrD,6-vIHOqepegwW0,IqonhHvnWwMZxIg4iQsARI8nUPU\",\n    \"date\": \"1995-06-12\",\n    \"time\": \"string\",\n    \"dateTime\": \"2019-03-10T16:29:34.689Z\",\n    \"lang\": \"string\",\n    \"source\": {\n      \"uri\": \"string\",\n      \"title\": \"string\",\n      \"url\": \"https://tA.ucgQsz-4ScZkph5lGHsK1bRgBlxfdGmcQAnctZwjSYXoBhEc5\",\n      \"ranking\": {\n        \"importanceRank\": 9309,\n        \"alexaGlobalRank\": 7641,\n        \"alexaCountryRank\": 1788\n      }\n    },\n    \"sentiment\": -0.9238233724133722,\n    \"concepts\": [\n      {\n        \"uri\": \"string\",\n        \"label\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\",\n          \"key_3\": \"string\"\n        },\n        \"type\": \"org\",\n        \"score\": 6327.230184180559\n      },\n      {\n        \"uri\": \"string\",\n        \"label\": {\n          \"key_0\": \"string\"\n        },\n        \"type\": \"org\",\n        \"score\": 6075.872818430927\n      }\n    ],\n    \"categories\": [\n      {\n        \"uri\": \"string\",\n        \"label\": \"string\",\n        \"wgt\": 7556\n      },\n      {\n        \"uri\": \"string\",\n        \"label\": \"string\",\n        \"wgt\": 4670\n      }\n    ],\n    \"authors\": [\n      {\n        \"uri\": \"string\",\n        \"name\": \"string\",\n        \"isAgency\": true\n      },\n      {\n        \"uri\": \"string\",\n        \"name\": \"string\",\n        \"isAgency\": false\n      }\n    ],\n    \"eventUri\": \"string\",\n    \"isDuplicate\": false\n  },\n  \"key_1\": {\n    \"uri\": \"string\",\n    \"title\": \"string\",\n    \"body\": \"string\",\n    \"url\": \"http://qPKXxhfOwhkeJdwevTQekduNB.tjwhUxLsTXV+C-XiuyjaZKIIwt2.iHBb3TjQHCdVE\",\n    \"date\": \"1967-11-09\",\n    \"time\": \"string\",\n    \"dateTime\": \"2023-03-04T09:43:58.875Z\",\n    \"lang\": \"string\",\n    \"source\": {\n      \"uri\": \"string\",\n      \"title\": \"string\",\n      \"url\": \"https://HB.ltsvcDfR,oxtS6MYqXT-fZ8d4OGoMyaEAIETKdGo-Rela1Rtd\",\n      \"ranking\": {\n        \"importanceRank\": 9976,\n        \"alexaGlobalRank\": 397,\n        \"alexaCountryRank\": 8374\n      }\n    },\n    \"sentiment\": -0.5067803762602048,\n    \"concepts\": [\n      {\n        \"uri\": \"string\",\n        \"label\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\",\n          \"key_2\": \"string\",\n          \"key_3\": \"string\"\n        },\n        \"type\": \"person\",\n        \"score\": 4289.67020477835\n      },\n      {\n        \"uri\": \"string\",\n        \"label\": {\n          \"key_0\": \"string\"\n        },\n        \"type\": \"org\",\n        \"score\": 7048.133555231845\n      }\n    ],\n    \"categories\": [\n      {\n        \"uri\": \"string\",\n        \"label\": \"string\",\n        \"wgt\": 8277\n      },\n      {\n        \"uri\": \"string\",\n        \"label\": \"string\",\n        \"wgt\": 3359\n      }\n    ],\n    \"authors\": [\n      {\n        \"uri\": \"string\",\n        \"name\": \"string\",\n        \"isAgency\": true\n      },\n      {\n        \"uri\": \"string\",\n        \"name\": \"string\",\n        \"isAgency\": false\n      }\n    ],\n    \"eventUri\": \"string\",\n    \"isDuplicate\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5cfd719-5594-408e-a0af-baecd69dfe35",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"articleUri\": \"850438242\",\n  \"articleBodyLen\": -1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ac869e1-6579-4c71-b89a-e57555bf2afc",
+          "name": "Get articles for a topic page",
+          "request": {
+            "name": "Get articles for a topic page",
+            "description": {
+              "content": "Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "article",
+                "getArticlesForTopicPage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"uri\": \"<string>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cd6fb7da-315e-432c-bae5-ea7decddf61a",
+              "name": "Articles matching the topic page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticlesForTopicPage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"string\",\n  \"uri\": \"<string>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"articles\": {\n    \"results\": [\n      {\n        \"uri\": \"string\",\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"url\": \"http://IdZEyJOUSLTtyUcCgvgRCRFJBxtO.hffCVIt,sRhHAxvWSWzQPqHiw.cIOImJo7TIFZyA8P\",\n        \"date\": \"1983-11-25\",\n        \"time\": \"string\",\n        \"dateTime\": \"1970-04-01T09:46:57.296Z\",\n        \"lang\": \"string\",\n        \"source\": {\n          \"uri\": \"string\",\n          \"title\": \"string\",\n          \"url\": \"http://xavNqTrWwkfKZeAMDCTbtQ.jbpBxqh.VeYeMKvDODGCQSH,.75AtzXpY.zDp.d74,RicjCTrcVVlU\",\n          \"ranking\": {\n            \"importanceRank\": 8789,\n            \"alexaGlobalRank\": 7390,\n            \"alexaCountryRank\": 8139\n          }\n        },\n        \"sentiment\": -0.060681481217114364,\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"loc\",\n            \"score\": 4382.049775382071\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"person\",\n            \"score\": 2990.8932578180893\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 1906\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 7319\n          }\n        ],\n        \"authors\": [\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          },\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          }\n        ],\n        \"eventUri\": \"string\",\n        \"isDuplicate\": true\n      },\n      {\n        \"uri\": \"string\",\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"url\": \"http://IKuV.rxjoIrYbZa6uT-85cx9yIP\",\n        \"date\": \"1968-02-23\",\n        \"time\": \"string\",\n        \"dateTime\": \"1971-01-20T14:30:42.144Z\",\n        \"lang\": \"string\",\n        \"source\": {\n          \"uri\": \"string\",\n          \"title\": \"string\",\n          \"url\": \"http://SWINlx.mkbv8hVCXN2djilRYchvNmD-ROuoJmeAboRc0xbYcQVS9RpSxp1GBIuxneikSqYF\",\n          \"ranking\": {\n            \"importanceRank\": 947,\n            \"alexaGlobalRank\": 6182,\n            \"alexaCountryRank\": 81\n          }\n        },\n        \"sentiment\": 0.2499365132072202,\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"type\": \"person\",\n            \"score\": 1749.3474818031164\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"wiki\",\n            \"score\": 1553.515863355296\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 5667\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 8412\n          }\n        ],\n        \"authors\": [\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": false\n          },\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          }\n        ],\n        \"eventUri\": \"string\",\n        \"isDuplicate\": false\n      }\n    ],\n    \"totalResults\": 8887\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ff84551-9a79-4f63-938c-d9da571bdeac",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticlesForTopicPage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"string\",\n  \"uri\": \"<string>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://eventregistry.org/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apiKey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "5b8eb1b4-da35-47f9-ba77-b6400e3a47fa",
+    "name": "Event Registry (NewsAPI.ai) Articles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.\n\n\nContact Support:\n Name: Event Registry Support\n Email: info@eventregistry.org",
+      "type": "text/plain"
+    }
+  }
+}

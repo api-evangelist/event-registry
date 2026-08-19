@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Event Registry (NewsAPI.ai) Articles Events API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apiKey",
+      "value": "{{apiKey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search news events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/event/getEvents",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Search events — clusters of related articles about the same real-world happening. Events deduplicate coverage: one entry per story instead of per article. Returns up to 50 events per call. Ideal for high-level overviews and trend analysis.\n"
+        },
+        {
+          "info": {
+            "name": "Get full event details by URI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/event/getEvent",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Retrieve full details for one or more events by their URI(s), including all grouped articles, concepts, categories, and geographic data.\n"
+        },
+        {
+          "info": {
+            "name": "Get events for a topic page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/event/getEventsForTopicPage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns events matching a user-created topic page (pre-configured search profile).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

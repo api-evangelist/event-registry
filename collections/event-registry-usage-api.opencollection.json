@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Event Registry (NewsAPI.ai) Articles Usage API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apiKey",
+      "value": "{{apiKey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Usage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get API token usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eventregistry.org/api/v1/usage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check API token usage — tokens consumed and tokens remaining in the current quota period for the authenticated API key.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

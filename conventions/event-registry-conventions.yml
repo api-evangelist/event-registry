@@ -1,0 +1,176 @@
+generated: '2026-08-13'
+method: derived
+source: >
+  Derived from openapi/_original/openapi.yml and openapi/event-registry-*-openapi.yml, and
+  from Event Registry's own first-party MCP server source read on 2026-08-13 —
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/client.ts (transport,
+  auth injection, response headers), src/types.ts (error classification), src/errors.ts
+  (recovery guidance), src/tools/*.ts (parameter surface) and CHANGELOG.md.
+name: Event Registry API Conventions
+description: >
+  Cross-cutting runtime semantics for the Event Registry (NewsAPI.ai) REST API. The public
+  documentation portal at newsapi.ai/documentation is a JavaScript-rendered single-page app
+  and could not be read by machine, so the authoritative source for these conventions is the
+  provider's own open-source client code, which is first-party and dated.
+transport:
+  protocol: HTTPS
+  base_url: https://eventregistry.org/api/v1
+  method: POST
+  method_note: >
+    EVERY operation is a POST, including pure reads such as suggest and usage. There are no
+    GET endpoints. Parameters travel in a JSON request body, not in the query string or path.
+    This is the most consequential convention in the API: it defeats HTTP caching, breaks
+    ordinary "safe method" retry heuristics, and means the 12 operations are addressed by 12
+    fixed paths rather than by resource URLs.
+  content_type: application/json
+  accept: application/json
+authentication:
+  style: api-key
+  transmission: >
+    An `apiKey` field inside the JSON POST body. A query parameter named `apiKey` is also
+    accepted. No Authorization header, no bearer token, no OAuth.
+  scheme_name: apiKeyAuth
+  obtain: https://newsapi.ai/register
+  scoped: false
+  rotation_policy: not published
+  cross_link: authentication/event-registry-authentication.yml
+  security_note: >
+    Because the key rides in the request body of a POST it does not leak into server access
+    logs or Referer headers the way a query-string key does — but the API also accepts the
+    query-string form, so a careless integrator can still leak it.
+idempotency:
+  mechanism: none
+  idempotency_key_header: null
+  supported: false
+  note: >
+    No Idempotency-Key header, no request-deduplication token, no documented replay window.
+    This is genuinely NOT APPLICABLE rather than a gap: all 12 operations are read-only
+    queries with no side effects, so every call is naturally safe to retry. There are no
+    write operations in the public API that would need a key. No Idempotency pointer is
+    emitted in apis.yml.
+pagination:
+  style: page-number
+  articles:
+    page_param: articlesPage
+    size_param: articlesCount
+    page_start: 1
+    max_page_size: 100
+    default_page_size: 100
+  events:
+    page_param: eventsPage
+    size_param: eventsCount
+    page_start: 1
+    max_page_size: 50
+    default_page_size: 50
+  cursor: false
+  total_count_field: totalResults
+  note: >
+    Classic offset/page pagination with per-collection parameter names — articles and events
+    use different parameter pairs even within the same request. There is no cursor and no
+    Link header.
+field_selection:
+  supported: true
+  parameters:
+    - name: includeFields
+      description: >
+        Selects enrichment field groups to include in the response — sentiment, concepts,
+        categories and related groups. Off by default, so responses are lean unless asked.
+    - name: articleBodyLen
+      description: >
+        Truncates article body text to N characters. Default 1000. Setting 0 returns titles,
+        dates, sources and URIs only, with no body at all.
+      default: 1000
+      efficiency_note: >
+        articleBodyLen 0 is the provider's own documented technique for a cheap "scan" pass:
+        fetch 100 titles, triage them, then fetch bodies only for the URIs you selected.
+    - name: resultType
+      description: Selects the shape of an event detail response (articles, concept aggregates, trends).
+  sparse_fieldsets: true
+filtering:
+  boolean_operators:
+    - name: keywordOper
+      values: [and, or]
+    - name: conceptOper
+      values: [and, or]
+    - name: categoryOper
+      values: [and, or]
+  negation:
+    supported: true
+    parameters:
+      - ignoreKeyword
+      - ignoreConceptUri
+      - ignoreCategoryUri
+      - ignoreSourceUri
+      - ignoreSourceLocationUri
+      - ignoreAuthorUri
+      - ignoreLocationUri
+      - ignoreLang
+  deduplication:
+    parameter: isDuplicateFilter
+    values: [keepAll, skipDuplicates, keepOnlyDuplicates]
+    note: Removes wire-syndication duplicates. The provider's own skill recommends skipDuplicates by default.
+  uri_resolution:
+    required: true
+    note: >
+      Entity filters (conceptUri, sourceUri, categoryUri, locationUri, authorUri) take opaque
+      URIs, not names. Callers MUST resolve a name to a URI through a suggest operation first.
+      This makes suggest a mandatory prelude to almost every real query — a two-call minimum
+      the OpenAPI does not make explicit.
+  array_encoding:
+    note: >
+      List parameters accept a single value, a JSON array, or a comma-separated string. Comma
+      splitting is URI-aware in the provider client — a Wikipedia URI containing a comma
+      (Tesla,_Inc.) is not split. Integrators writing their own client must reproduce this or
+      they will corrupt entity URIs.
+rate_limit_signaling:
+  response_headers:
+    - name: req-tokens
+      description: Tokens consumed by this specific request.
+      source: newsapi-mcp src/client.ts parseTokenUsage()
+    - name: x-ratelimit-remaining
+      description: Tokens remaining in the current quota period.
+      source: newsapi-mcp src/client.ts parseTokenUsage()
+  standard_headers: false
+  standard_headers_note: >
+    No RFC 9331 `RateLimit` header, no `X-RateLimit-Limit`, no `X-RateLimit-Reset`, and no
+    `Retry-After`. Only a remaining-count and a per-request cost are exposed.
+  exhaustion_status: 429
+  concurrency_status: 503
+  concurrency_limit: 5
+  cross_link: rate-limits/event-registry-rate-limits.yml
+error_envelope:
+  format: custom-json
+  rfc9457: false
+  fields: [error, message]
+  cross_link: errors/event-registry-problem-types.yml
+versioning:
+  scheme: url-path
+  current: v1
+  location: https://eventregistry.org/api/v1
+  version_header: null
+  date_versioning: false
+  note: >
+    A single `v1` path segment that has not changed. No version header, no date-pinned
+    versions, no published policy for how a v2 would be introduced.
+  cross_link: lifecycle/event-registry-lifecycle.yml
+request_tracing:
+  request_id_header: null
+  correlation_id: null
+  note: No request-id or correlation-id header is documented or emitted by the provider's own client.
+caching:
+  server_cache_headers: not published
+  client_guidance: >
+    The provider's own MCP server ships an in-memory LRU cache for suggest results — 1000
+    entries, 24-hour TTL — because entity URI lookups are stable and repeatedly requested.
+    Cached lookups report `Tokens used: 0 (cached)`. Integrators should do the same: caching
+    suggest results is the cheapest available optimisation against a token-metered API.
+  source: newsapi-mcp CHANGELOG 1.1.0
+concurrency:
+  max_concurrent_requests: 5
+  scope: account
+  behaviour_on_exceed: >
+    HTTP 503 immediately. Requests are rejected, not queued. Sequential request execution is
+    the provider's own stated recommendation.
+metadata:
+  user_defined_metadata: false
+  note: No customer-supplied metadata/annotation fields on requests or responses.

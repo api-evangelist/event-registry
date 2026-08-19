@@ -1,0 +1,121 @@
+generated: '2026-08-13'
+method: probed
+source: >
+  https://github.com/EventRegistry/newsapi-mcp (first-party repo in the EventRegistry GitHub
+  organization) and https://www.npmjs.com/package/newsapi-mcp. Tool list obtained by running
+  `npx -y newsapi-mcp` locally on 2026-08-13 and issuing a real MCP `tools/list` over stdio.
+name: NewsAPI.ai MCP Server
+description: >
+  Event Registry publishes a first-party Model Context Protocol server, newsapi-mcp, that
+  wraps the Event Registry REST API for LLM clients. It is a LOCAL STDIO server: there is no
+  hosted endpoint an agent can POST to. A human installs and runs it on a machine, supplying
+  a NewsAPI.ai API key via the NEWSAPI_KEY environment variable, before any agent can use it.
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: npx -y newsapi-mcp
+  package: https://www.npmjs.com/package/newsapi-mcp
+  auth: api-key
+  verified: probed
+  note: >
+    No hosted/remote MCP endpoint is published anywhere on eventregistry.org or newsapi.ai,
+    and none is claimed in the repo README. Both hosts are SPAs that answer 200 HTML for any
+    path, so no MCP URL could be inferred and none was invented. mode is local-stdio, not
+    remote or both.
+server:
+  name: newsapi
+  version: 1.3.1
+  protocol_version: '2025-11-25'
+  transport: stdio
+  runtime: Node.js 18 or newer
+  language: typescript
+  license: MIT
+  repository: https://github.com/EventRegistry/newsapi-mcp
+  package_published: '2026-03-18'
+  capabilities:
+    - tools
+    - resources
+  auth:
+    type: api-key
+    env: NEWSAPI_KEY
+    obtain: https://newsapi.ai/register
+    note: The server injects the key into every REST POST body as the `apiKey` field.
+clients_documented:
+  - Claude Code
+  - Claude Desktop
+  - VS Code
+  - Cursor
+  - Windsurf
+  - Gemini CLI
+  - Antigravity
+  - Qodo Gen
+install_examples:
+  - client: any
+    config: |
+      {
+        "mcpServers": {
+          "newsapi": {
+            "command": "npx",
+            "args": ["-y", "newsapi-mcp"],
+            "env": { "NEWSAPI_KEY": "your_api_key_here" }
+          }
+        }
+      }
+  - client: Claude Code
+    command: claude mcp add newsapi -e NEWSAPI_KEY=your_api_key_here -- npx -y newsapi-mcp
+  - client: VS Code
+    command: >-
+      code --add-mcp '{"name":"newsapi","command":"npx","args":["-y","newsapi-mcp"],"env":{"NEWSAPI_KEY":"your_api_key_here"}}'
+tools_source: mcp/event-registry-mcp-tools-list.json
+tools:
+  - name: search_articles
+    input_properties: 41
+    required: []
+    description: Search articles by concepts, sources, categories, dates, language, sentiment.
+  - name: get_article_details
+    input_properties: 3
+    required: [articleUri]
+    description: Get full details for one or more articles by URI (up to 100 URIs per call).
+  - name: search_events
+    input_properties: 42
+    required: []
+    description: >
+      Search events — clusters of related articles about the same real-world happening.
+      Returns up to 50 events per call and deduplicates wire syndication.
+  - name: get_event_details
+    input_properties: 3
+    required: [eventUri]
+    description: Get full details for one or more events by URI.
+  - name: get_topic_page_articles
+    input_properties: 6
+    required: [uri]
+    description: Get articles matching a user-created topic page on newsapi.ai.
+  - name: get_topic_page_events
+    input_properties: 5
+    required: [uri]
+    description: Get events matching a user-created topic page on newsapi.ai.
+  - name: suggest
+    input_properties: 3
+    required: [type, prefix]
+    description: >
+      Look up URIs for entities by name. Unified across concepts, categories, sources,
+      locations and authors via the `type` parameter. Must be called before using URI filters.
+  - name: get_api_usage
+    input_properties: 0
+    required: []
+    description: Check token usage and plan details for the current API key.
+resources:
+  - uri: newsapi://guide
+    note: Declared by the server capabilities block; documented in the repo CHANGELOG (1.1.0).
+  - uri: newsapi://examples
+  - uri: newsapi://fields
+skill:
+  published: true
+  path: skill/SKILL.md
+  invocation: /news
+  note: >
+    The repo ships a provider-authored Claude Code Agent Skill with 10 report templates.
+    Saved verbatim to skills/ — see skills/_index.yml.
+counts:
+  tools: 8
+  tools_with_input_schema: 8

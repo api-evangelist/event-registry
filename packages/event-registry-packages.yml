@@ -1,0 +1,89 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  Registry metadata endpoints (registry.npmjs.org, pypi.org/pypi/<pkg>/json) plus the
+  EventRegistry GitHub organization (https://github.com/orgs/EventRegistry/repos) and the
+  SDK pointers already recorded in apis.yml.
+name: Event Registry Client Packages
+description: >
+  First-party client libraries and the first-party MCP server published by Event Registry
+  (NewsAPI.ai). Every version/published pair below was read from the registry metadata
+  endpoint on 2026-08-13.
+packages:
+  - name: eventregistry
+    registry: pypi
+    language: python
+    official: true
+    url: https://pypi.org/project/eventregistry/
+    repository: https://github.com/EventRegistry/event-registry-python
+    version: '9.1'
+    published: '2023-06-23'
+    license: MIT
+    note: >
+      Official Python SDK, 260 GitHub stars. Registry metadata reports the latest release as
+      9.1 on 2023-06-23; the GitHub repository was last pushed 2023-06-23. The SDK has not
+      been republished in the three years since, while the API itself has continued to add
+      parameters (the first-party MCP server released `conceptOper`, `categoryOper`,
+      `dateMentionStart/End` and expanded `articlesSortBy` values during 2026) — a currency
+      gap a consumer should account for.
+  - name: eventregistry
+    registry: npm
+    language: javascript
+    official: true
+    url: https://www.npmjs.com/package/eventregistry
+    repository: https://github.com/EventRegistry/event-registry-node-js
+    version: 9.1.1
+    published: '2024-11-14'
+    license: MIT
+    note: >
+      Official Node.js SDK, 17 GitHub stars. Latest release 9.1.1 on 2024-11-14, matching the
+      repository's last push. Also predates the 2026 API parameter additions.
+  - name: newsapi-mcp
+    registry: npm
+    language: typescript
+    official: true
+    url: https://www.npmjs.com/package/newsapi-mcp
+    repository: https://github.com/EventRegistry/newsapi-mcp
+    version: 1.3.1
+    published: '2026-03-18'
+    license: MIT
+    kind: mcp-server
+    note: >
+      First-party Model Context Protocol server, published by the EventRegistry GitHub
+      organization and linked as the package homepage on the repo. This is the most current
+      first-party client Event Registry ships and it is the one tracking the live API surface
+      — it carries a dated CHANGELOG.md and exposes 8 MCP tools (verified by a local
+      tools/list probe on 2026-08-13). See mcp/event-registry-mcp.yml.
+counts:
+  total: 3
+  official: 3
+  by_registry:
+    npm: 2
+    pypi: 1
+  languages:
+    - python
+    - javascript
+    - typescript
+absent:
+  - registry: maven
+    checked: '2026-08-13'
+    note: No first-party Java client found.
+  - registry: nuget
+    checked: '2026-08-13'
+    note: No first-party .NET client found.
+  - registry: rubygems
+    checked: '2026-08-13'
+    note: No first-party Ruby client found.
+  - registry: crates.io
+    checked: '2026-08-13'
+    note: No first-party Rust client found.
+  - registry: pkg.go.dev
+    checked: '2026-08-13'
+    note: No first-party Go client found.
+  - registry: packagist
+    checked: '2026-08-13'
+    note: No first-party PHP client found.
+currency_finding: >
+  The two general-purpose SDKs (Python 2023-06-23, Node 2024-11-14) are materially older than
+  the MCP server (2026-03-18). Event Registry's investment has visibly moved from SDKs to the
+  agent surface.

@@ -1,3 +1,15 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://newsapi.ai/plans (server-prerendered, read 2026-08-13) for quota and plan limits,
+  and Event Registry's own first-party client source for the runtime signalling —
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/client.ts
+  (parseTokenUsage reads the response headers),
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/types.ts
+  (classifyError maps status to category) and
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/errors.ts
+  (recovery guidance). The documentation portal at newsapi.ai/documentation is
+  JavaScript-rendered and could not be read by machine.
 name: Event Registry Rate Limits
 description: Rate limiting policies for the Event Registry (NewsAPI.ai) news intelligence REST API.
 url: https://newsapi.ai/documentation
@@ -37,10 +49,59 @@ rateLimits:
     limit: 2000
     scope: account
     enforcement: Free plan tokens are a one-time allocation for testing purposes.
+responseHeaders:
+  - name: req-tokens
+    description: Tokens consumed by THIS request. Present on successful responses.
+    standard: false
+    source: newsapi-mcp src/client.ts parseTokenUsage()
+  - name: x-ratelimit-remaining
+    description: Tokens remaining in the current quota period.
+    standard: false
+    source: newsapi-mcp src/client.ts parseTokenUsage()
+missingHeaders:
+  note: >
+    Verified absent from the provider's own client, which reads only the two headers above.
+    An agent gets a remaining-count and a per-request cost, but no limit, no reset time and
+    no back-off hint.
+  headers:
+    - RateLimit / RateLimit-Policy (RFC 9331)
+    - X-RateLimit-Limit
+    - X-RateLimit-Reset
+    - Retry-After
 errorCodes:
   - code: 429
-    description: Too Many Requests — more than 5 concurrent requests sent simultaneously.
-    resolution: Reduce concurrency to 5 or fewer simultaneous requests; implement sequential request patterns.
+    category: rate_limit
+    description: >
+      TOKEN QUOTA exhausted — the monthly plan allocation (or the one-time free allocation)
+      has been spent. This is NOT the concurrency signal.
+    retryable: true
+    resolution: >
+      Do not retry immediately; retrying will not succeed. The provider's own guidance is
+      that tokens refresh the next day, and monthly caps reset at the billing period. Either
+      reduce consumption or enable overage at $0.015/token in the dashboard.
+    source: newsapi-mcp src/types.ts classifyError + src/errors.ts
+  - code: 503
+    category: concurrent_limit
+    description: >
+      CONCURRENCY cap exceeded — more than 5 simultaneous requests from one account. Excess
+      requests are rejected immediately, not queued.
+    retryable: true
+    resolution: Make requests sequentially, one after the other.
+    source: >
+      newsapi-mcp src/errors.ts, verbatim: "Too many simultaneous requests (HTTP 503).
+      Event Registry allows max 5 concurrent requests. Make requests sequentially, one after
+      the other." Recognised as a distinct category in newsapi-mcp 1.2.0 (2026-03-04).
+  - code: 401
+    category: auth_error
+    description: Missing, malformed or invalid apiKey.
+    retryable: false
+    resolution: Check the key; obtain one at https://newsapi.ai/register.
+correction:
+  date: '2026-08-13'
+  note: >
+    A previous round of this artifact recorded 429 as the concurrency signal. That was wrong.
+    Event Registry's own error classifier maps 429 to quota exhaustion and 503 to the
+    5-concurrent-request cap. Corrected above.
 authentication:
   method: API Key
   parameterName: apiKey

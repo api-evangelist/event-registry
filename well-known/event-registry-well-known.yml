@@ -1,0 +1,115 @@
+generated: '2026-08-13'
+method: probed
+source: Direct unauthenticated HTTPS GETs against every host named in apis.yml and the OpenAPI servers[] block.
+name: Event Registry well-known probe
+description: >
+  A recorded ABSENCE. Both eventregistry.org and newsapi.ai are single-page applications with
+  a catch-all route: EVERY path — including paths that certainly do not exist — answers
+  HTTP 200 with the same `text/html` SPA shell (`<!doctype html><html lang="en"><head><title>Event
+  Registry</title>...`). A 200 here is therefore NOT evidence of a served document. No
+  well-known document was found on either host, and NO WellKnown/SecurityTxt pointer is
+  emitted in apis.yml.
+soft_200: true
+soft_200_note: >
+  The SPA answers 200 text/html for arbitrary paths. Every result below was classified a MISS
+  on body inspection, not on status code.
+hosts:
+  - host: eventregistry.org
+    role: API host (OpenAPI servers[0] = https://eventregistry.org/api/v1) and corporate site
+  - host: newsapi.ai
+    role: Product / documentation host (apis[].humanURL)
+probes:
+  - path: /.well-known/security.txt
+    host: eventregistry.org
+    url: https://eventregistry.org/.well-known/security.txt
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+    note: SPA HTML shell, not a security.txt document.
+  - path: /.well-known/security.txt
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/security.txt
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+    note: SPA HTML shell.
+  - path: /security.txt
+    host: eventregistry.org
+    url: https://eventregistry.org/security.txt
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+    note: Legacy root path, SPA HTML shell.
+  - path: /.well-known/openid-configuration
+    host: eventregistry.org
+    url: https://eventregistry.org/.well-known/openid-configuration
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/openid-configuration
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/openid-configuration
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/oauth-authorization-server
+    host: eventregistry.org
+    url: https://eventregistry.org/.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/oauth-authorization-server
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/api-catalog
+    host: eventregistry.org
+    url: https://eventregistry.org/.well-known/api-catalog
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/api-catalog
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/api-catalog
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/ai-plugin.json
+    host: eventregistry.org
+    url: https://eventregistry.org/.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/ai-plugin.json
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/agent-card.json
+    host: eventregistry.org
+    url: https://eventregistry.org/.well-known/agent-card.json
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+    note: See a2a section of the enrichment notes — no agent card exists; nothing was authored.
+  - path: /.well-known/agent-card.json
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/agent-card.json
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+  - path: /.well-known/agent.json
+    host: newsapi.ai
+    url: https://newsapi.ai/.well-known/agent.json
+    status: 200
+    content_type: text/html; charset=utf-8
+    result: miss
+    note: Legacy pre-0.3 A2A path, also the SPA shell.
+summary:
+  probed: 15
+  hits: 0
+  documents_served: 0
+  pointer_emitted: false

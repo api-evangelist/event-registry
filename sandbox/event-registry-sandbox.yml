@@ -1,0 +1,59 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://newsapi.ai/plans (server-prerendered, read 2026-08-13) and the sandbox route
+  advertised in the site navigation, https://newsapi.ai/documentation/sandbox.
+name: Event Registry Sandbox
+description: >
+  Event Registry's "sandbox" is a browser-based query builder, NOT an isolated test
+  environment. There is no test-mode key, no separate test host, no fixture data and no way
+  to simulate a call without spending real quota against real data.
+type: query-builder
+url: https://newsapi.ai/documentation/sandbox
+purpose: >
+  Verbatim from the site navigation: "Create example queries, see results, get the code to
+  reproduce the data." The sandbox composes a query interactively, shows live results, and
+  emits copyable code for the SDKs.
+test_environment:
+  separate_host: false
+  separate_base_url: false
+  test_mode: false
+  note: >
+    All requests go to the single production base URL https://eventregistry.org/api/v1. There
+    is no sandbox host and no mode flag on the request.
+credentials:
+  test_key_prefix: null
+  live_key_prefix: null
+  key_prefix_note: >
+    Event Registry API keys carry no documented prefix distinguishing test from live, because
+    there is no test key. One key works everywhere.
+  separate_test_credentials: false
+test_data:
+  fixtures: null
+  test_tokens: null
+  seeded_accounts: null
+  note: >
+    None published, and none would apply — the sandbox queries the live global news corpus.
+    There is no synthetic dataset to assert against, which makes deterministic integration
+    testing against Event Registry inherently difficult.
+time_simulation:
+  test_clocks: false
+  note: No time simulation or clock advancement facility.
+free_evaluation:
+  mechanism: Free plan
+  allocation: 2,000 searches
+  renewal: One-time allocation, not monthly
+  credit_card_required: false
+  data_window: Last 30 days only
+  commercial_use: Not permitted on the free plan
+  signup: https://newsapi.ai/register
+  note: >
+    This — not the sandbox — is the actual mechanism for evaluating the API without cost. It
+    is a metered production allowance, so exploratory testing consumes the same quota
+    production would.
+  cross_link: plans/event-registry-plans-pricing.yml
+finding: >
+  There is no sandbox in the payments-provider sense of the word. A team integrating Event
+  Registry cannot run a test suite without either burning production tokens or building their
+  own mocks. The repo's examples/ directory (search-articles.json, search-events.json,
+  suggest-concepts.json) is the closest thing available to fixture data.

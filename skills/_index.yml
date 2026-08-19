@@ -1,0 +1,89 @@
+generated: '2026-08-13'
+method: searched
+source: https://github.com/EventRegistry/newsapi-mcp/tree/main/skill
+name: Event Registry Agent Skills
+description: >
+  PROVIDER-PUBLISHED, saved verbatim. Event Registry ships a Claude Code Agent Skill inside
+  its first-party MCP server repository (newsapi-mcp, skill/SKILL.md, shipped in release
+  1.3.1 on 2026-03-18). Nothing here was authored by API Evangelist — the skill and all ten
+  report templates are the provider's own files, downloaded unmodified. Filenames were
+  prefixed with the provider slug per repo convention; file contents are byte-for-byte.
+skills:
+  - name: news
+    file: event-registry-news-research.md
+    upstream: https://github.com/EventRegistry/newsapi-mcp/blob/main/skill/SKILL.md
+    invocation: /news
+    user_invocable: true
+    api: event-registry:event-registry-articles-api
+    description: >
+      Research news topics end-to-end using the NewsAPI MCP server. Orchestrates the
+      suggest -> scan -> triage -> retrieve workflow and formats findings into structured
+      reports with mandatory inline citations and a token-usage footer.
+    allowed_tools:
+      - mcp__newsapi__suggest
+      - mcp__newsapi__search_articles
+      - mcp__newsapi__search_events
+      - mcp__newsapi__get_article_details
+      - mcp__newsapi__get_event_details
+      - mcp__newsapi__get_topic_page_articles
+      - mcp__newsapi__get_topic_page_events
+      - mcp__newsapi__get_api_usage
+    operations:
+      - suggestConcepts
+      - suggestCategories
+      - suggestSources
+      - suggestLocations
+      - suggestAuthors
+      - searchArticles
+      - getArticleDetails
+      - searchEvents
+      - getEventDetails
+      - getTopicPageArticles
+      - getTopicPageEvents
+      - getApiUsage
+    patterns:
+      - Event Overview
+      - Article Deep Dive
+      - Source Comparison
+      - Sentiment Analysis
+      - Topic Page
+      - Economic Report
+      - Political Report
+      - Investing Report
+      - Research Report
+      - Quick Lookup
+      - Adverse Media Report
+      - Company Intelligence Report
+      - Supply Chain Risk Report
+      - Geopolitical Risk Report
+    runtime_rules:
+      - >
+        Sequential requests only — never fire NewsAPI calls in parallel. The API caps
+        concurrency at 5 and returns HTTP 503 past it.
+      - Deduplicate by default with isDuplicateFilter "skipDuplicates" in every scan step.
+      - >
+        Track usage — read the "Tokens used" footer from every response and report totals at
+        the end of the session.
+      - >
+        Token efficiency — scan with articleBodyLen 0 to get titles only, triage, then fetch
+        bodies for selected URIs (up to 100 per get_article_details call).
+templates:
+  directory: templates/
+  upstream: https://github.com/EventRegistry/newsapi-mcp/tree/main/skill/templates
+  count: 10
+  files:
+    - templates/event-registry-adverse-media.md
+    - templates/event-registry-company-intel.md
+    - templates/event-registry-economic.md
+    - templates/event-registry-findings.md
+    - templates/event-registry-geopolitical.md
+    - templates/event-registry-investing.md
+    - templates/event-registry-political.md
+    - templates/event-registry-research.md
+    - templates/event-registry-sentiment.md
+    - templates/event-registry-supply-chain.md
+counts:
+  skills: 1
+  templates: 10
+  authored_by_provider: 11
+  authored_by_api_evangelist: 0

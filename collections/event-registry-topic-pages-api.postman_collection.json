@@ -1,0 +1,343 @@
+{
+  "item": [
+    {
+      "id": "c721c727-e9ff-43a0-8d28-4cc83ee4b1ab",
+      "name": "Topic Pages",
+      "description": {
+        "content": "Retrieve content matching user-defined topic page configurations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ffeab751-739f-4a50-a7c8-638a2bbb4d70",
+          "name": "Get articles for a topic page",
+          "request": {
+            "name": "Get articles for a topic page",
+            "description": {
+              "content": "Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "article",
+                "getArticlesForTopicPage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"uri\": \"<string>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0f38e563-6f0f-4e1a-8a9d-dfa45667a9a8",
+              "name": "Articles matching the topic page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticlesForTopicPage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"string\",\n  \"uri\": \"<string>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"articles\": {\n    \"results\": [\n      {\n        \"uri\": \"string\",\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"url\": \"http://dUqP.uvvKBSo2Cpzt9tBbSbWCh6N,jAztPoELsqBkvR7VfGWWZcur4skGYIJoUU.k\",\n        \"date\": \"1963-12-19\",\n        \"time\": \"string\",\n        \"dateTime\": \"1986-06-27T00:13:32.780Z\",\n        \"lang\": \"string\",\n        \"source\": {\n          \"uri\": \"string\",\n          \"title\": \"string\",\n          \"url\": \"http://UEQXHimI.vezGPja.n74YkpWdAiqVYIDF.OkUjZF06MkCVjc0iCtKKwM\",\n          \"ranking\": {\n            \"importanceRank\": 6169,\n            \"alexaGlobalRank\": 36,\n            \"alexaCountryRank\": 996\n          }\n        },\n        \"sentiment\": 0.9601116248192791,\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"loc\",\n            \"score\": 7266.115149342391\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"org\",\n            \"score\": 8338.060367484115\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 7364\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 1195\n          }\n        ],\n        \"authors\": [\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": false\n          },\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          }\n        ],\n        \"eventUri\": \"string\",\n        \"isDuplicate\": false\n      },\n      {\n        \"uri\": \"string\",\n        \"title\": \"string\",\n        \"body\": \"string\",\n        \"url\": \"http://xosctfREDH.rutwswpM.sh9UiaoAf5er7KTKAkQofuiKqpaAWB-JKtfUByXyFDWzb2eoTvJvSy4bKwEB4wsZ\",\n        \"date\": \"2018-11-16\",\n        \"time\": \"string\",\n        \"dateTime\": \"1958-08-25T11:17:47.895Z\",\n        \"lang\": \"string\",\n        \"source\": {\n          \"uri\": \"string\",\n          \"title\": \"string\",\n          \"url\": \"https://NeOkSufcv.mptx,r9kUwVjTh\",\n          \"ranking\": {\n            \"importanceRank\": 294,\n            \"alexaGlobalRank\": 2739,\n            \"alexaCountryRank\": 8899\n          }\n        },\n        \"sentiment\": 0.023175856704175768,\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"type\": \"org\",\n            \"score\": 9111.246419998017\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"type\": \"person\",\n            \"score\": 1780.7648293744849\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 5094\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 1267\n          }\n        ],\n        \"authors\": [\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": true\n          },\n          {\n            \"uri\": \"string\",\n            \"name\": \"string\",\n            \"isAgency\": false\n          }\n        ],\n        \"eventUri\": \"string\",\n        \"isDuplicate\": true\n      }\n    ],\n    \"totalResults\": 543\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f2249f6-3e85-414f-918a-975c0e86cf52",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "article",
+                    "getArticlesForTopicPage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"string\",\n  \"uri\": \"<string>\",\n  \"articlesPage\": \"<integer>\",\n  \"articlesCount\": \"<integer>\",\n  \"articleBodyLen\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79a2b5e2-e247-446d-b871-fe024f408d00",
+          "name": "Get events for a topic page",
+          "request": {
+            "name": "Get events for a topic page",
+            "description": {
+              "content": "Returns events matching a user-created topic page (pre-configured search profile).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "event",
+                "getEventsForTopicPage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"uri\": \"<string>\",\n  \"eventsPage\": \"<integer>\",\n  \"eventsCount\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2f6f5995-1b83-4523-a7e6-4b45e1bb67e7",
+              "name": "Events matching the topic page.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "event",
+                    "getEventsForTopicPage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"string\",\n  \"uri\": \"<string>\",\n  \"eventsPage\": \"<integer>\",\n  \"eventsCount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"events\": {\n    \"results\": [\n      {\n        \"uri\": \"string\",\n        \"title\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"summary\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"articleCount\": 5426,\n        \"date\": \"1952-10-14\",\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\",\n              \"key_2\": \"string\"\n            },\n            \"type\": \"org\",\n            \"score\": 9963.218221276406\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"person\",\n            \"score\": 2619.441490460835\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 407\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 5973\n          }\n        ],\n        \"sentiment\": -0.48007505433098596,\n        \"location\": {\n          \"uri\": \"string\",\n          \"label\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": \"string\"\n          },\n          \"type\": \"string\",\n          \"lat\": 5635.985358327377,\n          \"long\": 6911.720161163931\n        }\n      },\n      {\n        \"uri\": \"string\",\n        \"title\": {\n          \"key_0\": \"string\"\n        },\n        \"summary\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"articleCount\": 7544,\n        \"date\": \"1996-08-22\",\n        \"concepts\": [\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\"\n            },\n            \"type\": \"wiki\",\n            \"score\": 2385.048907068964\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": {\n              \"key_0\": \"string\",\n              \"key_1\": \"string\"\n            },\n            \"type\": \"loc\",\n            \"score\": 2961.1267231561924\n          }\n        ],\n        \"categories\": [\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 7615\n          },\n          {\n            \"uri\": \"string\",\n            \"label\": \"string\",\n            \"wgt\": 5634\n          }\n        ],\n        \"sentiment\": -0.029226309592573108,\n        \"location\": {\n          \"uri\": \"string\",\n          \"label\": {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\"\n          },\n          \"type\": \"string\",\n          \"lat\": 3857.0508992576324,\n          \"long\": 9666.833888841522\n        }\n      }\n    ],\n    \"totalResults\": 3136\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61f4cde0-fab7-4f95-98db-2616691ae55d",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "event",
+                    "getEventsForTopicPage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"string\",\n  \"uri\": \"<string>\",\n  \"eventsPage\": \"<integer>\",\n  \"eventsCount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://eventregistry.org/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apiKey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "07d2fd9b-ee06-4f96-8008-f001bb6de76a",
+    "name": "Event Registry (NewsAPI.ai) Articles Topic Pages API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.\n\n\nContact Support:\n Name: Event Registry Support\n Email: info@eventregistry.org",
+      "type": "text/plain"
+    }
+  }
+}

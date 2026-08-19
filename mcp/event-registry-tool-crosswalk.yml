@@ -1,0 +1,125 @@
+generated: '2026-08-13'
+method: derived
+source: >
+  mcp/event-registry-mcp-tools-list.json (live tools/list probe of newsapi-mcp 1.3.1) bound
+  against the operationIds in openapi/event-registry-*-openapi.yml, cross-checked against
+  https://raw.githubusercontent.com/EventRegistry/newsapi-mcp/main/src/client.ts which posts
+  every tool to https://eventregistry.org/api/v1<path>.
+name: Event Registry MCP-to-REST tool crosswalk
+description: >
+  Binds each first-party MCP tool to the REST operation it actually calls. The binding is
+  high confidence throughout because the MCP server's own source (src/client.ts, src/tools/*.ts)
+  posts to the same paths the OpenAPI documents, and the live tools/list probe supplied the
+  real inputSchema for every tool.
+surfaces:
+  openapi:
+    files:
+      - openapi/event-registry-articles-api-openapi.yml
+      - openapi/event-registry-events-api-openapi.yml
+      - openapi/event-registry-suggest-api-openapi.yml
+      - openapi/event-registry-topic-pages-api-openapi.yml
+      - openapi/event-registry-usage-api-openapi.yml
+    base_url: https://eventregistry.org/api/v1
+    gated: false
+  graphql:
+    endpoint: null
+    note: Event Registry publishes no GraphQL surface.
+  mcp:
+    mode: local-stdio
+    install: npx -y newsapi-mcp
+    url: null
+    gated: false
+    note: >
+      Not gated at the schema level — tools/list returned all 8 tools with full inputSchema
+      using a dummy key. A valid NEWSAPI_KEY is required only to CALL a tool.
+crosswalk:
+  - tool: search_articles
+    category: articles
+    rest:
+      - searchArticles
+    binding: POST /article/getArticles
+    confidence: high
+    note: >
+      The MCP tool exposes 41 input properties, a superset of the OpenAPI
+      ContentFilterParams + ArticleResponseControl schemas plus MCP-only presentation
+      controls (detailLevel, includeFields).
+  - tool: get_article_details
+    category: articles
+    rest:
+      - getArticleDetails
+    binding: POST /article/getArticle
+    confidence: high
+    note: Accepts up to 100 articleUri values per call; the REST operation takes the same array.
+  - tool: search_events
+    category: events
+    rest:
+      - searchEvents
+    binding: POST /event/getEvents
+    confidence: high
+    note: >
+      42 input properties. The server renames minSentiment/maxSentiment to
+      minSentimentEvent/maxSentimentEvent and strips article-only params
+      (startSourceRankPercentile, endSourceRankPercentile) before calling REST — a real
+      divergence between the tool schema and the wire contract, fixed in newsapi-mcp 1.2.0.
+  - tool: get_event_details
+    category: events
+    rest:
+      - getEventDetails
+    binding: POST /event/getEvent
+    confidence: high
+  - tool: get_topic_page_articles
+    category: topic-pages
+    rest:
+      - getTopicPageArticles
+    binding: POST /article/getArticlesForTopicPage
+    confidence: high
+  - tool: get_topic_page_events
+    category: topic-pages
+    rest:
+      - getTopicPageEvents
+    binding: POST /event/getEventsForTopicPage
+    confidence: high
+  - tool: suggest
+    category: suggest
+    rest:
+      - suggestConcepts
+      - suggestCategories
+      - suggestSources
+      - suggestLocations
+      - suggestAuthors
+    binding: >
+      POST /suggestConceptsFast | /suggestCategoriesFast | /suggestSourcesFast |
+      /suggestLocationsFast | /suggestAuthorsFast — selected by the required `type` parameter
+      (concepts | categories | sources | locations | authors).
+    confidence: high
+    note: >
+      One-to-many. newsapi-mcp 1.1.0 consolidated five separate suggest tools into this one,
+      cutting the tool count from 13 to 8. This is the clearest example in the catalog of an
+      MCP surface deliberately collapsing REST endpoints rather than mirroring them.
+  - tool: get_api_usage
+    category: usage
+    rest:
+      - getApiUsage
+    binding: POST /usage
+    confidence: high
+    note: >
+      Largely superseded in practice by the per-response token footer the server derives from
+      the `req-tokens` and `x-ratelimit-remaining` response headers (newsapi-mcp 1.2.0).
+mcp_only: []
+rest_only: []
+coverage:
+  mcp_tools: 8
+  rest_operations: 12
+  operations_reachable_via_mcp: 12
+  operations_unreachable_via_mcp: 0
+  tools_without_rest_backing: 0
+  rest_coverage_pct: 100
+  binding_confidence:
+    high: 8
+    medium: 0
+    low: 0
+finding: >
+  Full parity. Every one of the 12 documented REST operations is reachable through the MCP
+  server, and no MCP tool exists without a REST operation behind it. The tool surface is
+  smaller than the REST surface (8 vs 12) only because the five suggest endpoints were
+  deliberately folded into one typed tool.

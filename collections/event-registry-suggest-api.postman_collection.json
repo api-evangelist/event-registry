@@ -1,0 +1,769 @@
+{
+  "item": [
+    {
+      "id": "5a237786-028f-481e-b2ab-ad064aed50f1",
+      "name": "Suggest",
+      "description": {
+        "content": "Resolve entity names to URIs for use in search filters.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f63b0521-b53d-449a-8f3a-5f0e91329838",
+          "name": "Suggest concept URIs by name prefix",
+          "request": {
+            "name": "Suggest concept URIs by name prefix",
+            "description": {
+              "content": "Look up concept URIs (people, organizations, locations, things) by name prefix. Always resolve entity names to URIs using this endpoint before passing them to conceptUri filters in search operations.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "suggestConceptsFast"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"prefix\": \"<string>\",\n  \"lang\": \"<string>\",\n  \"conceptType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d00b3b41-2a09-40b9-ba5f-04da780e159b",
+              "name": "List of matching concept suggestions with URIs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestConceptsFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Tesla\",\n  \"lang\": \"eng\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\"\n    },\n    \"type\": \"string\"\n  },\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"type\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a5f1f3f-a8c7-438d-a99e-720364d04908",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestConceptsFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Tesla\",\n  \"lang\": \"eng\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "34a54e32-c763-4ffa-b125-9ee7c1501180",
+          "name": "Suggest category URIs by name prefix",
+          "request": {
+            "name": "Suggest category URIs by name prefix",
+            "description": {
+              "content": "Look up news topic category URIs (business, tech, sports, etc.) by name prefix. Use returned URIs in categoryUri filters.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "suggestCategoriesFast"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"prefix\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9fde9daf-b5d2-4613-8c3e-eada07f12442",
+              "name": "List of matching category suggestions with URIs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestCategoriesFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Business\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\"\n    },\n    \"type\": \"string\"\n  },\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"type\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29ec7299-eee6-4967-b8a6-60fa0699ef3c",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestCategoriesFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Business\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "519e8e9a-10f3-4ba2-85a1-108e3090016b",
+          "name": "Suggest news source URIs by name prefix",
+          "request": {
+            "name": "Suggest news source URIs by name prefix",
+            "description": {
+              "content": "Look up news source URIs (e.g., Reuters, BBC) by name prefix. Use returned URIs in sourceUri filters.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "suggestSourcesFast"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"prefix\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "06eb34c8-c9b0-4bff-af7b-6f2d5818b733",
+              "name": "List of matching source suggestions with URIs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestSourcesFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Reuters\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\"\n    },\n    \"type\": \"string\"\n  },\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"type\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a9a2602d-a416-4018-b60b-9b23fddd3aee",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestSourcesFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Reuters\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bc9cd000-d451-4486-94ba-15c537c1cbd1",
+          "name": "Suggest location URIs by name prefix",
+          "request": {
+            "name": "Suggest location URIs by name prefix",
+            "description": {
+              "content": "Look up location URIs (countries, cities, regions) by name prefix. Use returned URIs in locationUri or sourceLocationUri filters. Always use English location names.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "suggestLocationsFast"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"prefix\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c410c3b6-9d6a-4134-8c41-8337c8fc2e2a",
+              "name": "List of matching location suggestions with URIs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestLocationsFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Germany\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\"\n    },\n    \"type\": \"string\"\n  },\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"type\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "359e748c-ad8d-4771-8ab0-20c86fe3392d",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestLocationsFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"Germany\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b329f996-463f-48af-9fa4-3609f2d5095e",
+          "name": "Suggest author URIs by name prefix",
+          "request": {
+            "name": "Suggest author URIs by name prefix",
+            "description": {
+              "content": "Look up journalist/author URIs by name prefix. Use returned URIs in authorUri filters.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "suggestAuthorsFast"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"apiKey\": \"<string>\",\n  \"prefix\": \"<string>\",\n  \"lang\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "09b84266-9cf7-46b4-bade-36e6ffb1f5d3",
+              "name": "List of matching author suggestions with URIs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestAuthorsFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"John Smith\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\"\n    },\n    \"type\": \"string\"\n  },\n  {\n    \"uri\": \"string\",\n    \"label\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\"\n    },\n    \"type\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "812a52a2-ef20-4196-815c-883afe4d1fdc",
+              "name": "Unauthorized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "suggestAuthorsFast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"apiKey\": \"YOUR_API_KEY\",\n  \"prefix\": \"John Smith\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://eventregistry.org/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apiKey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b0a16079-f344-4e65-b996-701b4474cda9",
+    "name": "Event Registry (NewsAPI.ai) Articles Suggest API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.\n\n\nContact Support:\n Name: Event Registry Support\n Email: info@eventregistry.org",
+      "type": "text/plain"
+    }
+  }
+}

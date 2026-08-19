@@ -1,0 +1,169 @@
+generated: '2026-08-13'
+method: derived
+source: >
+  Derived from openapi/event-registry-*-openapi.yml and openapi/_original/openapi.yml, the
+  live MCP tools/list probe recorded in mcp/event-registry-mcp-tools-list.json, the
+  well-known probe in well-known/event-registry-well-known.yml, and the provider's own
+  first-party client source at https://github.com/EventRegistry/newsapi-mcp (read 2026-08-13).
+name: Event Registry Standards Conformance
+description: >
+  What cross-cutting and industry standards the Event Registry API does and does not
+  implement. Every `conforms: false` below is a recorded absence backed by a check, not an
+  assumption. Event Registry publishes no compliance certifications, so no Compliance pointer
+  is emitted in apis.yml.
+standards:
+  - id: openapi
+    name: OpenAPI 3.1.0
+    conforms: true
+    evidence: >
+      Five refined definitions plus openapi/_original/openapi.yml, all declaring
+      `openapi: 3.1.0`, covering 12 operations across articles, events, suggest, topic pages
+      and usage. Note: these were authored by API Evangelist from the provider's
+      documentation — Event Registry does not itself publish an OpenAPI at any probed
+      location (see well-known/event-registry-well-known.yml).
+    provider_published: false
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    version: '2025-11-25'
+    evidence: >
+      Verified by running the provider's own server (`npx -y newsapi-mcp`, v1.3.1) and
+      completing a real initialize + tools/list handshake over stdio on 2026-08-13. The
+      server declared protocolVersion 2025-11-25 and capabilities {tools, resources}, and
+      returned 8 tools each carrying a full JSON Schema inputSchema.
+    provider_published: true
+    artifact: mcp/event-registry-mcp.yml
+  - id: agent-skills
+    name: Agent Skills (SKILL.md frontmatter format)
+    conforms: true
+    evidence: >
+      The provider ships skill/SKILL.md in newsapi-mcp with valid frontmatter (name,
+      description, user-invocable, allowed-tools) and 10 report templates. Saved verbatim to
+      skills/.
+    provider_published: true
+  - id: json-schema
+    name: JSON Schema
+    conforms: true
+    evidence: >
+      Every MCP tool exposes a JSON Schema inputSchema (properties/required), and the OpenAPI
+      3.1 component schemas are JSON Schema 2020-12 dialect by definition. Repo also carries
+      json-schema/article.json and json-schema/event.json.
+  - id: oauth2
+    name: OAuth 2.0
+    conforms: false
+    evidence: >
+      No oauth2 securityScheme in any OpenAPI definition; the sole scheme is an apiKey in the
+      request body. /.well-known/oauth-authorization-server returned the SPA shell on both
+      hosts. See scopes — none exist to derive.
+  - id: oidc
+    name: OpenID Connect
+    conforms: false
+    evidence: /.well-known/openid-configuration returned the SPA HTML shell on eventregistry.org and newsapi.ai. No openIdConnect securityScheme.
+  - id: rfc9457
+    name: RFC 9457 Problem Details for HTTP APIs
+    conforms: false
+    evidence: >
+      Errors return a bespoke {error, message} JSON object with media type application/json.
+      No type/title/status/detail/instance members, no application/problem+json.
+      See errors/event-registry-problem-types.yml.
+  - id: rfc8594
+    name: RFC 8594 Sunset HTTP Header
+    conforms: false
+    evidence: No Sunset or Deprecation header documented or emitted; no deprecation policy published. See lifecycle/event-registry-lifecycle.yml.
+  - id: rfc9331-ratelimit-headers
+    name: RateLimit header fields for HTTP
+    conforms: false
+    evidence: >
+      The API emits proprietary `req-tokens` and `x-ratelimit-remaining` headers only — no
+      standard `RateLimit` / `RateLimit-Policy` fields, no `X-RateLimit-Limit`, no
+      `X-RateLimit-Reset`, and no `Retry-After` on 429 or 503.
+      Source: newsapi-mcp src/client.ts parseTokenUsage().
+  - id: idempotency
+    name: Idempotency keys (draft-ietf-httpapi-idempotency-key-header)
+    conforms: false
+    not_applicable: true
+    evidence: >
+      No Idempotency-Key header. Genuinely not applicable rather than missing: all 12
+      operations are read-only queries with no side effects, so there are no writes to
+      deduplicate. No Idempotency pointer is emitted.
+  - id: pagination
+    name: Conventional pagination
+    conforms: partial
+    evidence: >
+      Page-number pagination is implemented (articlesPage/articlesCount, eventsPage/eventsCount,
+      1-indexed, max 100 articles / 50 events per page) but the parameter names differ per
+      collection, there is no cursor, and no Link header is emitted.
+  - id: rest
+    name: REST architectural style
+    conforms: false
+    evidence: >
+      RPC-over-HTTP, not REST. Every one of the 12 operations is a POST to a fixed verb-named
+      path (/article/getArticles, /event/getEvent, /suggestConceptsFast, /usage) with all
+      parameters in a JSON body. There are no resource URLs, no GETs, and no HTTP verb
+      semantics. This is a factual classification, not a criticism — but it means HTTP
+      caching, conditional requests and safe-method retry heuristics do not apply.
+  - id: jsonapi
+    name: JSON:API
+    conforms: false
+    evidence: Responses are bespoke JSON objects; no JSON:API document structure or media type.
+  - id: odata
+    name: OData
+    conforms: false
+    evidence: No OData metadata document or query conventions.
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: false
+    not_applicable: true
+    evidence: >
+      Event Registry publishes no event, streaming or webhook surface. Despite the product
+      name, "events" here are clustered news stories retrieved by polling, not push
+      notifications. No AsyncAPI artifact is emitted and no AsyncAPI/Webhooks pointer is
+      wired — this is N/A, not a failure.
+  - id: securitytxt
+    name: RFC 9116 security.txt
+    conforms: false
+    evidence: >
+      /.well-known/security.txt and /security.txt returned the SPA HTML shell on both hosts.
+      See well-known/event-registry-well-known.yml.
+  - id: a2a
+    name: A2A Agent Card
+    conforms: false
+    evidence: >
+      /.well-known/agent-card.json and the legacy /.well-known/agent.json returned the SPA
+      HTML shell on both hosts. No agent card exists and none was authored.
+  - id: llmstxt
+    name: llms.txt
+    conforms: false
+    evidence: >
+      /llms.txt on both hosts returned the SPA HTML shell, byte-identical to the shell served
+      for a known-nonexistent path. The llms/ artifact in this repo is GENERATED by API
+      Evangelist, not published by the provider.
+  - id: soc2
+    name: SOC 2
+    conforms: unknown
+    evidence: >
+      No trust center, certification page or compliance claim found. probe-security-programs.py
+      returned vdp=none trust=none on 2026-08-13.
+  - id: iso27001
+    name: ISO/IEC 27001
+    conforms: unknown
+    evidence: No certification claim found on any reachable page.
+  - id: gdpr
+    name: GDPR
+    conforms: unknown
+    evidence: >
+      A privacy policy route exists at https://newsapi.ai/privacy but it is client-rendered
+      only and returned the SPA shell to a machine fetch, so no GDPR statement could be read.
+      Event Registry is an EU-based (Slovenian) company, but no compliance claim was verified.
+summary:
+  conforms_true: 4
+  conforms_partial: 1
+  conforms_false: 11
+  not_applicable: 2
+  unknown: 3
+finding: >
+  Event Registry's standards posture is bifurcated. Its agent surface is genuinely modern and
+  verifiable — a working MCP server on protocol 2025-11-25 with real tool schemas and a
+  published Agent Skill. Its HTTP surface implements almost no cross-cutting web-API standard:
+  no OAuth, no problem+json, no standard rate-limit headers, no Sunset, no security.txt, and
+  an RPC-over-POST shape that puts it outside REST conventions entirely.

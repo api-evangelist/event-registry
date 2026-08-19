@@ -1,3 +1,11 @@
+generated: '2026-08-13'
+method: searched
+source: >
+  https://newsapi.ai/plans — read 2026-08-13. The plans page is one of the few routes
+  newsapi.ai server-prerenders, so its tier names, prices, support tiers, free-plan
+  allocation (2,000 searches, no credit card) and the current/historical data split were read
+  directly from the served HTML rather than inferred.
+plan_count: 6
 name: Event Registry Plans and Pricing
 description: Pricing plans and token allocations for the Event Registry (NewsAPI.ai) news intelligence REST API.
 url: https://newsapi.ai/plans

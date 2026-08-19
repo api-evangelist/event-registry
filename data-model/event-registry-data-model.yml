@@ -1,0 +1,162 @@
+generated: '2026-08-13'
+method: derived
+source: >
+  Derived from components.schemas and $ref links in openapi/_original/openapi.yml and the
+  five refined specs under openapi/, plus the id-reference fields (uri, eventUri, sourceUri,
+  conceptUri, categoryUri, locationUri, authorUri) used across ContentFilterParams.
+name: Event Registry Data Model
+description: >
+  The entity graph behind the Event Registry news intelligence API. Everything is addressed
+  by an opaque string `uri`; there are no numeric ids and no id prefixes. The graph is
+  read-only — no entity in this model can be created, updated or deleted through the public
+  API.
+identifier_convention:
+  field: uri
+  type: string
+  opaque: true
+  prefixes: none
+  resolution: >
+    Human names are resolved to URIs through the suggest operations (suggestConcepts,
+    suggestCategories, suggestSources, suggestLocations, suggestAuthors). Concept URIs are
+    frequently Wikipedia-style and may contain commas and underscores (for example
+    `Tesla,_Inc.`), which is why array parameters must be split URI-aware.
+entities:
+  - name: Article
+    description: A single news item from one source.
+    schema: Article
+    fields: [uri, title, body, url, date, time, dateTime, lang, source, sentiment, concepts, categories, authors, eventUri, isDuplicate]
+    operations: [searchArticles, getArticleDetails, getTopicPageArticles]
+    root: true
+  - name: Event
+    description: A cluster of related articles about the same real-world happening; the deduplicated unit of coverage.
+    schema: Event
+    fields: [uri, title, summary, articleCount, date, concepts, categories, sentiment, location]
+    operations: [searchEvents, getEventDetails, getTopicPageEvents]
+    root: true
+  - name: Source
+    description: A news publisher, with ranking metadata.
+    schema: Source
+    fields: [uri, title, url, ranking]
+    operations: [suggestSources]
+  - name: Concept
+    description: An entity or topic (person, organisation, location, theme) attached to articles and events with a relevance score.
+    schema: Concept
+    fields: [uri, label, type, score]
+    operations: [suggestConcepts]
+  - name: Category
+    description: A taxonomy node classifying content, carried with a weight.
+    schema: Category
+    fields: [uri, label, wgt]
+    operations: [suggestCategories]
+  - name: Author
+    description: A byline, flagged when it belongs to a wire agency.
+    schema: Author
+    fields: [uri, name, isAgency]
+    operations: [suggestAuthors]
+  - name: Location
+    description: A geographic place with coordinates, used both as an event attribute and as a filter.
+    schema: Location
+    fields: [uri, label, type, lat, long]
+    operations: [suggestLocations]
+  - name: SuggestResult
+    description: The uniform envelope every suggest operation returns — the bridge from a human name to a URI.
+    schema: SuggestResult
+    fields: [uri, label, type]
+    operations: [suggestConcepts, suggestCategories, suggestSources, suggestLocations, suggestAuthors]
+  - name: TokenUsage
+    description: Quota accounting for the calling API key.
+    schema: TokenUsage
+    fields: [tokensUsed, remaining]
+    operations: [getApiUsage]
+  - name: ErrorResponse
+    description: The error envelope. See errors/event-registry-problem-types.yml.
+    schema: ErrorResponse
+    fields: [error, message]
+relationships:
+  - from: Article
+    to: Source
+    type: has_one
+    via: source
+    binding: embedded object
+  - from: Article
+    to: Event
+    type: belongs_to
+    via: eventUri
+    binding: id reference
+    note: >
+      The spine of the model. An article optionally names the event cluster it belongs to,
+      which is how a caller pivots from an individual story to the deduplicated event.
+  - from: Article
+    to: Concept
+    type: has_many
+    via: concepts
+    binding: embedded array
+  - from: Article
+    to: Category
+    type: has_many
+    via: categories
+    binding: embedded array
+  - from: Article
+    to: Author
+    type: has_many
+    via: authors
+    binding: embedded array
+  - from: Article
+    to: Article
+    type: has_one
+    via: isDuplicate
+    binding: boolean flag
+    note: Marks wire-syndicated repeats rather than pointing at the canonical article.
+  - from: Event
+    to: Article
+    type: has_many
+    via: articleCount + getEventDetails(resultType=articles)
+    binding: derived collection
+    note: >
+      Not a field on the Event schema. The member articles are fetched by calling
+      getEventDetails with resultType "articles" for a single eventUri.
+  - from: Event
+    to: Concept
+    type: has_many
+    via: concepts
+    binding: embedded array
+  - from: Event
+    to: Category
+    type: has_many
+    via: categories
+    binding: embedded array
+  - from: Event
+    to: Location
+    type: has_one
+    via: location
+    binding: embedded object
+  - from: Source
+    to: Location
+    type: has_one
+    via: sourceLocationUri filter
+    binding: id reference
+    note: >
+      Expressed only as a filter parameter (sourceLocationUri) rather than a field on the
+      Source schema — the geography of a publisher is queryable but not returned.
+filter_references:
+  note: >
+    ContentFilterParams accepts id references into every entity above, each with a matching
+    `ignore*` negation. This is the practical shape of the model — a caller composes a query
+    out of URIs resolved from suggest.
+  fields:
+    - conceptUri
+    - categoryUri
+    - sourceUri
+    - sourceLocationUri
+    - sourceGroupUri
+    - authorUri
+    - locationUri
+counts:
+  entities: 10
+  root_entities: 2
+  relationships: 11
+  writable_entities: 0
+finding: >
+  A two-root read-only graph: Article and Event, joined by eventUri, with Concept, Category,
+  Source, Author and Location acting as shared vocabulary that is both embedded in responses
+  and accepted as query filters. Nothing in the model is mutable through the API.
