@@ -65,6 +65,8 @@ apis:
   humanURL: https://newsapi.ai
   baseURL: https://eventregistry.org/api/v1
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
