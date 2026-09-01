@@ -179,6 +179,9 @@ apis:
   - type: Documentation
     url: https://github.com/EventRegistry/newsapi-mcp
 common:
+  - type: License
+    name: MIT
+    url: https://github.com/EventRegistry/newsapi-mcp/blob/main/LICENSE
   - type: AgenticAccess
     url: agentic-access/event-registry-agentic-access.yml
   - type: DomainSecurity
