@@ -1,11 +1,7 @@
 {
   "provider": "event-registry",
   "sources": [
-    "event-registry-articles-api-openapi.yml",
-    "event-registry-events-api-openapi.yml",
-    "event-registry-suggest-api-openapi.yml",
-    "event-registry-topic-pages-api-openapi.yml",
-    "event-registry-usage-api-openapi.yml"
+    "_original/openapi.yml"
   ],
   "outputs": [
     "event-registry-articles-api-openapi.yml",
@@ -17,6 +13,16 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "event-registry-articles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "event-registry-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "event-registry-suggest-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "event-registry-topic-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "event-registry-usage-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

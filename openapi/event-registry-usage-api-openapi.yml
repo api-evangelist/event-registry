@@ -1,9 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Event Registry (NewsAPI.ai) Articles Usage API
-  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
-
-    '
+  title: Event Registry (NewsAPI.ai) Usage API
+  description: Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
   version: 1.0.0
   contact:
     name: Event Registry Support
@@ -26,9 +24,7 @@ paths:
     post:
       operationId: getApiUsage
       summary: Get API token usage
-      description: 'Check API token usage — tokens consumed and tokens remaining in the current quota period for the authenticated API key.
-
-        '
+      description: Check API token usage — tokens consumed and tokens remaining in the current quota period for the authenticated API key.
       tags:
       - Usage
       requestBody:
@@ -54,13 +50,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     TokenUsage:
       type: object
       properties:
@@ -78,6 +67,13 @@ components:
         apiKey:
           type: string
           description: Your NewsAPI.ai API key.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
   securitySchemes:
     apiKeyAuth:
       type: apiKey

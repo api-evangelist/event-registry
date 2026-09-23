@@ -1,9 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Event Registry (NewsAPI.ai) Articles API
-  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
-
-    '
+  description: Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
   version: 1.0.0
   contact:
     name: Event Registry Support
@@ -26,9 +24,7 @@ paths:
     post:
       operationId: searchArticles
       summary: Search news articles
-      description: 'Search news articles by concepts, sources, categories, dates, language, and sentiment. Returns up to 100 articles per call. Use /suggestConceptsFast to resolve entity names to URIs before searching. Set resultType to "articles" in the request body.
-
-        '
+      description: Search news articles by concepts, sources, categories, dates, language, and sentiment. Returns up to 100 articles per call. Use /suggestConceptsFast to resolve entity names to URIs before searching. Set resultType to "articles" in the request body.
       tags:
       - Articles
       requestBody:
@@ -91,9 +87,7 @@ paths:
     post:
       operationId: getArticleDetails
       summary: Get full article details by URI
-      description: 'Retrieve full details for one or more articles by their URI(s). Use this after obtaining article URIs from /article/getArticles to fetch complete content and metadata.
-
-        '
+      description: Retrieve full details for one or more articles by their URI(s). Use this after obtaining article URIs from /article/getArticles to fetch complete content and metadata.
       tags:
       - Articles
       requestBody:
@@ -139,9 +133,7 @@ paths:
     post:
       operationId: getTopicPageArticles
       summary: Get articles for a topic page
-      description: 'Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.
-
-        '
+      description: Returns articles matching a user-created topic page (pre-configured search profile). Topic pages are created and managed on the newsapi.ai website.
       tags:
       - Articles
       requestBody:
@@ -192,110 +184,42 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Category:
+    ArticleResponseControl:
       type: object
       properties:
-        uri:
-          type: string
-        label:
-          type: string
-        wgt:
+        articleBodyLen:
           type: integer
-    Concept:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
+          description: Article body length in characters. Default 1000. Use -1 for full text, 0 to exclude body.
+        articlesPage:
+          type: integer
+          description: Page number (starting from 1). Default 1.
+        articlesCount:
+          type: integer
+          maximum: 100
+          description: Articles per page (max 100). Default 100.
+        articlesSortBy:
           type: string
           enum:
-          - person
-          - org
-          - loc
-          - wiki
-        score:
-          type: number
-    Article:
-      type: object
-      properties:
-        uri:
-          type: string
-          description: Unique article identifier.
-        title:
-          type: string
-        body:
-          type: string
-          description: Article body text (length controlled by articleBodyLen).
-        url:
-          type: string
-          format: uri
-          description: Original article URL.
-        date:
-          type: string
-          format: date
-        time:
-          type: string
-        dateTime:
-          type: string
-          format: date-time
-        lang:
-          type: string
-          description: ISO language code.
-        source:
-          $ref: '#/components/schemas/Source'
-        sentiment:
-          type: number
-          minimum: -1
-          maximum: 1
-          description: Sentiment score (-1 very negative, +1 very positive).
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        authors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Author'
-        eventUri:
-          type: string
-          description: URI of the event this article belongs to.
-        isDuplicate:
+          - date
+          - rel
+          - sourceImportance
+          - sourceAlexaGlobalRank
+          - socialScore
+          - facebookShares
+          description: Sort order. Default "date".
+        articlesSortByAsc:
           type: boolean
-    Source:
+          description: Ascending sort order. Default false.
+        dataType:
+          type: string
+          description: Content types (comma-separated) — "news", "pr", "blog". Default "news".
+    ErrorResponse:
       type: object
       properties:
-        uri:
+        error:
           type: string
-        title:
+        message:
           type: string
-        url:
-          type: string
-          format: uri
-        ranking:
-          type: object
-          properties:
-            importanceRank:
-              type: integer
-            alexaGlobalRank:
-              type: integer
-            alexaCountryRank:
-              type: integer
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
     ContentFilterParams:
       type: object
       properties:
@@ -430,13 +354,43 @@ components:
           description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
         query:
           description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
-    ErrorResponse:
+    Concept:
       type: object
       properties:
-        error:
+        uri:
           type: string
-        message:
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
           type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
+    Source:
+      type: object
+      properties:
+        uri:
+          type: string
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        ranking:
+          type: object
+          properties:
+            importanceRank:
+              type: integer
+            alexaGlobalRank:
+              type: integer
+            alexaCountryRank:
+              type: integer
     Author:
       type: object
       properties:
@@ -446,35 +400,73 @@ components:
           type: string
         isAgency:
           type: boolean
-    ArticleResponseControl:
+    Category:
       type: object
       properties:
-        articleBodyLen:
-          type: integer
-          description: Article body length in characters. Default 1000. Use -1 for full text, 0 to exclude body.
-        articlesPage:
-          type: integer
-          description: Page number (starting from 1). Default 1.
-        articlesCount:
-          type: integer
-          maximum: 100
-          description: Articles per page (max 100). Default 100.
-        articlesSortBy:
+        uri:
           type: string
-          enum:
-          - date
-          - rel
-          - sourceImportance
-          - sourceAlexaGlobalRank
-          - socialScore
-          - facebookShares
-          description: Sort order. Default "date".
-        articlesSortByAsc:
+        label:
+          type: string
+        wgt:
+          type: integer
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    Article:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique article identifier.
+        title:
+          type: string
+        body:
+          type: string
+          description: Article body text (length controlled by articleBodyLen).
+        url:
+          type: string
+          format: uri
+          description: Original article URL.
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        dateTime:
+          type: string
+          format: date-time
+        lang:
+          type: string
+          description: ISO language code.
+        source:
+          $ref: '#/components/schemas/Source'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Sentiment score (-1 very negative, +1 very positive).
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+        eventUri:
+          type: string
+          description: URI of the event this article belongs to.
+        isDuplicate:
           type: boolean
-          description: Ascending sort order. Default false.
-        dataType:
-          type: string
-          description: Content types (comma-separated) — "news", "pr", "blog". Default "news".
   securitySchemes:
     apiKeyAuth:
       type: apiKey

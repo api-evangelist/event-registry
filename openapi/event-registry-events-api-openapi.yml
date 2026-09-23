@@ -1,9 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Event Registry (NewsAPI.ai) Articles Events API
-  description: 'Event Registry (NewsAPI.ai) is the world''s leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
-
-    '
+  title: Event Registry (NewsAPI.ai) Events API
+  description: Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014. All requests are POST with JSON bodies and require an apiKey field.
   version: 1.0.0
   contact:
     name: Event Registry Support
@@ -26,9 +24,7 @@ paths:
     post:
       operationId: searchEvents
       summary: Search news events
-      description: 'Search events — clusters of related articles about the same real-world happening. Events deduplicate coverage: one entry per story instead of per article. Returns up to 50 events per call. Ideal for high-level overviews and trend analysis.
-
-        '
+      description: 'Search events — clusters of related articles about the same real-world happening. Events deduplicate coverage: one entry per story instead of per article. Returns up to 50 events per call. Ideal for high-level overviews and trend analysis.'
       tags:
       - Events
       requestBody:
@@ -132,9 +128,7 @@ paths:
     post:
       operationId: getEventDetails
       summary: Get full event details by URI
-      description: 'Retrieve full details for one or more events by their URI(s), including all grouped articles, concepts, categories, and geographic data.
-
-        '
+      description: Retrieve full details for one or more events by their URI(s), including all grouped articles, concepts, categories, and geographic data.
       tags:
       - Events
       requestBody:
@@ -179,9 +173,7 @@ paths:
     post:
       operationId: getTopicPageEvents
       summary: Get events for a topic page
-      description: 'Returns events matching a user-created topic page (pre-configured search profile).
-
-        '
+      description: Returns events matching a user-created topic page (pre-configured search profile).
       tags:
       - Events
       requestBody:
@@ -229,92 +221,13 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Category:
+    ErrorResponse:
       type: object
       properties:
-        uri:
+        error:
           type: string
-        label:
+        message:
           type: string
-        wgt:
-          type: integer
-    Location:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-        lat:
-          type: number
-        long:
-          type: number
-    Concept:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-          enum:
-          - person
-          - org
-          - loc
-          - wiki
-        score:
-          type: number
-    Event:
-      type: object
-      properties:
-        uri:
-          type: string
-          description: Unique event identifier.
-        title:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event title keyed by language code.
-        summary:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event summary keyed by language code.
-        articleCount:
-          type: integer
-          description: Number of articles grouped in this event.
-        date:
-          type: string
-          format: date
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        sentiment:
-          type: number
-          minimum: -1
-          maximum: 1
-        location:
-          $ref: '#/components/schemas/Location'
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
     ContentFilterParams:
       type: object
       properties:
@@ -449,13 +362,92 @@ components:
           description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
         query:
           description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
-    ErrorResponse:
+    Concept:
       type: object
       properties:
-        error:
+        uri:
           type: string
-        message:
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
           type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
+    Location:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        lat:
+          type: number
+        long:
+          type: number
+    Category:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: string
+        wgt:
+          type: integer
+    Event:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique event identifier.
+        title:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event title keyed by language code.
+        summary:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event summary keyed by language code.
+        articleCount:
+          type: integer
+          description: Number of articles grouped in this event.
+        date:
+          type: string
+          format: date
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+        location:
+          $ref: '#/components/schemas/Location'
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
   securitySchemes:
     apiKeyAuth:
       type: apiKey
