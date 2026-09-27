@@ -184,6 +184,98 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Article:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique article identifier.
+        title:
+          type: string
+        body:
+          type: string
+          description: Article body text (length controlled by articleBodyLen).
+        url:
+          type: string
+          format: uri
+          description: Original article URL.
+        date:
+          type: string
+          format: date
+        time:
+          type: string
+        dateTime:
+          type: string
+          format: date-time
+        lang:
+          type: string
+          description: ISO language code.
+        source:
+          $ref: '#/components/schemas/Source'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+          description: Sentiment score (-1 very negative, +1 very positive).
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+        eventUri:
+          type: string
+          description: URI of the event this article belongs to.
+        isDuplicate:
+          type: boolean
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    Concept:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
+    Category:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: string
+        wgt:
+          type: integer
     ArticleResponseControl:
       type: object
       properties:
@@ -213,13 +305,6 @@ components:
         dataType:
           type: string
           description: Content types (comma-separated) — "news", "pr", "blog". Default "news".
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     ContentFilterParams:
       type: object
       properties:
@@ -354,24 +439,6 @@ components:
           description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
         query:
           description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
-    Concept:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-          enum:
-          - person
-          - org
-          - loc
-          - wiki
-        score:
-          type: number
     Source:
       type: object
       properties:
@@ -399,73 +466,6 @@ components:
         name:
           type: string
         isAgency:
-          type: boolean
-    Category:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: string
-        wgt:
-          type: integer
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
-    Article:
-      type: object
-      properties:
-        uri:
-          type: string
-          description: Unique article identifier.
-        title:
-          type: string
-        body:
-          type: string
-          description: Article body text (length controlled by articleBodyLen).
-        url:
-          type: string
-          format: uri
-          description: Original article URL.
-        date:
-          type: string
-          format: date
-        time:
-          type: string
-        dateTime:
-          type: string
-          format: date-time
-        lang:
-          type: string
-          description: ISO language code.
-        source:
-          $ref: '#/components/schemas/Source'
-        sentiment:
-          type: number
-          minimum: -1
-          maximum: 1
-          description: Sentiment score (-1 very negative, +1 very positive).
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        authors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Author'
-        eventUri:
-          type: string
-          description: URI of the event this article belongs to.
-        isDuplicate:
           type: boolean
   securitySchemes:
     apiKeyAuth:

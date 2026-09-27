@@ -59,6 +59,13 @@ components:
         remaining:
           type: number
           description: Tokens remaining in the current quota period.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     ApiKeyParam:
       type: object
       required:
@@ -67,13 +74,6 @@ components:
         apiKey:
           type: string
           description: Your NewsAPI.ai API key.
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
   securitySchemes:
     apiKeyAuth:
       type: apiKey
