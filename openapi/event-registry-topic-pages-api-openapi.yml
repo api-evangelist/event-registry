@@ -125,13 +125,59 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
+    Event:
       type: object
       properties:
-        error:
+        uri:
           type: string
-        message:
+          description: Unique event identifier.
+        title:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event title keyed by language code.
+        summary:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event summary keyed by language code.
+        articleCount:
+          type: integer
+          description: Number of articles grouped in this event.
+        date:
           type: string
+          format: date
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        sentiment:
+          type: number
+          minimum: -1
+          maximum: 1
+        location:
+          $ref: '#/components/schemas/Location'
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    Author:
+      type: object
+      properties:
+        uri:
+          type: string
+        name:
+          type: string
+        isAgency:
+          type: boolean
     Article:
       type: object
       properties:
@@ -182,14 +228,22 @@ components:
           description: URI of the event this article belongs to.
         isDuplicate:
           type: boolean
-    ApiKeyParam:
+    Category:
       type: object
-      required:
-      - apiKey
       properties:
-        apiKey:
+        uri:
           type: string
-          description: Your NewsAPI.ai API key.
+        label:
+          type: string
+        wgt:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     Concept:
       type: object
       properties:
@@ -208,51 +262,21 @@ components:
           - wiki
         score:
           type: number
-    Event:
-      type: object
-      properties:
-        uri:
-          type: string
-          description: Unique event identifier.
-        title:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event title keyed by language code.
-        summary:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event summary keyed by language code.
-        articleCount:
-          type: integer
-          description: Number of articles grouped in this event.
-        date:
-          type: string
-          format: date
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        sentiment:
-          type: number
-          minimum: -1
-          maximum: 1
-        location:
-          $ref: '#/components/schemas/Location'
-    Category:
+    Location:
       type: object
       properties:
         uri:
           type: string
         label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
           type: string
-        wgt:
-          type: integer
+        lat:
+          type: number
+        long:
+          type: number
     Source:
       type: object
       properties:
@@ -272,30 +296,6 @@ components:
               type: integer
             alexaCountryRank:
               type: integer
-    Location:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-        lat:
-          type: number
-        long:
-          type: number
-    Author:
-      type: object
-      properties:
-        uri:
-          type: string
-        name:
-          type: string
-        isAgency:
-          type: boolean
   securitySchemes:
     apiKeyAuth:
       type: apiKey

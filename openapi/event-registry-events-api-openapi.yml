@@ -221,39 +221,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
-    Concept:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-          enum:
-          - person
-          - org
-          - loc
-          - wiki
-        score:
-          type: number
     Event:
       type: object
       properties:
@@ -290,6 +257,14 @@ components:
           maximum: 1
         location:
           $ref: '#/components/schemas/Location'
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
     Category:
       type: object
       properties:
@@ -299,6 +274,31 @@ components:
           type: string
         wgt:
           type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Concept:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
+          type: number
     Location:
       type: object
       properties:
