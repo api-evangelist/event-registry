@@ -161,23 +161,6 @@ components:
           maximum: 1
         location:
           $ref: '#/components/schemas/Location'
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
-    Author:
-      type: object
-      properties:
-        uri:
-          type: string
-        name:
-          type: string
-        isAgency:
-          type: boolean
     Article:
       type: object
       properties:
@@ -237,13 +220,6 @@ components:
           type: string
         wgt:
           type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     Concept:
       type: object
       properties:
@@ -262,21 +238,22 @@ components:
           - wiki
         score:
           type: number
-    Location:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Author:
       type: object
       properties:
         uri:
           type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
+        name:
           type: string
-        lat:
-          type: number
-        long:
-          type: number
+        isAgency:
+          type: boolean
     Source:
       type: object
       properties:
@@ -296,6 +273,29 @@ components:
               type: integer
             alexaCountryRank:
               type: integer
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    Location:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        lat:
+          type: number
+        long:
+          type: number
   securitySchemes:
     apiKeyAuth:
       type: apiKey

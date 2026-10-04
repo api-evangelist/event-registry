@@ -184,52 +184,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
-    ArticleResponseControl:
-      type: object
-      properties:
-        articleBodyLen:
-          type: integer
-          description: Article body length in characters. Default 1000. Use -1 for full text, 0 to exclude body.
-        articlesPage:
-          type: integer
-          description: Page number (starting from 1). Default 1.
-        articlesCount:
-          type: integer
-          maximum: 100
-          description: Articles per page (max 100). Default 100.
-        articlesSortBy:
-          type: string
-          enum:
-          - date
-          - rel
-          - sourceImportance
-          - sourceAlexaGlobalRank
-          - socialScore
-          - facebookShares
-          description: Sort order. Default "date".
-        articlesSortByAsc:
-          type: boolean
-          description: Ascending sort order. Default false.
-        dataType:
-          type: string
-          description: Content types (comma-separated) — "news", "pr", "blog". Default "news".
-    Author:
-      type: object
-      properties:
-        uri:
-          type: string
-        name:
-          type: string
-        isAgency:
-          type: boolean
     Article:
       type: object
       properties:
@@ -280,6 +234,35 @@ components:
           description: URI of the event this article belongs to.
         isDuplicate:
           type: boolean
+    ArticleResponseControl:
+      type: object
+      properties:
+        articleBodyLen:
+          type: integer
+          description: Article body length in characters. Default 1000. Use -1 for full text, 0 to exclude body.
+        articlesPage:
+          type: integer
+          description: Page number (starting from 1). Default 1.
+        articlesCount:
+          type: integer
+          maximum: 100
+          description: Articles per page (max 100). Default 100.
+        articlesSortBy:
+          type: string
+          enum:
+          - date
+          - rel
+          - sourceImportance
+          - sourceAlexaGlobalRank
+          - socialScore
+          - facebookShares
+          description: Sort order. Default "date".
+        articlesSortByAsc:
+          type: boolean
+          description: Ascending sort order. Default false.
+        dataType:
+          type: string
+          description: Content types (comma-separated) — "news", "pr", "blog". Default "news".
     Category:
       type: object
       properties:
@@ -289,13 +272,6 @@ components:
           type: string
         wgt:
           type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     Concept:
       type: object
       properties:
@@ -448,6 +424,22 @@ components:
           description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
         query:
           description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Author:
+      type: object
+      properties:
+        uri:
+          type: string
+        name:
+          type: string
+        isAgency:
+          type: boolean
     Source:
       type: object
       properties:
@@ -467,6 +459,14 @@ components:
               type: integer
             alexaCountryRank:
               type: integer
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
   securitySchemes:
     apiKeyAuth:
       type: apiKey

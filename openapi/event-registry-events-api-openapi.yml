@@ -257,14 +257,6 @@ components:
           maximum: 1
         location:
           $ref: '#/components/schemas/Location'
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
     Category:
       type: object
       properties:
@@ -274,13 +266,6 @@ components:
           type: string
         wgt:
           type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     Concept:
       type: object
       properties:
@@ -298,21 +283,6 @@ components:
           - loc
           - wiki
         score:
-          type: number
-    Location:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: object
-          additionalProperties:
-            type: string
-        type:
-          type: string
-        lat:
-          type: number
-        long:
           type: number
     ContentFilterParams:
       type: object
@@ -448,6 +418,36 @@ components:
           description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
         query:
           description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    Location:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: object
+          additionalProperties:
+            type: string
+        type:
+          type: string
+        lat:
+          type: number
+        long:
+          type: number
   securitySchemes:
     apiKeyAuth:
       type: apiKey

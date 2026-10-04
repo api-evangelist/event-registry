@@ -231,13 +231,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
     ApiKeyParam:
       type: object
       required:
@@ -246,6 +239,13 @@ components:
         apiKey:
           type: string
           description: Your NewsAPI.ai API key.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
     SuggestResult:
       type: object
       properties:
