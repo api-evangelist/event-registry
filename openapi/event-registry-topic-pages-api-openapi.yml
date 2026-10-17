@@ -125,42 +125,45 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Event:
+    Location:
       type: object
       properties:
         uri:
           type: string
-          description: Unique event identifier.
-        title:
+        label:
           type: object
           additionalProperties:
             type: string
-          description: Event title keyed by language code.
-        summary:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event summary keyed by language code.
-        articleCount:
-          type: integer
-          description: Number of articles grouped in this event.
-        date:
+        type:
           type: string
-          format: date
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        sentiment:
+        lat:
           type: number
-          minimum: -1
-          maximum: 1
-        location:
-          $ref: '#/components/schemas/Location'
+        long:
+          type: number
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+    Author:
+      type: object
+      properties:
+        uri:
+          type: string
+        name:
+          type: string
+        isAgency:
+          type: boolean
     Article:
       type: object
       properties:
@@ -211,15 +214,6 @@ components:
           description: URI of the event this article belongs to.
         isDuplicate:
           type: boolean
-    Category:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: string
-        wgt:
-          type: integer
     Concept:
       type: object
       properties:
@@ -238,22 +232,6 @@ components:
           - wiki
         score:
           type: number
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    Author:
-      type: object
-      properties:
-        uri:
-          type: string
-        name:
-          type: string
-        isAgency:
-          type: boolean
     Source:
       type: object
       properties:
@@ -273,29 +251,51 @@ components:
               type: integer
             alexaCountryRank:
               type: integer
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
-    Location:
+    Category:
       type: object
       properties:
         uri:
           type: string
         label:
+          type: string
+        wgt:
+          type: integer
+    Event:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique event identifier.
+        title:
           type: object
           additionalProperties:
             type: string
-        type:
+          description: Event title keyed by language code.
+        summary:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event summary keyed by language code.
+        articleCount:
+          type: integer
+          description: Number of articles grouped in this event.
+        date:
           type: string
-        lat:
+          format: date
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        sentiment:
           type: number
-        long:
-          type: number
+          minimum: -1
+          maximum: 1
+        location:
+          $ref: '#/components/schemas/Location'
   securitySchemes:
     apiKeyAuth:
       type: apiKey

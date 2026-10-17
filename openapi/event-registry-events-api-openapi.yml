@@ -221,52 +221,14 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Event:
+    ErrorResponse:
       type: object
       properties:
-        uri:
+        error:
           type: string
-          description: Unique event identifier.
-        title:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event title keyed by language code.
-        summary:
-          type: object
-          additionalProperties:
-            type: string
-          description: Event summary keyed by language code.
-        articleCount:
-          type: integer
-          description: Number of articles grouped in this event.
-        date:
+        message:
           type: string
-          format: date
-        concepts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Concept'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/Category'
-        sentiment:
-          type: number
-          minimum: -1
-          maximum: 1
-        location:
-          $ref: '#/components/schemas/Location'
-    Category:
-      type: object
-      properties:
-        uri:
-          type: string
-        label:
-          type: string
-        wgt:
-          type: integer
-    Concept:
+    Location:
       type: object
       properties:
         uri:
@@ -277,13 +239,18 @@ components:
             type: string
         type:
           type: string
-          enum:
-          - person
-          - org
-          - loc
-          - wiki
-        score:
+        lat:
           type: number
+        long:
+          type: number
+    ApiKeyParam:
+      type: object
+      required:
+      - apiKey
+      properties:
+        apiKey:
+          type: string
+          description: Your NewsAPI.ai API key.
     ContentFilterParams:
       type: object
       properties:
@@ -418,22 +385,7 @@ components:
           description: Duplicate handling strategy. Default "keepAll". Use "skipDuplicates" to remove wire syndication noise.
         query:
           description: Advanced Query Language object for complex boolean logic. Overrides simple filter params.
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-        message:
-          type: string
-    ApiKeyParam:
-      type: object
-      required:
-      - apiKey
-      properties:
-        apiKey:
-          type: string
-          description: Your NewsAPI.ai API key.
-    Location:
+    Concept:
       type: object
       properties:
         uri:
@@ -444,10 +396,58 @@ components:
             type: string
         type:
           type: string
-        lat:
+          enum:
+          - person
+          - org
+          - loc
+          - wiki
+        score:
           type: number
-        long:
+    Category:
+      type: object
+      properties:
+        uri:
+          type: string
+        label:
+          type: string
+        wgt:
+          type: integer
+    Event:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Unique event identifier.
+        title:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event title keyed by language code.
+        summary:
+          type: object
+          additionalProperties:
+            type: string
+          description: Event summary keyed by language code.
+        articleCount:
+          type: integer
+          description: Number of articles grouped in this event.
+        date:
+          type: string
+          format: date
+        concepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        sentiment:
           type: number
+          minimum: -1
+          maximum: 1
+        location:
+          $ref: '#/components/schemas/Location'
   securitySchemes:
     apiKeyAuth:
       type: apiKey
