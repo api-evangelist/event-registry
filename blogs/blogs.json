@@ -9,6 +9,13 @@
       "method": "discovered"
     },
     {
+      "source": "https://newsapi.ai/blog/rss/",
+      "feed_url": "https://newsapi.ai/blog/rss/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://newsapi.ai/blog/feed/",
       "feed_url": "https://newsapi.ai/blog/feed/",
       "title": "",
@@ -16,7 +23,7 @@
       "method": "feed"
     }
   ],
-  "fetched": "2026-10-10T13:15:00Z",
+  "fetched": "2026-10-17T14:53:57Z",
   "post_count": 22,
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "blog_subdomain",
