@@ -66,70 +66,171 @@
 
 Event Registry (NewsAPI.ai) is the world's leading news intelligence platform providing a REST API for accessing global news articles, trending topics, event detection, named entities, sentiment analysis, and media monitoring across 150,000+ sources in 60+ languages, with historical archive access dating back to 2014.
 
-## Links
+**Areas:** News · Media Monitoring · News Intelligence · Event Detection · Named Entity Recognition · Sentiment Analysis · Media Analytics · News API
 
-- Website: https://eventregistry.org
-- API / Developer Portal: https://newsapi.ai
-- Documentation: https://newsapi.ai/documentation
-- Sandbox: https://newsapi.ai/documentation/sandbox
-- Pricing Plans: https://newsapi.ai/plans
-- Blog: https://newsapi.ai/blog/
-- GitHub: https://github.com/EventRegistry
-- LinkedIn: https://www.linkedin.com/company/event-registry/
-- X (Twitter): https://x.com/event_registry
+## Event Registry on APIs.io
 
-## APIs
+Everything profiled for Event Registry is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/event-registry/](https://apis.io/providers/event-registry/)** — or go straight to one of the APIs or properties below.
 
-- **News API** — Query articles and clustered events with full AI-enriched metadata.
-  - Base URL: `https://eventregistry.org/api/v1`
-  - Auth: API key via `apiKey` query parameter or request body field
-  - HTTP Methods: GET and POST
+### APIs (5)
 
-### Key Endpoints
+- [Event Registry Articles API](https://apis.io/apis/event-registry/event-registry-articles-api/) — Search and retrieve individual news articles from 150,000+ global sources.
+- [Event Registry Events API](https://apis.io/apis/event-registry/event-registry-events-api/) — Search and retrieve clustered news events (deduplicated story groups).
+- [Event Registry Suggest API](https://apis.io/apis/event-registry/event-registry-suggest-api/) — Resolve entity names to URIs for use in search filters.
+- [Event Registry Topic Pages API](https://apis.io/apis/event-registry/event-registry-topic-pages-api/) — Retrieve content matching user-defined topic page configurations.
+- [Event Registry Usage API](https://apis.io/apis/event-registry/event-registry-usage-api/) — Monitor API token quota and usage.
 
-| Endpoint | Description |
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [newsapi](https://apis.io/servers/event-registry/newsapi/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Event Registry Agentic Access](https://apis.io/agentic-access/event-registry/event-registry-agentic-access/)
+
+#### JSON Schema (2)
+
+The data models the API reads and writes.
+
+- [Article](https://apis.io/schemas/event-registry/article/)
+- [Event](https://apis.io/schemas/event-registry/event/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [context Context](https://apis.io/jsonld/event-registry/context/)
+
+#### Examples (3)
+
+Example requests and responses.
+
+- [Search Articles](https://apis.io/examples/event-registry/search-articles/)
+- [Search Events](https://apis.io/examples/event-registry/search-events/)
+- [Suggest Concepts](https://apis.io/examples/event-registry/suggest-concepts/)
+
+#### Collections (5)
+
+Postman and Open Collection request collections.
+
+- [Event Registry (NewsAPI.ai) Articles API](https://apis.io/collections/event-registry/open-event-registry-articles-api/)
+- [Event Registry (NewsAPI.ai) Articles Events API](https://apis.io/collections/event-registry/open-event-registry-events-api/)
+- [Event Registry (NewsAPI.ai) Articles Suggest API](https://apis.io/collections/event-registry/open-event-registry-suggest-api/)
+- [Event Registry (NewsAPI.ai) Articles Topic Pages API](https://apis.io/collections/event-registry/open-event-registry-topic-pages-api/)
+- [Event Registry (NewsAPI.ai) Articles Usage API](https://apis.io/collections/event-registry/open-event-registry-usage-api/)
+
+#### Overlays (5)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Event Registry Articles Overlay](https://apis.io/overlays/event-registry/event-registry-articles-overlay/)
+- [Event Registry Events Overlay](https://apis.io/overlays/event-registry/event-registry-events-overlay/)
+- [Event Registry Suggest Overlay](https://apis.io/overlays/event-registry/event-registry-suggest-overlay/)
+- [Event Registry Topic Pages Overlay](https://apis.io/overlays/event-registry/event-registry-topic-pages-overlay/)
+- [Event Registry Usage Overlay](https://apis.io/overlays/event-registry/event-registry-usage-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Event Registry — jsonschema rules](https://apis.io/rules/event-registry/event-registry-jsonschema-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Event Registry Authentication](https://apis.io/security/event-registry/event-registry-authentication/)
+- [Event Registry Domain Security](https://apis.io/security/event-registry/event-registry-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Event Registry Plans Pricing](https://apis.io/plans/event-registry/event-registry-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Event Registry Rate Limits](https://apis.io/rate-limits/event-registry/event-registry-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Event Registry Finops](https://apis.io/finops/event-registry/event-registry-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://eventregistry.org)
+- [Documentation](https://newsapi.ai/documentation)
+- [API reference](https://newsapi.ai/documentation)
+- [Pricing](https://newsapi.ai/plans)
+- [Sign up](https://newsapi.ai/register)
+- [Blog](https://newsapi.ai/blog/)
+- [Terms of service](https://newsapi.ai/terms)
+
+## API Evangelist rating
+
+**Kin Score 46.7** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
 |---|---|
-| `/api/v1/article/getArticles` | Retrieve news articles with filtering |
-| `/api/v1/event/getEvents` | Retrieve AI-clustered news events |
+| Discoverability | 65.0 |
+| Contract quality | 57.8 |
+| Contract governance | 14.4 |
+| Operational transparency | 42.1 |
+| Developer ergonomics | 39.3 |
+| Access clarity | 52.6 |
 
-### SDKs
+**Agent readiness 38.9** — agent-ready (gated down from agent-native)
 
-- Python: https://github.com/EventRegistry/event-registry-python
-- Node.js: https://github.com/EventRegistry/event-registry-node-js
-- MCP Server: https://github.com/EventRegistry/newsapi-mcp
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | yes |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
 
-## Plans
+**Regulatory alignment 20.6** — Horizontal (data, software, accessibility, platform)
 
-See [plans/event-registry-plans-pricing.yml](plans/event-registry-plans-pricing.yml) for full pricing details.
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/event-registry/](https://apis.io/providers/event-registry/).
 
-| Plan | Monthly Cost | Tokens/Month |
-|---|---|---|
-| Free | $0 | 2,000 (one-time) |
-| 5K | $90 | 5,000 |
-| 10K | ~$150 | 10,000 |
-| 25K | ~$300 | 25,000 |
-| Enterprise | Custom | Custom |
+## How this profile is made
 
-Overage: $0.015 per token above plan limit (opt-in). Academic discounts available.
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
 
-## Rate Limits
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Event Registry: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
 
-See [rate-limits/event-registry-rate-limits.yml](rate-limits/event-registry-rate-limits.yml) for full rate limit details.
+## Open an issue
 
-- Maximum concurrent requests: **5** (429 returned if exceeded)
-- Monthly token quota enforced per plan tier
-- Tokens reset on the first of each month; no rollover
-
-## FinOps
-
-See [finops/event-registry-finops.yml](finops/event-registry-finops.yml) for cost optimization guidance.
-
-Key cost drivers:
-- Historical depth: recent queries (1 token) vs. historical queries (5+ tokens/year)
-- Event queries cost 5x more than article queries
-- Overage charges at $0.015/token if opt-in overage is enabled
-
-## Contact
-
-- General: info@eventregistry.org
-- Maintainer: Kin Lane (kin@apievangelist.com)
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/event-registry/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
